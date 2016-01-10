@@ -5,9 +5,7 @@ import java.util.List;
 
 import com.dyn.achievements.achievement.AchievementHandler;
 import com.dyn.achievements.achievement.AchievementPlus;
-import com.dyn.instructor.TeacherMod;
 import com.rabbit.gui.background.DefaultBackground;
-import com.rabbit.gui.component.control.PictureButton;
 import com.rabbit.gui.component.control.TextBox;
 import com.rabbit.gui.component.display.Picture;
 import com.rabbit.gui.component.display.TextLabel;
@@ -15,11 +13,6 @@ import com.rabbit.gui.component.grid.Grid;
 import com.rabbit.gui.component.grid.ScrollableGrid;
 import com.rabbit.gui.component.grid.entries.GridEntry;
 import com.rabbit.gui.component.grid.entries.PictureButtonGridEntry;
-import com.rabbit.gui.component.grid.entries.PictureGridEntry;
-import com.rabbit.gui.component.list.DisplayList;
-import com.rabbit.gui.component.list.entries.StringEntry;
-import com.rabbit.gui.component.table.Row;
-import com.rabbit.gui.component.table.Table;
 import com.rabbit.gui.render.TextAlignment;
 import com.rabbit.gui.show.Show;
 
@@ -64,7 +57,7 @@ public class AchHome extends Show {
 								(TextBox textbox, String previousText) -> textChanged(textbox, previousText)));
 		// The background
 		this.registerComponent(new Picture(this.width / 8, (int) (this.height * .05), (int) (this.width * (6.0 / 8.0)),
-				(int) (this.height * .9), new ResourceLocation("tutorial", "textures/gui/background3.png")));
+				(int) (this.height * .9), new ResourceLocation("dyn", "textures/gui/background3.png")));
 	}
 
 	private void textChanged(TextBox textbox, String previousText) {
