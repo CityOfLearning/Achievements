@@ -1,5 +1,6 @@
 package com.dyn.achievements.handlers;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,8 +18,9 @@ public class EventHandler {
 	@SubscribeEvent
 	public void craftingEvent(PlayerEvent.ItemCraftedEvent event) {
 		if (event.crafting != null) {
-			for (AchievementPlus a : AchievementHandler.itemIds.get(AchievementType.CRAFT)
-					.get(Item.getIdFromItem(event.crafting.getItem()))) {
+			System.out.println(event.crafting.getDisplayName());
+			for (AchievementPlus a : AchievementHandler.itemNames.get(AchievementType.CRAFT)
+					.get(event.crafting.getDisplayName())) {
 				if (!a.isAwarded()) {
 					for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.CRAFT)) {
 						if (r.getRequirementItemID() == Item.getIdFromItem(event.crafting.getItem())) {
@@ -36,8 +38,9 @@ public class EventHandler {
 	@SubscribeEvent
 	public void smeltingEvent(PlayerEvent.ItemSmeltedEvent event) {
 		if (event.smelting != null) {
-			for (AchievementPlus a : AchievementHandler.itemIds.get(AchievementType.SMELT)
-					.get(Item.getIdFromItem(event.smelting.getItem()))) {
+			System.out.println(event.smelting.getDisplayName());
+			for (AchievementPlus a : AchievementHandler.itemNames.get(AchievementType.SMELT)
+					.get(event.smelting.getDisplayName())) {
 				if (!a.isAwarded()) {
 					for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.SMELT)) {
 						if (r.getRequirementItemID() == Item.getIdFromItem(event.smelting.getItem())) {
@@ -55,11 +58,15 @@ public class EventHandler {
 	@SubscribeEvent
 	public void pickupEvent(PlayerEvent.ItemPickupEvent event) {
 		if (event.pickedUp != null) {
-			for (AchievementPlus a : AchievementHandler.itemIds.get(AchievementType.PICKUP)
-					.get(Item.getIdFromItem(event.pickedUp.getEntityItem().getItem()))) {
+			System.out.println(event.pickedUp.getEntityItem().getDisplayName());
+			for (AchievementPlus a : AchievementHandler.itemNames.get(AchievementType.PICKUP)
+					.get(event.pickedUp.getEntityItem().getDisplayName())) {
+				System.out.print(a.getName());
 				if (!a.isAwarded()) {
 					for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.PICKUP)) {
-						if (r.getRequirementItemID() == Item.getIdFromItem(event.pickedUp.getEntityItem().getItem())) {
+						System.out.print(r.getRequirementEntityName());
+						if (r.getRequirementEntityName().equals(event.pickedUp.getEntityItem().getDisplayName())) {
+							System.out.println(r.getTotalAquired());
 							if (r.getTotalAquired() < r.getTotalNeeded()) {
 								r.incrementTotal();
 							}
@@ -74,13 +81,14 @@ public class EventHandler {
 	@SubscribeEvent
 	public void killEvent(LivingDeathEvent event) {
 		if (event.source != null && event.source.getEntity() != null) {
-			if (event.source.getEntity() instanceof EntityPlayer) {
+			//we need to know that this particular player did the killing
+			if (event.source.getEntity() instanceof EntityPlayer  && event.source.getEntity().equals(Minecraft.getMinecraft().thePlayer)) {
 				EntityPlayer player = (EntityPlayer) event.source.getEntity();
 				for (AchievementPlus a : AchievementHandler.entityNames.get(AchievementType.KILL)
 						.get(EntityList.getEntityString(event.entity))) {
 					if (!a.isAwarded()) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.KILL)) {
-							if (r.getRequirementItemEntity() == EntityList.getEntityString(event.entity)) {
+							if (r.getRequirementEntityName() == EntityList.getEntityString(event.entity)) {
 								if (r.getTotalAquired() < r.getTotalNeeded()) {
 									r.incrementTotal();
 								}
@@ -92,6 +100,20 @@ public class EventHandler {
 			}
 		}
 	}
+
+	// how do we know which player brewed the potion
+	/*
+	 * @SubscribeEvent public void brewEvent(PotionBrewEvent event) { for(int
+	 * i=0;i<3;i++){ if (event.getItem(1) != null) { for (AchievementPlus a :
+	 * AchievementHandler.itemIds.get(AchievementType.BREW)
+	 * .get(Item.getIdFromItem(event.getItem(i).getItem()))) { if
+	 * (!a.isAwarded()) { for (BaseRequirement r :
+	 * a.getRequirements().getRequirementsByType(AchievementType.BREW)) { if
+	 * (r.getRequirementItemID() ==
+	 * Item.getIdFromItem(event.getItem(i).getItem())) { if (r.getTotalAquired()
+	 * < r.getTotalNeeded()) { r.incrementTotal(); } } }
+	 * a.meetsRequirements(player); } } } } }
+	 */
 
 	/*
 	 * @SubscribeEvent public void spawnEvent(LivingEvent.LivingSpawnEvent

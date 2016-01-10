@@ -13,12 +13,15 @@ import com.dyn.achievements.gui.AchHome;
 import com.dyn.achievements.handlers.*;
 import com.dyn.achievements.proxy.Proxy;
 import com.dyn.achievements.reference.Reference;
+import com.google.gson.JsonObject;
 import com.rabbit.gui.GuiFoundation;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -70,19 +73,21 @@ public class AchievementsMod {
 		
 		//Crafting
 		CraftRequirement cr2 = r.new CraftRequirement();
-		cr2.setFromItemId(Block.getIdFromBlock(Blocks.oak_stairs));
+		ItemStack is = new ItemStack(Blocks.birch_stairs);
+		cr2.setFromItemId(Item.getIdFromItem(is.getItem()), is.getItemDamage());
 		cr2.setAmountNeeded(1);
 		r.addRequirement(cr2);
 		
 		//Smelting
 		SmeltRequirement sr = r.new SmeltRequirement();
-		sr.setFromItemId(265); //iron ingot
+		sr.setFromItemId(265, 0); //iron ingot
 		sr.setAmountNeeded(1);
 		r.addRequirement(sr);
 		
 		//Pick Up
 		PickupRequirement pr = r.new PickupRequirement();
-		pr.setFromItemId(344); //egg
+		is = new ItemStack(Items.egg);
+		pr.setFromItemId(Item.getIdFromItem(is.getItem()), is.getItemDamage()); //egg
 		pr.setAmountNeeded(10);
 		r.addRequirement(pr);
 		
@@ -106,12 +111,13 @@ public class AchievementsMod {
 		AchievementPlus test = new AchievementPlus(r, "My Test Achievement", "this is a test to make sure that the achievement system works", 2168);
 
 		for(int i=1;i<100;i++){
-			AchievementPlus test2 = new AchievementPlus(r, "Achievement " + i, "this is a test", 2168);
+			AchievementPlus test2 = new AchievementPlus(Requirements.getCopy(r), "Achievement " + i, "this is a test", 2168);
 		}
 		
-		/*JsonObject ache = test.achievementToJson();
-		AchievementPlus test3 = new AchievementPlus();
-		test3.JsonToAchievement(ache);*/
+		JsonObject ache = test.achievementToJson();
+		System.out.println(ache);
+		//AchievementPlus test3 = new AchievementPlus();
+		//test3.JsonToAchievement(ache);
 		
 	}
 	

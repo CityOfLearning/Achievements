@@ -14,36 +14,43 @@ public class Requirements {
 		private int amount;
 
 		BaseRequirement() {
-			aquired = 0;
-			amount = 0;
+			this.aquired = 0;
+			this.amount = 0;
 		}
 
-		public abstract String getRequirementItemEntity();
+		BaseRequirement(BaseRequirement br) {
+			this.aquired = br.aquired;
+			this.amount = br.amount;
+		}
+
+		public abstract String getRequirementEntityName();
 
 		public int getTotalNeeded() {
-			return amount;
+			return this.amount;
 		}
 
 		public int getTotalAquired() {
-			return aquired;
+			return this.aquired;
 		}
 
 		public abstract int getRequirementItemID();
+
+		public abstract int getRequirementSubItemID();
 
 		public void incrementTotal() {
 			this.aquired++;
 		}
 
 		public void incrementTotalBy(int amt) {
-			aquired += amt;
+			this.aquired += amt;
 		}
 
 		public void setAquiredTo(int total) {
-			aquired = total;
+			this.aquired = total;
 		}
 
 		public void setAmountNeeded(int total) {
-			amount = total;
+			this.amount = total;
 		}
 	}
 
@@ -52,23 +59,35 @@ public class Requirements {
 		public int id;
 
 		public CraftRequirement() {
-			item = null;
-			id = 0;
+			super();
+			this.item = null;
+			this.id = 0;
+		}
+
+		public CraftRequirement(CraftRequirement cr) {
+			super(cr);
+			this.item = cr.item;
+			this.id = cr.id;
 		}
 
 		@Override
-		public String getRequirementItemEntity() {
-			return item.getDisplayName();
+		public String getRequirementEntityName() {
+			return this.item.getDisplayName();
 		}
 
 		@Override
 		public int getRequirementItemID() {
-			return id;
+			return this.id;
 		}
 
-		public void setFromItemId(int id) {
-			item = new ItemStack(Item.getItemById(id));
+		public void setFromItemId(int id, int subItemId) {
+			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
 			this.id = id;
+		}
+
+		@Override
+		public int getRequirementSubItemID() {
+			return this.item.getItemDamage();
 		}
 	}
 
@@ -77,23 +96,35 @@ public class Requirements {
 		public int id;
 
 		public SmeltRequirement() {
-			item = null;
-			id = 0;
+			super();
+			this.item = null;
+			this.id = 0;
+		}
+
+		public SmeltRequirement(SmeltRequirement sr) {
+			super(sr);
+			this.item = sr.item;
+			this.id = sr.id;
 		}
 
 		@Override
-		public String getRequirementItemEntity() {
-			return item.getDisplayName();
+		public String getRequirementEntityName() {
+			return this.item.getDisplayName();
 		}
 
 		@Override
 		public int getRequirementItemID() {
-			return id;
+			return this.id;
 		}
 
-		public void setFromItemId(int id) {
-			item = new ItemStack(Item.getItemById(id));
+		public void setFromItemId(int id, int subItemId) {
+			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
 			this.id = id;
+		}
+
+		@Override
+		public int getRequirementSubItemID() {
+			return this.item.getItemDamage();
 		}
 	}
 
@@ -101,16 +132,27 @@ public class Requirements {
 		public String entityType;
 
 		public KillRequirement() {
-			entityType = "";
+			super();
+			this.entityType = "";
+		}
+
+		public KillRequirement(KillRequirement kr) {
+			super(kr);
+			this.entityType = kr.entityType;
 		}
 
 		@Override
-		public String getRequirementItemEntity() {
-			return entityType;
+		public String getRequirementEntityName() {
+			return this.entityType;
 		}
 
 		@Override
 		public int getRequirementItemID() {
+			return 0;
+		}
+
+		@Override
+		public int getRequirementSubItemID() {
 			return 0;
 		}
 	}
@@ -119,42 +161,65 @@ public class Requirements {
 		public String entityType;
 
 		public SpawnRequirement() {
-			entityType = "";
+			super();
+			this.entityType = "";
+		}
+
+		public SpawnRequirement(SpawnRequirement sr) {
+			super(sr);
+			this.entityType = sr.entityType;
 		}
 
 		@Override
-		public String getRequirementItemEntity() {
-			return entityType;
+		public String getRequirementEntityName() {
+			return this.entityType;
 		}
 
 		@Override
 		public int getRequirementItemID() {
 			return 0;
 		}
+
+		@Override
+		public int getRequirementSubItemID() {
+			return 0;
+		}
 	}
 
 	public class PickupRequirement extends BaseRequirement {
-		public Item item;
+		public ItemStack item;
 		public int id;
 
 		public PickupRequirement() {
-			item = null;
-			id = 0;
+			super();
+			this.item = null;
+			this.id = 0;
+		}
+
+		public PickupRequirement(PickupRequirement pr) {
+			super(pr);
+			this.item = pr.item;
+			this.id = pr.id;
 		}
 
 		@Override
-		public String getRequirementItemEntity() {
-			return item.getUnlocalizedName().substring(5);
+		public String getRequirementEntityName() {
+			return this.item.getDisplayName();
 		}
 
 		@Override
 		public int getRequirementItemID() {
-			return id;
+			return this.id;
 		}
 
-		public void setFromItemId(int id) {
-			item = Item.getItemById(id);
+		public void setFromItemId(int id, int subItemId) {
+			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
 			this.id = id;
+		}
+
+		@Override
+		public int getRequirementSubItemID() {
+			return this.item.getItemDamage();
 		}
 	}
 
@@ -162,25 +227,62 @@ public class Requirements {
 		public StatBase eventStat;
 
 		public StatRequirement() {
-			eventStat = null;
+			super();
+			this.eventStat = null;
+		}
+
+		public StatRequirement(StatRequirement sr) {
+			super(sr);
+			this.eventStat = sr.eventStat;
 		}
 
 		@Override
-		public String getRequirementItemEntity() {
-			return eventStat.toString();
+		public String getRequirementEntityName() {
+			return this.eventStat.toString();
 		}
 
 		@Override
 		public int getRequirementItemID() {
 			return 0;
 		}
+
+		@Override
+		public int getRequirementSubItemID() {
+			return 0;
+		}
 	}
 
-	private ArrayList<BaseRequirement> requirements = new ArrayList();
+	private ArrayList<BaseRequirement> requirements = new ArrayList();;
 
 	public Requirements() {
-
+	
 	}
+	
+	public static Requirements getCopy(Requirements r){
+		Requirements copy = new Requirements();
+		for (BaseRequirement br : r.getRequirements()) {
+			if (br instanceof CraftRequirement) {
+				copy.addRequirement(copy.new CraftRequirement((CraftRequirement) br));
+			}
+			if (br instanceof SmeltRequirement) {
+				copy.addRequirement(copy.new SmeltRequirement((SmeltRequirement) br));
+			}
+			if (br instanceof PickupRequirement) {
+				copy.addRequirement(copy.new PickupRequirement((PickupRequirement) br));
+			}
+			if (br instanceof StatRequirement) {
+				copy.addRequirement(copy.new StatRequirement((StatRequirement) br));
+			}
+			if (br instanceof KillRequirement) {
+				copy.addRequirement(copy.new KillRequirement((KillRequirement) br));
+			}
+			if (br instanceof SpawnRequirement) {
+				copy.addRequirement(copy.new SpawnRequirement((SpawnRequirement) br));
+			}
+		}
+		return copy;
+	}
+	
 
 	/***
 	 * Add requirement to requirements ArrayList.
@@ -189,7 +291,7 @@ public class Requirements {
 	 *            BaseRequirement
 	 */
 	public void addRequirement(BaseRequirement req) {
-		requirements.add(req);
+		this.requirements.add(req);
 	}
 
 	/***
@@ -198,7 +300,7 @@ public class Requirements {
 	 * @return requirements ArrayList
 	 */
 	public ArrayList<BaseRequirement> getRequirements() {
-		return requirements;
+		return this.requirements;
 	}
 
 	/***
@@ -213,7 +315,7 @@ public class Requirements {
 		boolean hasStat = false;
 		boolean hasKill = false;
 		boolean hasSpawn = false;
-		for (BaseRequirement r : requirements) {
+		for (BaseRequirement r : this.requirements) {
 			if (r instanceof CraftRequirement)
 				hasCraft = true;
 
@@ -246,7 +348,7 @@ public class Requirements {
 	 */
 	public ArrayList<BaseRequirement> getRequirementsByType(AchievementType type) {
 		ArrayList<BaseRequirement> typereq = new ArrayList();
-		for (BaseRequirement r : requirements) {
+		for (BaseRequirement r : this.requirements) {
 			switch (type) {
 			case CRAFT:
 				if (r instanceof CraftRequirement)

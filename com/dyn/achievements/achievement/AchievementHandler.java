@@ -23,7 +23,7 @@ public class AchievementHandler {
 	public static Map<String, AchievementPlus> achievementsName = new HashMap();
 	// currently achievements can have mixed requirements so this doesnt work
 	public static Map<AchievementType, ArrayList<AchievementPlus>> achievementsType = new HashMap();
-	public static Map<AchievementType, ListMultimap<Integer, AchievementPlus>> itemIds = new HashMap();
+	public static Map<AchievementType, ListMultimap<String, AchievementPlus>> itemNames = new HashMap();
 	public static Map<AchievementType, ListMultimap<String, AchievementPlus>> entityNames = new HashMap();
 	/***
 	 * Adds page of achievements.
@@ -132,33 +132,33 @@ public class AchievementHandler {
 		}
 	}
 	
-	private static void parseRequirementItemIds(AchievementPlus achievement){
+	private static void parseRequirementItemNames(AchievementPlus achievement){
 		boolean[] vals = achievement.getRequirements().getRequirementTypes();
 		if (vals[0]) {
-			if (itemIds.get(AchievementType.CRAFT) == null) {
-				ListMultimap<Integer, AchievementPlus> map = ArrayListMultimap.create();
-				itemIds.put(AchievementType.CRAFT, map);
+			if (itemNames.get(AchievementType.CRAFT) == null) {
+				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
+				itemNames.put(AchievementType.CRAFT, map);
 			}
 			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.CRAFT)){
-				itemIds.get(AchievementType.CRAFT).put(r.getRequirementItemID(), achievement);
+				itemNames.get(AchievementType.CRAFT).put(r.getRequirementEntityName(), achievement);
 			}
 		}
 		if (vals[1]) {
-			if (itemIds.get(AchievementType.SMELT) == null) {
-				ListMultimap<Integer, AchievementPlus> map = ArrayListMultimap.create();
-				itemIds.put(AchievementType.SMELT, map);
+			if (itemNames.get(AchievementType.SMELT) == null) {
+				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
+				itemNames.put(AchievementType.SMELT, map);
 			}
 			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.SMELT)){
-				itemIds.get(AchievementType.SMELT).put(r.getRequirementItemID(), achievement);
+				itemNames.get(AchievementType.SMELT).put(r.getRequirementEntityName(), achievement);
 			}
 		}
 		if (vals[2]) {
-			if (itemIds.get(AchievementType.PICKUP) == null) {
-				ListMultimap<Integer, AchievementPlus> map = ArrayListMultimap.create();
-				itemIds.put(AchievementType.PICKUP, map);
+			if (itemNames.get(AchievementType.PICKUP) == null) {
+				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
+				itemNames.put(AchievementType.PICKUP, map);
 			}
 			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.PICKUP)){
-				itemIds.get(AchievementType.PICKUP).put(r.getRequirementItemID(), achievement);
+				itemNames.get(AchievementType.PICKUP).put(r.getRequirementEntityName(), achievement);
 			}
 		}
 	}
@@ -171,7 +171,7 @@ public class AchievementHandler {
 				entityNames.put(AchievementType.KILL, map);
 			}
 			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.KILL)){
-				entityNames.get(AchievementType.KILL).put(r.getRequirementItemEntity(), achievement);
+				entityNames.get(AchievementType.KILL).put(r.getRequirementEntityName(), achievement);
 			}
 		}
 		if (vals[5]) {
@@ -180,7 +180,7 @@ public class AchievementHandler {
 				entityNames.put(AchievementType.SPAWN, map);
 			}
 			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.SPAWN)){
-				entityNames.get(AchievementType.SPAWN).put(r.getRequirementItemEntity(), achievement);
+				entityNames.get(AchievementType.SPAWN).put(r.getRequirementEntityName(), achievement);
 			}
 		}
 	}
@@ -196,13 +196,14 @@ public class AchievementHandler {
 
 		achievements.add(achievement);
 
-		if (achievementsName.get(achievement.getName()) != null) {
+		//we shouldnt crash from this
+		/*if (achievementsName.get(achievement.getName()) != null) {
 			throw new RuntimeException("The achievement with the name " + achievement.getName() + " already exists!");
-		}
+		}*/
 		achievementsName.put(achievement.getName(), achievement);
 
 		registerAchievementRequirementTypes(achievement);
-		parseRequirementItemIds(achievement);
+		parseRequirementItemNames(achievement);
 		parseRequirementEntityNames(achievement);
 	}
 }

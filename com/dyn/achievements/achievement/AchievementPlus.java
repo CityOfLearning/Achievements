@@ -114,7 +114,7 @@ public class AchievementPlus{
 				while(reqType.has("craft_req_"+Integer.toString(counter))){
 					JsonObject reqSubType = (JsonObject) reqType.get("craft_req_"+Integer.toString(counter++));
 					CraftRequirement r = requirements.new CraftRequirement();
-					r.setFromItemId(reqSubType.get("id").getAsInt());
+					r.setFromItemId(reqSubType.get("id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
 					requirements.addRequirement(r);
 				}
@@ -125,7 +125,7 @@ public class AchievementPlus{
 				while(reqType.has("smelt_req_"+Integer.toString(counter))){
 					JsonObject reqSubType = (JsonObject) reqType.get("smelt_req_"+Integer.toString(counter++));
 					SmeltRequirement r = requirements.new SmeltRequirement();
-					r.setFromItemId(reqSubType.get("id").getAsInt());
+					r.setFromItemId(reqSubType.get("id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
 					requirements.addRequirement(r);
 				}
@@ -136,7 +136,7 @@ public class AchievementPlus{
 				while(reqType.has("pickup_req_"+Integer.toString(counter))){
 					JsonObject reqSubType = (JsonObject) reqType.get("pickup_req_"+Integer.toString(counter++));
 					PickupRequirement r = requirements.new PickupRequirement();
-					r.setFromItemId(reqSubType.get("id").getAsInt());
+					r.setFromItemId(reqSubType.get("id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
 					requirements.addRequirement(r);
 				}
@@ -188,9 +188,10 @@ public class AchievementPlus{
 					int counter = 1;
 					for(BaseRequirement t : typeReq){
 						JsonObject reqSubTypes = new JsonObject();
-						reqSubTypes.addProperty("item", t.getRequirementItemEntity());
+						reqSubTypes.addProperty("item", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
 						reqSubTypes.addProperty("id", t.getRequirementItemID());
+						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
 						reqTypes.add("craft_req_"+Integer.toString(counter++), reqSubTypes);
 					}
 					req.add("craft_requirements", reqTypes);
@@ -202,9 +203,10 @@ public class AchievementPlus{
 					int counter = 1;
 					for(BaseRequirement t : typeReq){
 						JsonObject reqSubTypes = new JsonObject();
-						reqSubTypes.addProperty("item", t.getRequirementItemEntity());
+						reqSubTypes.addProperty("item", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
 						reqSubTypes.addProperty("id", t.getRequirementItemID());
+						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
 						reqTypes.add("smelt_req_"+Integer.toString(counter++), reqSubTypes);
 					}
 					req.add("smelt_requirements", reqTypes);
@@ -216,9 +218,10 @@ public class AchievementPlus{
 					int counter = 1;
 					for(BaseRequirement t : typeReq){
 						JsonObject reqSubTypes = new JsonObject();
-						reqSubTypes.addProperty("item", t.getRequirementItemEntity());
+						reqSubTypes.addProperty("item", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
 						reqSubTypes.addProperty("id", t.getRequirementItemID());
+						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
 						reqTypes.add("pickup_req_"+Integer.toString(counter++), reqSubTypes);
 					}
 					req.add("pick_up_requirements", reqTypes);
@@ -230,7 +233,7 @@ public class AchievementPlus{
 					int counter = 1;
 					for(BaseRequirement t : typeReq){
 						JsonObject reqSubTypes = new JsonObject();
-						reqSubTypes.addProperty("stat", t.getRequirementItemEntity());
+						reqSubTypes.addProperty("stat", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
 						reqTypes.add("stat_req_"+Integer.toString(counter++), reqSubTypes);
 					}
@@ -243,7 +246,7 @@ public class AchievementPlus{
 					int counter = 1;
 					for(BaseRequirement t : typeReq){
 						JsonObject reqSubTypes = new JsonObject();
-						reqSubTypes.addProperty("entity", t.getRequirementItemEntity());
+						reqSubTypes.addProperty("entity", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
 						reqTypes.add("kill_req_"+Integer.toString(counter++), reqSubTypes);
 					}
@@ -256,7 +259,7 @@ public class AchievementPlus{
 					int counter = 1;
 					for(BaseRequirement t : typeReq){
 						JsonObject reqSubTypes = new JsonObject();
-						reqSubTypes.addProperty("entity", t.getRequirementItemEntity());
+						reqSubTypes.addProperty("entity", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
 						reqTypes.add("spawn_req_"+Integer.toString(counter++), reqSubTypes);
 					}
@@ -275,6 +278,6 @@ public class AchievementPlus{
 	}
 	
 	public enum AchievementType {
-		CRAFT, SMELT, PICKUP, STAT, KILL, SPAWN, OTHER
+		CRAFT, SMELT, PICKUP, STAT, KILL, SPAWN, BREW, OTHER
 	}
 }
