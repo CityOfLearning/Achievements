@@ -21,6 +21,7 @@ import net.minecraft.util.ResourceLocation;
 public class Search extends Show {
 
 	private ScrollableGrid achievementGrid;
+	ResourceLocation imgTexture;
 
 	public Search() {
 		this.setBackground(new DefaultBackground());
@@ -40,7 +41,6 @@ public class Search extends Show {
 			List<String> hoverText = new ArrayList();
 			hoverText.add(a.getName());
 			hoverText.add(a.getDescription());
-			ResourceLocation imgTexture;
 			if (a.getTexture() == null) {
 				imgTexture = new ResourceLocation("minecraft", "textures/items/experience_bottle.png");
 			} else {
@@ -72,7 +72,6 @@ public class Search extends Show {
 					List<String> hoverText = new ArrayList();
 					hoverText.add(a.getName());
 					hoverText.add(a.getDescription());
-					ResourceLocation imgTexture;
 					if (a.getTexture() == null) {
 						imgTexture = new ResourceLocation("minecraft", "textures/items/experience_bottle.png");
 					} else {
@@ -87,7 +86,6 @@ public class Search extends Show {
 					List<String> hoverText = new ArrayList();
 					hoverText.add(a.getName());
 					hoverText.add(a.getDescription());
-					ResourceLocation imgTexture;
 					if (a.getTexture() == null) {
 						imgTexture = new ResourceLocation("minecraft", "textures/items/experience_bottle.png");
 					} else {

@@ -26,7 +26,12 @@ public class Info extends Show {
 		this.setBackground(new DefaultBackground());
 		this.title = "Achievement Gui";
 		this.achievement = achievement;
-		this.texture = achievement.getTexture();
+		if(achievement.getTexture() != null){
+			this.texture = achievement.getTexture();
+		} else {
+			this.texture = new ResourceLocation("minecraft", "textures/items/experience_bottle.png");
+		}
+		
 	}	
 
 	@Override
@@ -40,7 +45,7 @@ public class Info extends Show {
 				"Description: " + achievement.getDescription(), TextAlignment.LEFT).setMultilined(true));
 
 		this.registerComponent(
-				new Picture(this.width / 7, (int) (this.height * .15), this.width / 6, this.width / 6, texture));
+				new Picture((int) (this.width * .15), (int) (this.height * .15), this.width / 6, this.width / 6, texture));
 
 		ArrayList<ListEntry> ulist = new ArrayList();
 

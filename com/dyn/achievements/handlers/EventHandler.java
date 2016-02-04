@@ -5,10 +5,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.event.brewing.PotionBrewEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
+
+import java.util.Random;
 
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.AchievementType;
@@ -125,6 +128,19 @@ public class EventHandler {
 		// we are only concerned with placing blocks
 		if (event.block != null && event.getPlayer() != null) {
 			ItemStack is = new ItemStack(event.block, 1, event.blockMetadata);
+			try {
+				is.getDisplayName();
+			} catch (NullPointerException e) {
+				is = new ItemStack(event.block.getItemDropped(0, new Random(), 0), 1, event.blockMetadata);
+				try {
+					is.getDisplayName();
+				} catch (NullPointerException e2) {
+					//if this doesnt work nothing will lets return before we cause problems
+					event.getPlayer().addChatMessage(new ChatComponentText(
+							"Cannot create item stack from block: " + event.block.getLocalizedName()));
+					return;
+				}
+			}
 			for (AchievementPlus a : AchievementHandler.getItemNames().get(AchievementType.BREAK)
 					.get(is.getDisplayName())) {
 				if (a.getWorldId() > 0 && event.getPlayer().dimension == a.getWorldId()) {
@@ -137,14 +153,11 @@ public class EventHandler {
 						}
 					}
 				}
-
 			}
-
 		}
 	}
 
 	// how do we know which player brewed the potion
-
 	@SubscribeEvent
 	public void brewEvent(PotionBrewEvent event) {
 		for (int i = 0; i < 3; i++) {
