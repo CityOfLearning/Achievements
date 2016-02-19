@@ -7,6 +7,7 @@ import com.dyn.achievements.achievement.Requirements.BreakRequirement;
 import com.dyn.achievements.achievement.Requirements.BrewRequirement;
 import com.dyn.achievements.achievement.Requirements.CraftRequirement;
 import com.dyn.achievements.achievement.Requirements.KillRequirement;
+import com.dyn.achievements.achievement.Requirements.MentorRequirement;
 import com.dyn.achievements.achievement.Requirements.PickupRequirement;
 import com.dyn.achievements.achievement.Requirements.PlaceRequirement;
 import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
@@ -20,6 +21,7 @@ import com.google.gson.JsonObject;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
@@ -49,7 +51,7 @@ public class AchievementPlus extends Achievement {
 
 	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int badgeId,
 			int achievementId, int mapId, int worldId, AchievementPlus parent, boolean awarded, ResourceLocation texture) {
-		super(name.replace(' ', '_'), name.replace(' ', '_'), xPos, yPos, new ItemStack(Blocks.dirt), parent);
+		super(name.replace(' ', '_'), name.replace(' ', '_'), xPos, yPos, new ItemStack(Items.experience_bottle), parent);
 		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_'), "en_US", name);
 		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_') + ".desc", "en_US",
 				description);
@@ -276,6 +278,11 @@ public class AchievementPlus extends Achievement {
 					requirements.addRequirement(r);
 				}
 			}
+			if (req.has("mentor_requirements")) {
+				//this should be an empty array...
+					MentorRequirement r = requirements.new MentorRequirement();
+					requirements.addRequirement(r);
+			}
 			if (json.has("badge_id"))
 				badgeId = json.get("badge_id").getAsInt();
 			if (json.has("parent_name")) {
@@ -428,6 +435,12 @@ public class AchievementPlus extends Achievement {
 						reqTypes.add(reqSubTypes);
 					}
 					req.add("break_requirements", reqTypes);
+				}
+				break;
+			case 8:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(AchievementType.MENTOR);
+					req.add("mentor_requirements", reqTypes);
 				}
 				break;
 			default:

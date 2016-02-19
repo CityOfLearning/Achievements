@@ -268,6 +268,25 @@ public class Requirements {
 			return this.eventStat.toString();
 		}
 	}
+	
+	public class MentorRequirement extends BaseRequirement {
+		public String info;
+
+		public MentorRequirement() {
+			super();
+			this.info = "";
+		}
+
+		public MentorRequirement(MentorRequirement sr) {
+			super(sr);
+			this.info = sr.info;
+		}
+
+		@Override
+		public String getRequirementEntityName() {
+			return this.info;
+		}
+	}
 
 	private ArrayList<BaseRequirement> requirements = new ArrayList();
 
@@ -301,6 +320,9 @@ public class Requirements {
 			}
 			if (br instanceof BreakRequirement) {
 				copy.addRequirement(copy.new BreakRequirement((BreakRequirement) br));
+			}
+			if (br instanceof MentorRequirement) {
+				copy.addRequirement(copy.new MentorRequirement((MentorRequirement) br));
 			}
 		}
 		return copy;
@@ -340,6 +362,7 @@ public class Requirements {
 		boolean hasBrew = false;
 		boolean hasPlace = false;
 		boolean hasBreak = false;
+		boolean isMentor = false;
 		for (BaseRequirement r : this.requirements) {
 			if (r instanceof CraftRequirement)
 				hasCraft = true;
@@ -365,8 +388,10 @@ public class Requirements {
 			if (r instanceof BreakRequirement)
 				hasBreak = true;
 
+			if (r instanceof MentorRequirement)
+				isMentor = true;
 		}
-		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasBrew, hasPlace, hasBreak };
+		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasBrew, hasPlace, hasBreak, isMentor };
 		return types;
 	}
 
@@ -411,6 +436,10 @@ public class Requirements {
 				break;
 			case BREAK:
 				if (r instanceof BreakRequirement)
+					typereq.add(r);
+				break;
+			case MENTOR:
+				if (r instanceof MentorRequirement)
 					typereq.add(r);
 				break;
 			default:

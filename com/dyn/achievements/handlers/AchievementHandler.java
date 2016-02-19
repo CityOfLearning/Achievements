@@ -178,6 +178,13 @@ public class AchievementHandler {
 			}
 			achievementsType.get(AchievementType.BREAK).add(achievement);
 		}
+		if (vals[8]) {
+			if (achievementsType.get(AchievementType.MENTOR) == null) {
+				ArrayList<AchievementPlus> ach = new ArrayList();
+				achievementsType.put(AchievementType.MENTOR, ach);
+			}
+			achievementsType.get(AchievementType.MENTOR).add(achievement);
+		}
 	}
 	
 	private static void parseRequirementItemNames(AchievementPlus achievement){

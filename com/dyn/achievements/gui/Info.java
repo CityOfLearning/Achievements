@@ -103,7 +103,12 @@ public class Info extends Show {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
-
+		if (achievement.hasRequirementOfType(AchievementType.MENTOR)){
+			ulist.add(new StringEntry("-Mentor-"));
+			ulist.add(new StringEntry("Only a mentor can"));
+			ulist.add(new StringEntry("give this achievement"));
+		}
+			
 		this.registerComponent(new TextLabel((int) (this.width * .5), (int) (this.height * .4), this.width / 3, 20,
 				"Requirements", TextAlignment.CENTER));
 
