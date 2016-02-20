@@ -86,7 +86,7 @@ public class AchievementHandler {
 	public static List<AchievementPlus> findAchievementsByName(String name) {
 		List<AchievementPlus> achList = new ArrayList();
 		for (AchievementPlus achs : achievementNames.values()) {
-			if (achs.getName().contains(name)) {
+			if (achs.getName().toLowerCase().contains(name.toLowerCase())) {
 				achList.add(achs);
 			}
 		}
