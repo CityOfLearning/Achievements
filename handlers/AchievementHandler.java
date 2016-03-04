@@ -1,11 +1,12 @@
-package com.dyn.achievements.achievement;
+package com.dyn.achievements.handlers;
 
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 
 import java.util.*;
 
-import com.dyn.achievements.achievement.AchievementPlus.AchievementType;
+import com.dyn.achievements.achievement.AchievementPlus;
+import com.dyn.achievements.achievement.AchievementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -18,13 +19,14 @@ import com.google.common.collect.ListMultimap;
  */
 public class AchievementHandler {
 
-	public static Map<String, AchievementPage> achievementPages = new HashMap();
-	public static ArrayList<AchievementPlus> achievements = new ArrayList();
-	public static Map<String, AchievementPlus> achievementsName = new HashMap();
-	// currently achievements can have mixed requirements so this doesnt work
-	public static Map<AchievementType, ArrayList<AchievementPlus>> achievementsType = new HashMap();
-	public static Map<AchievementType, ListMultimap<String, AchievementPlus>> itemNames = new HashMap();
-	public static Map<AchievementType, ListMultimap<String, AchievementPlus>> entityNames = new HashMap();
+	private static Map<String, AchievementPage> achievementPages = new HashMap();
+	private static ArrayList<AchievementPlus> achievements = new ArrayList();
+	private static Map<String, AchievementPlus> achievementNames = new HashMap();
+	private static Map<Integer, AchievementPlus> achievementIds = new HashMap();
+	private static Map<Integer, AchievementMap> achievementMaps = new HashMap();
+	private static Map<AchievementType, ArrayList<AchievementPlus>> achievementsType = new HashMap();
+	private static Map<AchievementType, ListMultimap<String, AchievementPlus>> itemNames = new HashMap();
+	private static Map<AchievementType, ListMultimap<String, AchievementPlus>> entityNames = new HashMap();
 	/***
 	 * Adds page of achievements.
 	 * @param pageName Name of achievement page
@@ -37,6 +39,25 @@ public class AchievementHandler {
 			AchievementPage.registerAchievementPage(achievementPage);
 
 			achievementPages.put(pageName, achievementPage);
+		}
+	}
+	
+	public static void sortAndAssignMaps(){
+		List<AchievementMap> maps = new ArrayList();
+		Map<Integer, List<AchievementPlus>> mapMapping = new HashMap();
+		List<Integer> ids = new ArrayList();
+		achievementMaps.clear();
+		//we need all the possible map ids
+		for(AchievementPlus a: achievements){
+			if(!ids.contains(a.getMapId())){
+				mapMapping.put(a.getMapId(), new ArrayList());
+				ids.add(a.getMapId());
+			}
+			mapMapping.get(a.getMapId()).add(a);
+		} //map everything to a map id
+		for(int id: ids){
+			achievementMaps.put(id, new AchievementMap(id, mapMapping.get(id)));
+			achievementMaps.get(id).processMap();
 		}
 	}
 
@@ -54,7 +75,7 @@ public class AchievementHandler {
 	 * @return achievement object
 	 */
 	public static AchievementPlus findAchievementByName(String name) {
-		return achievementsName.get(name);
+		return achievementNames.get(name);
 	}
 	
 	/***
@@ -64,12 +85,16 @@ public class AchievementHandler {
 	 */
 	public static List<AchievementPlus> findAchievementsByName(String name) {
 		List<AchievementPlus> achList = new ArrayList();
-		for (AchievementPlus achs : achievementsName.values()) {
-			if(achs.getName().contains(name)){
+		for (AchievementPlus achs : achievementNames.values()) {
+			if (achs.getName().toLowerCase().contains(name.toLowerCase())) {
 				achList.add(achs);
 			}
 		}
 		return achList;
+	}
+	
+	public static AchievementPlus findAchievementById(int id) {
+		return achievementIds.get(id);
 	}
 	
 	/***
@@ -81,6 +106,15 @@ public class AchievementHandler {
 		return achievementsType.get(type);
 	}
 
+	
+	public static Map<AchievementType, ListMultimap<String, AchievementPlus>> getItemNames() {
+		return itemNames;
+	}
+	
+	public static Map<AchievementType, ListMultimap<String, AchievementPlus>> getEntityNames() {
+		return entityNames;
+	}
+	
 	/***
 	 * Registers achievement by CRAFT, SMELT, PICKUP, and STAT type.
 	 * @param achievement AchievementPlus object
@@ -124,11 +158,32 @@ public class AchievementHandler {
 			achievementsType.get(AchievementType.KILL).add(achievement);
 		}
 		if (vals[5]) {
-			if (achievementsType.get(AchievementType.SPAWN) == null) {
+			if (achievementsType.get(AchievementType.BREW) == null) {
 				ArrayList<AchievementPlus> ach = new ArrayList();
-				achievementsType.put(AchievementType.SPAWN, ach);
+				achievementsType.put(AchievementType.BREW, ach);
 			}
-			achievementsType.get(AchievementType.SPAWN).add(achievement);
+			achievementsType.get(AchievementType.BREW).add(achievement);
+		}
+		if (vals[6]) {
+			if (achievementsType.get(AchievementType.PLACE) == null) {
+				ArrayList<AchievementPlus> ach = new ArrayList();
+				achievementsType.put(AchievementType.PLACE, ach);
+			}
+			achievementsType.get(AchievementType.PLACE).add(achievement);
+		}
+		if (vals[7]) {
+			if (achievementsType.get(AchievementType.BREAK) == null) {
+				ArrayList<AchievementPlus> ach = new ArrayList();
+				achievementsType.put(AchievementType.BREAK, ach);
+			}
+			achievementsType.get(AchievementType.BREAK).add(achievement);
+		}
+		if (vals[8]) {
+			if (achievementsType.get(AchievementType.MENTOR) == null) {
+				ArrayList<AchievementPlus> ach = new ArrayList();
+				achievementsType.put(AchievementType.MENTOR, ach);
+			}
+			achievementsType.get(AchievementType.MENTOR).add(achievement);
 		}
 	}
 	
@@ -161,6 +216,33 @@ public class AchievementHandler {
 				itemNames.get(AchievementType.PICKUP).put(r.getRequirementEntityName(), achievement);
 			}
 		}
+		if (vals[5]) {
+			if (itemNames.get(AchievementType.BREW) == null) {
+				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
+				itemNames.put(AchievementType.BREW, map);
+			}
+			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.BREW)){
+				itemNames.get(AchievementType.BREW).put(r.getRequirementEntityName(), achievement);
+			}
+		}
+		if (vals[6]) {
+			if (itemNames.get(AchievementType.PLACE) == null) {
+				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
+				itemNames.put(AchievementType.PLACE, map);
+			}
+			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.PLACE)){
+				itemNames.get(AchievementType.PLACE).put(r.getRequirementEntityName(), achievement);
+			}
+		}
+		if (vals[7]) {
+			if (itemNames.get(AchievementType.BREAK) == null) {
+				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
+				itemNames.put(AchievementType.BREAK, map);
+			}
+			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.BREAK)){
+				itemNames.get(AchievementType.BREAK).put(r.getRequirementEntityName(), achievement);
+			}
+		}
 	}
 	
 	private static void parseRequirementEntityNames(AchievementPlus achievement){
@@ -172,15 +254,6 @@ public class AchievementHandler {
 			}
 			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.KILL)){
 				entityNames.get(AchievementType.KILL).put(r.getRequirementEntityName(), achievement);
-			}
-		}
-		if (vals[5]) {
-			if (entityNames.get(AchievementType.SPAWN) == null) {
-				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
-				entityNames.put(AchievementType.SPAWN, map);
-			}
-			for(BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.SPAWN)){
-				entityNames.get(AchievementType.SPAWN).put(r.getRequirementEntityName(), achievement);
 			}
 		}
 	}
@@ -200,8 +273,10 @@ public class AchievementHandler {
 		/*if (achievementsName.get(achievement.getName()) != null) {
 			throw new RuntimeException("The achievement with the name " + achievement.getName() + " already exists!");
 		}*/
-		achievementsName.put(achievement.getName(), achievement);
-
+		achievementNames.put(achievement.getName(), achievement);
+		achievementIds.put(achievement.getId(), achievement);
+		achievement.registerStat();
+		
 		registerAchievementRequirementTypes(achievement);
 		parseRequirementItemNames(achievement);
 		parseRequirementEntityNames(achievement);

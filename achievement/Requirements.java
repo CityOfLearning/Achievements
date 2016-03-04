@@ -2,8 +2,6 @@ package com.dyn.achievements.achievement;
 
 import java.util.ArrayList;
 
-import com.dyn.achievements.achievement.AchievementPlus.AchievementType;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatBase;
@@ -12,15 +10,24 @@ public class Requirements {
 	public abstract class BaseRequirement {
 		private int aquired;
 		private int amount;
+		private int id;
+		private int item_id;
+		private int sub_id;
 
 		BaseRequirement() {
 			this.aquired = 0;
 			this.amount = 0;
+			this.item_id = 0;
+			this.sub_id = 0;
+			this.id = 0;
 		}
 
 		BaseRequirement(BaseRequirement br) {
 			this.aquired = br.aquired;
 			this.amount = br.amount;
+			this.item_id = br.item_id;
+			this.sub_id = br.sub_id;
+			this.id = br.id;
 		}
 
 		public abstract String getRequirementEntityName();
@@ -33,9 +40,29 @@ public class Requirements {
 			return this.aquired;
 		}
 
-		public abstract int getRequirementItemID();
+		public int getRequirementItemID() {
+			return this.item_id;
+		}
 
-		public abstract int getRequirementSubItemID();
+		public int getRequirementSubItemID(){
+			return this.sub_id;
+		}
+		
+		public int getRequirementID(){
+			return this.id;
+		}
+		
+		public void setItemId(int id){
+			this.item_id = id;
+		}
+		
+		public void setSubItemId(int id){
+			this.sub_id = id;
+		}
+		
+		public void setRequirementId(int id){
+			this.id = id;
+		}
 
 		public void incrementTotal() {
 			this.aquired++;
@@ -56,18 +83,15 @@ public class Requirements {
 
 	public class CraftRequirement extends BaseRequirement {
 		public ItemStack item;
-		public int id;
 
 		public CraftRequirement() {
 			super();
 			this.item = null;
-			this.id = 0;
 		}
 
 		public CraftRequirement(CraftRequirement cr) {
 			super(cr);
 			this.item = cr.item;
-			this.id = cr.id;
 		}
 
 		@Override
@@ -75,36 +99,24 @@ public class Requirements {
 			return this.item.getDisplayName();
 		}
 
-		@Override
-		public int getRequirementItemID() {
-			return this.id;
-		}
-
 		public void setFromItemId(int id, int subItemId) {
 			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
-			this.id = id;
-		}
-
-		@Override
-		public int getRequirementSubItemID() {
-			return this.item.getItemDamage();
+			setItemId(id);
+			setSubItemId(subItemId);
 		}
 	}
 
 	public class SmeltRequirement extends BaseRequirement {
 		public ItemStack item;
-		public int id;
 
 		public SmeltRequirement() {
 			super();
 			this.item = null;
-			this.id = 0;
 		}
 
 		public SmeltRequirement(SmeltRequirement sr) {
 			super(sr);
 			this.item = sr.item;
-			this.id = sr.id;
 		}
 
 		@Override
@@ -112,19 +124,10 @@ public class Requirements {
 			return this.item.getDisplayName();
 		}
 
-		@Override
-		public int getRequirementItemID() {
-			return this.id;
-		}
-
 		public void setFromItemId(int id, int subItemId) {
 			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
-			this.id = id;
-		}
-
-		@Override
-		public int getRequirementSubItemID() {
-			return this.item.getItemDamage();
+			setItemId(id);
+			setSubItemId(subItemId);
 		}
 	}
 
@@ -145,61 +148,19 @@ public class Requirements {
 		public String getRequirementEntityName() {
 			return this.entityType;
 		}
-
-		@Override
-		public int getRequirementItemID() {
-			return 0;
-		}
-
-		@Override
-		public int getRequirementSubItemID() {
-			return 0;
-		}
-	}
-
-	public class SpawnRequirement extends BaseRequirement {
-		public String entityType;
-
-		public SpawnRequirement() {
-			super();
-			this.entityType = "";
-		}
-
-		public SpawnRequirement(SpawnRequirement sr) {
-			super(sr);
-			this.entityType = sr.entityType;
-		}
-
-		@Override
-		public String getRequirementEntityName() {
-			return this.entityType;
-		}
-
-		@Override
-		public int getRequirementItemID() {
-			return 0;
-		}
-
-		@Override
-		public int getRequirementSubItemID() {
-			return 0;
-		}
 	}
 
 	public class PickupRequirement extends BaseRequirement {
 		public ItemStack item;
-		public int id;
 
 		public PickupRequirement() {
 			super();
 			this.item = null;
-			this.id = 0;
 		}
 
 		public PickupRequirement(PickupRequirement pr) {
 			super(pr);
 			this.item = pr.item;
-			this.id = pr.id;
 		}
 
 		@Override
@@ -207,19 +168,85 @@ public class Requirements {
 			return this.item.getDisplayName();
 		}
 
+		public void setFromItemId(int id, int subItemId) {
+			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
+			setItemId(id);
+			setSubItemId(subItemId);
+		}
+	}
+	
+	public class PlaceRequirement extends BaseRequirement {
+		public ItemStack item;
+
+		public PlaceRequirement() {
+			super();
+			this.item = null;
+		}
+
+		public PlaceRequirement(PlaceRequirement pr) {
+			super(pr);
+			this.item = pr.item;
+		}
+
 		@Override
-		public int getRequirementItemID() {
-			return this.id;
+		public String getRequirementEntityName() {
+			return this.item.getDisplayName();
 		}
 
 		public void setFromItemId(int id, int subItemId) {
 			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
-			this.id = id;
+			setItemId(id);
+			setSubItemId(subItemId);
+		}
+	}
+	
+	public class BreakRequirement extends BaseRequirement {
+		public ItemStack item;
+
+		public BreakRequirement() {
+			super();
+			this.item = null;
+		}
+
+		public BreakRequirement(BreakRequirement pr) {
+			super(pr);
+			this.item = pr.item;
 		}
 
 		@Override
-		public int getRequirementSubItemID() {
-			return this.item.getItemDamage();
+		public String getRequirementEntityName() {
+			return this.item.getDisplayName();
+		}
+
+		public void setFromItemId(int id, int subItemId) {
+			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
+			setItemId(id);
+			setSubItemId(subItemId);
+		}
+	}
+	
+	public class BrewRequirement extends BaseRequirement {
+		public ItemStack item;
+
+		public BrewRequirement() {
+			super();
+			this.item = null;
+		}
+
+		public BrewRequirement(BrewRequirement pr) {
+			super(pr);
+			this.item = pr.item;
+		}
+
+		@Override
+		public String getRequirementEntityName() {
+			return this.item.getDisplayName();
+		}
+
+		public void setFromItemId(int id, int subItemId) {
+			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
+			setItemId(id);
+			setSubItemId(subItemId);
 		}
 	}
 
@@ -240,22 +267,31 @@ public class Requirements {
 		public String getRequirementEntityName() {
 			return this.eventStat.toString();
 		}
+	}
+	
+	public class MentorRequirement extends BaseRequirement {
+		public String info;
 
-		@Override
-		public int getRequirementItemID() {
-			return 0;
+		public MentorRequirement() {
+			super();
+			this.info = "";
+		}
+
+		public MentorRequirement(MentorRequirement sr) {
+			super(sr);
+			this.info = sr.info;
 		}
 
 		@Override
-		public int getRequirementSubItemID() {
-			return 0;
+		public String getRequirementEntityName() {
+			return this.info;
 		}
 	}
 
-	private ArrayList<BaseRequirement> requirements = new ArrayList();;
+	private ArrayList<BaseRequirement> requirements = new ArrayList();
 
 	public Requirements() {
-	
+
 	}
 	
 	public static Requirements getCopy(Requirements r){
@@ -276,8 +312,17 @@ public class Requirements {
 			if (br instanceof KillRequirement) {
 				copy.addRequirement(copy.new KillRequirement((KillRequirement) br));
 			}
-			if (br instanceof SpawnRequirement) {
-				copy.addRequirement(copy.new SpawnRequirement((SpawnRequirement) br));
+			if (br instanceof BrewRequirement) {
+				copy.addRequirement(copy.new BrewRequirement((BrewRequirement) br));
+			}
+			if (br instanceof PlaceRequirement) {
+				copy.addRequirement(copy.new PlaceRequirement((PlaceRequirement) br));
+			}
+			if (br instanceof BreakRequirement) {
+				copy.addRequirement(copy.new BreakRequirement((BreakRequirement) br));
+			}
+			if (br instanceof MentorRequirement) {
+				copy.addRequirement(copy.new MentorRequirement((MentorRequirement) br));
 			}
 		}
 		return copy;
@@ -314,7 +359,10 @@ public class Requirements {
 		boolean hasPickup = false;
 		boolean hasStat = false;
 		boolean hasKill = false;
-		boolean hasSpawn = false;
+		boolean hasBrew = false;
+		boolean hasPlace = false;
+		boolean hasBreak = false;
+		boolean isMentor = false;
 		for (BaseRequirement r : this.requirements) {
 			if (r instanceof CraftRequirement)
 				hasCraft = true;
@@ -330,12 +378,20 @@ public class Requirements {
 
 			if (r instanceof KillRequirement)
 				hasKill = true;
+			
+			if (r instanceof BrewRequirement)
+				hasBrew = true;
+			
+			if (r instanceof PlaceRequirement)
+				hasPlace = true;
+			
+			if (r instanceof BreakRequirement)
+				hasBreak = true;
 
-			if (r instanceof SpawnRequirement)
-				hasSpawn = true;
-
+			if (r instanceof MentorRequirement)
+				isMentor = true;
 		}
-		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasSpawn };
+		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasBrew, hasPlace, hasBreak, isMentor };
 		return types;
 	}
 
@@ -370,8 +426,20 @@ public class Requirements {
 				if (r instanceof KillRequirement)
 					typereq.add(r);
 				break;
-			case SPAWN:
-				if (r instanceof SpawnRequirement)
+			case BREW:
+				if (r instanceof BrewRequirement)
+					typereq.add(r);
+				break;
+			case PLACE:
+				if (r instanceof PlaceRequirement)
+					typereq.add(r);
+				break;
+			case BREAK:
+				if (r instanceof BreakRequirement)
+					typereq.add(r);
+				break;
+			case MENTOR:
+				if (r instanceof MentorRequirement)
 					typereq.add(r);
 				break;
 			default:

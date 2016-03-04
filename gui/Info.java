@@ -3,7 +3,7 @@ package com.dyn.achievements.gui;
 import java.util.ArrayList;
 
 import com.dyn.achievements.achievement.AchievementPlus;
-import com.dyn.achievements.achievement.AchievementPlus.AchievementType;
+import com.dyn.achievements.achievement.AchievementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.rabbit.gui.background.DefaultBackground;
 import com.rabbit.gui.component.control.Button;
@@ -17,17 +17,22 @@ import com.rabbit.gui.show.Show;
 
 import net.minecraft.util.ResourceLocation;
 
-public class AchDisp extends Show {
+public class Info extends Show {
 
-	AchievementPlus achievement;
-	ResourceLocation texture;
+	private AchievementPlus achievement;
+	private ResourceLocation texture;
 
-	public AchDisp(AchievementPlus achievement, ResourceLocation picture) {
+	public Info(AchievementPlus achievement) {
 		this.setBackground(new DefaultBackground());
 		this.title = "Achievement Gui";
 		this.achievement = achievement;
-		this.texture = picture;
-	}
+		if(achievement.getTexture() != null){
+			this.texture = achievement.getTexture();
+		} else {
+			this.texture = new ResourceLocation("minecraft", "textures/items/experience_bottle.png");
+		}
+		
+	}	
 
 	@Override
 	public void setup() {
@@ -40,7 +45,7 @@ public class AchDisp extends Show {
 				"Description: " + achievement.getDescription(), TextAlignment.LEFT).setMultilined(true));
 
 		this.registerComponent(
-				new Picture(this.width / 7, (int) (this.height * .15), this.width / 6, this.width / 6, texture));
+				new Picture((int) (this.width * .15), (int) (this.height * .15), this.width / 6, this.width / 6, texture));
 
 		ArrayList<ListEntry> ulist = new ArrayList();
 
@@ -78,22 +83,51 @@ public class AchDisp extends Show {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
-
-		if (achievement.hasRequirementOfType(AchievementType.SPAWN))
-			ulist.add(new StringEntry("-Spawn-"));
-		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.SPAWN)) {
+		
+		if (achievement.hasRequirementOfType(AchievementType.BREW))
+			ulist.add(new StringEntry("-Brew-"));
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.BREW)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
-
+		
+		if (achievement.hasRequirementOfType(AchievementType.PLACE))
+			ulist.add(new StringEntry("-Place-"));
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.PLACE)) {
+			ulist.add(new StringEntry(
+					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+		}
+		if (achievement.hasRequirementOfType(AchievementType.BREAK))
+			ulist.add(new StringEntry("-Break-"));
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.BREAK)) {
+			ulist.add(new StringEntry(
+					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+		}
+		if (achievement.hasRequirementOfType(AchievementType.MENTOR)){
+			ulist.add(new StringEntry("-Mentor-"));
+			ulist.add(new StringEntry("Only a mentor can"));
+			ulist.add(new StringEntry("give this achievement"));
+		}
+			
 		this.registerComponent(new TextLabel((int) (this.width * .5), (int) (this.height * .4), this.width / 3, 20,
 				"Requirements", TextAlignment.CENTER));
+
+		if (achievement.isAwarded()) {
+			this.registerComponent(new TextLabel((int) (this.width * .2), (int) (this.height * .4), this.width / 3, 20,
+					"Achieved!", TextAlignment.CENTER));
+		}
 
 		this.registerComponent(new ScrollableDisplayList((int) (this.width * .5), (int) (this.height * .45),
 				this.width / 3, 100, 15, ulist));
 
 		this.registerComponent(new Button(this.width / 6, (int) (this.height * .8), 40, 20, "Back")
 				.setClickListener(but -> this.getStage().displayPrevious()));
+
+		/*this.registerComponent(
+				new Button(this.width / 6, (int) (this.height * .7), 60, 20, "Award").setClickListener(but -> {
+					PacketDispatcher.sendToServer(new AwardAchievementMessage(achievement.getId(), LoginGUI.DYN_Username));
+					//achievement.setAwarded(true);
+				}));*/
 
 		// The background
 		this.registerComponent(new Picture(this.width / 8, (int) (this.height * .05), (int) (this.width * (6.0 / 8.0)),
