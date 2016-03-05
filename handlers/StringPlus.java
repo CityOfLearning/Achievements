@@ -14,16 +14,16 @@ public class StringPlus {
 		this.val = v;
 	}
 
+	public StringPlus getParent() {
+		return this.parent;
+	}
+
 	public boolean hasParent() {
 		return this.parent != null;
 	}
 
-	public StringPlus getParent() {
-		return this.parent;
-	}
-	
 	@Override
-	public String toString(){
+	public String toString() {
 		return this.val;
 	}
 

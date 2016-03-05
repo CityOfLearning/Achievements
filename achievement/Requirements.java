@@ -32,36 +32,24 @@ public class Requirements {
 
 		public abstract String getRequirementEntityName();
 
-		public int getTotalNeeded() {
-			return this.amount;
-		}
-
-		public int getTotalAquired() {
-			return this.aquired;
+		public int getRequirementID() {
+			return this.id;
 		}
 
 		public int getRequirementItemID() {
 			return this.item_id;
 		}
 
-		public int getRequirementSubItemID(){
+		public int getRequirementSubItemID() {
 			return this.sub_id;
 		}
-		
-		public int getRequirementID(){
-			return this.id;
+
+		public int getTotalAquired() {
+			return this.aquired;
 		}
-		
-		public void setItemId(int id){
-			this.item_id = id;
-		}
-		
-		public void setSubItemId(int id){
-			this.sub_id = id;
-		}
-		
-		public void setRequirementId(int id){
-			this.id = id;
+
+		public int getTotalNeeded() {
+			return this.amount;
 		}
 
 		public void incrementTotal() {
@@ -72,12 +60,74 @@ public class Requirements {
 			this.aquired += amt;
 		}
 
+		public void setAmountNeeded(int total) {
+			this.amount = total;
+		}
+
 		public void setAquiredTo(int total) {
 			this.aquired = total;
 		}
 
-		public void setAmountNeeded(int total) {
-			this.amount = total;
+		public void setItemId(int id) {
+			this.item_id = id;
+		}
+
+		public void setRequirementId(int id) {
+			this.id = id;
+		}
+
+		public void setSubItemId(int id) {
+			this.sub_id = id;
+		}
+	}
+
+	public class BreakRequirement extends BaseRequirement {
+		public ItemStack item;
+
+		public BreakRequirement() {
+			super();
+			this.item = null;
+		}
+
+		public BreakRequirement(BreakRequirement pr) {
+			super(pr);
+			this.item = pr.item;
+		}
+
+		@Override
+		public String getRequirementEntityName() {
+			return this.item.getDisplayName();
+		}
+
+		public void setFromItemId(int id, int subItemId) {
+			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
+			this.setItemId(id);
+			this.setSubItemId(subItemId);
+		}
+	}
+
+	public class BrewRequirement extends BaseRequirement {
+		public ItemStack item;
+
+		public BrewRequirement() {
+			super();
+			this.item = null;
+		}
+
+		public BrewRequirement(BrewRequirement pr) {
+			super(pr);
+			this.item = pr.item;
+		}
+
+		@Override
+		public String getRequirementEntityName() {
+			return this.item.getDisplayName();
+		}
+
+		public void setFromItemId(int id, int subItemId) {
+			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
+			this.setItemId(id);
+			this.setSubItemId(subItemId);
 		}
 	}
 
@@ -101,33 +151,8 @@ public class Requirements {
 
 		public void setFromItemId(int id, int subItemId) {
 			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
-			setItemId(id);
-			setSubItemId(subItemId);
-		}
-	}
-
-	public class SmeltRequirement extends BaseRequirement {
-		public ItemStack item;
-
-		public SmeltRequirement() {
-			super();
-			this.item = null;
-		}
-
-		public SmeltRequirement(SmeltRequirement sr) {
-			super(sr);
-			this.item = sr.item;
-		}
-
-		@Override
-		public String getRequirementEntityName() {
-			return this.item.getDisplayName();
-		}
-
-		public void setFromItemId(int id, int subItemId) {
-			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
-			setItemId(id);
-			setSubItemId(subItemId);
+			this.setItemId(id);
+			this.setSubItemId(subItemId);
 		}
 	}
 
@@ -147,6 +172,25 @@ public class Requirements {
 		@Override
 		public String getRequirementEntityName() {
 			return this.entityType;
+		}
+	}
+
+	public class MentorRequirement extends BaseRequirement {
+		public String info;
+
+		public MentorRequirement() {
+			super();
+			this.info = "";
+		}
+
+		public MentorRequirement(MentorRequirement sr) {
+			super(sr);
+			this.info = sr.info;
+		}
+
+		@Override
+		public String getRequirementEntityName() {
+			return this.info;
 		}
 	}
 
@@ -170,11 +214,11 @@ public class Requirements {
 
 		public void setFromItemId(int id, int subItemId) {
 			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
-			setItemId(id);
-			setSubItemId(subItemId);
+			this.setItemId(id);
+			this.setSubItemId(subItemId);
 		}
 	}
-	
+
 	public class PlaceRequirement extends BaseRequirement {
 		public ItemStack item;
 
@@ -195,22 +239,22 @@ public class Requirements {
 
 		public void setFromItemId(int id, int subItemId) {
 			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
-			setItemId(id);
-			setSubItemId(subItemId);
+			this.setItemId(id);
+			this.setSubItemId(subItemId);
 		}
 	}
-	
-	public class BreakRequirement extends BaseRequirement {
+
+	public class SmeltRequirement extends BaseRequirement {
 		public ItemStack item;
 
-		public BreakRequirement() {
+		public SmeltRequirement() {
 			super();
 			this.item = null;
 		}
 
-		public BreakRequirement(BreakRequirement pr) {
-			super(pr);
-			this.item = pr.item;
+		public SmeltRequirement(SmeltRequirement sr) {
+			super(sr);
+			this.item = sr.item;
 		}
 
 		@Override
@@ -220,33 +264,8 @@ public class Requirements {
 
 		public void setFromItemId(int id, int subItemId) {
 			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
-			setItemId(id);
-			setSubItemId(subItemId);
-		}
-	}
-	
-	public class BrewRequirement extends BaseRequirement {
-		public ItemStack item;
-
-		public BrewRequirement() {
-			super();
-			this.item = null;
-		}
-
-		public BrewRequirement(BrewRequirement pr) {
-			super(pr);
-			this.item = pr.item;
-		}
-
-		@Override
-		public String getRequirementEntityName() {
-			return this.item.getDisplayName();
-		}
-
-		public void setFromItemId(int id, int subItemId) {
-			this.item = new ItemStack(Item.getItemById(id), 1, subItemId);
-			setItemId(id);
-			setSubItemId(subItemId);
+			this.setItemId(id);
+			this.setSubItemId(subItemId);
 		}
 	}
 
@@ -268,33 +287,8 @@ public class Requirements {
 			return this.eventStat.toString();
 		}
 	}
-	
-	public class MentorRequirement extends BaseRequirement {
-		public String info;
 
-		public MentorRequirement() {
-			super();
-			this.info = "";
-		}
-
-		public MentorRequirement(MentorRequirement sr) {
-			super(sr);
-			this.info = sr.info;
-		}
-
-		@Override
-		public String getRequirementEntityName() {
-			return this.info;
-		}
-	}
-
-	private ArrayList<BaseRequirement> requirements = new ArrayList();
-
-	public Requirements() {
-
-	}
-	
-	public static Requirements getCopy(Requirements r){
+	public static Requirements getCopy(Requirements r) {
 		Requirements copy = new Requirements();
 		for (BaseRequirement br : r.getRequirements()) {
 			if (br instanceof CraftRequirement) {
@@ -327,11 +321,16 @@ public class Requirements {
 		}
 		return copy;
 	}
-	
+
+	private ArrayList<BaseRequirement> requirements = new ArrayList<BaseRequirement>();
+
+	public Requirements() {
+
+	}
 
 	/***
 	 * Add requirement to requirements ArrayList.
-	 * 
+	 *
 	 * @param req
 	 *            BaseRequirement
 	 */
@@ -341,7 +340,7 @@ public class Requirements {
 
 	/***
 	 * Get requirements ArrayList.
-	 * 
+	 *
 	 * @return requirements ArrayList
 	 */
 	public ArrayList<BaseRequirement> getRequirements() {
@@ -349,8 +348,71 @@ public class Requirements {
 	}
 
 	/***
+	 * Get list of requirements by specified type.
+	 *
+	 * @param type
+	 *            AchievementType
+	 * @return ArrayList<BaseRequirement> of given type
+	 */
+	public ArrayList<BaseRequirement> getRequirementsByType(AchievementType type) {
+		ArrayList<BaseRequirement> typereq = new ArrayList<BaseRequirement>();
+		for (BaseRequirement r : this.requirements) {
+			switch (type) {
+			case CRAFT:
+				if (r instanceof CraftRequirement) {
+					typereq.add(r);
+				}
+				break;
+			case SMELT:
+				if (r instanceof SmeltRequirement) {
+					typereq.add(r);
+				}
+				break;
+			case PICKUP:
+				if (r instanceof PickupRequirement) {
+					typereq.add(r);
+				}
+				break;
+			case STAT:
+				if (r instanceof StatRequirement) {
+					typereq.add(r);
+				}
+				break;
+			case KILL:
+				if (r instanceof KillRequirement) {
+					typereq.add(r);
+				}
+				break;
+			case BREW:
+				if (r instanceof BrewRequirement) {
+					typereq.add(r);
+				}
+				break;
+			case PLACE:
+				if (r instanceof PlaceRequirement) {
+					typereq.add(r);
+				}
+				break;
+			case BREAK:
+				if (r instanceof BreakRequirement) {
+					typereq.add(r);
+				}
+				break;
+			case MENTOR:
+				if (r instanceof MentorRequirement) {
+					typereq.add(r);
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return typereq;
+	}
+
+	/***
 	 * Get boolean of all types from requirements ArrayList.
-	 * 
+	 *
 	 * @return boolean[] of types in requirements
 	 */
 	public boolean[] getRequirementTypes() {
@@ -364,88 +426,44 @@ public class Requirements {
 		boolean hasBreak = false;
 		boolean isMentor = false;
 		for (BaseRequirement r : this.requirements) {
-			if (r instanceof CraftRequirement)
+			if (r instanceof CraftRequirement) {
 				hasCraft = true;
+			}
 
-			if (r instanceof SmeltRequirement)
+			if (r instanceof SmeltRequirement) {
 				hasSmelt = true;
+			}
 
-			if (r instanceof PickupRequirement)
+			if (r instanceof PickupRequirement) {
 				hasPickup = true;
+			}
 
-			if (r instanceof StatRequirement)
+			if (r instanceof StatRequirement) {
 				hasStat = true;
+			}
 
-			if (r instanceof KillRequirement)
+			if (r instanceof KillRequirement) {
 				hasKill = true;
-			
-			if (r instanceof BrewRequirement)
+			}
+
+			if (r instanceof BrewRequirement) {
 				hasBrew = true;
-			
-			if (r instanceof PlaceRequirement)
+			}
+
+			if (r instanceof PlaceRequirement) {
 				hasPlace = true;
-			
-			if (r instanceof BreakRequirement)
+			}
+
+			if (r instanceof BreakRequirement) {
 				hasBreak = true;
+			}
 
-			if (r instanceof MentorRequirement)
+			if (r instanceof MentorRequirement) {
 				isMentor = true;
-		}
-		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasBrew, hasPlace, hasBreak, isMentor };
-		return types;
-	}
-
-	/***
-	 * Get list of requirements by specified type.
-	 * 
-	 * @param type
-	 *            AchievementType
-	 * @return ArrayList<BaseRequirement> of given type
-	 */
-	public ArrayList<BaseRequirement> getRequirementsByType(AchievementType type) {
-		ArrayList<BaseRequirement> typereq = new ArrayList();
-		for (BaseRequirement r : this.requirements) {
-			switch (type) {
-			case CRAFT:
-				if (r instanceof CraftRequirement)
-					typereq.add(r);
-				break;
-			case SMELT:
-				if (r instanceof SmeltRequirement)
-					typereq.add(r);
-				break;
-			case PICKUP:
-				if (r instanceof PickupRequirement)
-					typereq.add(r);
-				break;
-			case STAT:
-				if (r instanceof StatRequirement)
-					typereq.add(r);
-				break;
-			case KILL:
-				if (r instanceof KillRequirement)
-					typereq.add(r);
-				break;
-			case BREW:
-				if (r instanceof BrewRequirement)
-					typereq.add(r);
-				break;
-			case PLACE:
-				if (r instanceof PlaceRequirement)
-					typereq.add(r);
-				break;
-			case BREAK:
-				if (r instanceof BreakRequirement)
-					typereq.add(r);
-				break;
-			case MENTOR:
-				if (r instanceof MentorRequirement)
-					typereq.add(r);
-				break;
-			default:
-				break;
 			}
 		}
-		return typereq;
+		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasBrew, hasPlace, hasBreak,
+				isMentor };
+		return types;
 	}
 }

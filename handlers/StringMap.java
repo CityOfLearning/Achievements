@@ -8,12 +8,12 @@ import net.vivin.GenericTreeNode;
 
 public class StringMap {
 	private List<StringPlus> tStrings;
-	private List<GenericTree<StringPlus>> trees = new ArrayList();
+	private List<GenericTree<StringPlus>> trees = new ArrayList<GenericTree<StringPlus>>();
 	private int id;
 
 	public StringMap() {
-		id = 0;
-		tStrings = new ArrayList();
+		this.id = 0;
+		this.tStrings = new ArrayList<StringPlus>();
 	}
 
 	public StringMap(int id, List<StringPlus> strs) {
@@ -29,19 +29,11 @@ public class StringMap {
 		this.tStrings.addAll(a);
 	}
 
-	public void removeString(StringPlus a) {
-		this.tStrings.remove(a);
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
 	public int getId() {
-		return id;
+		return this.id;
 	}
-	
-	public List<GenericTree<StringPlus>> getTrees(){
+
+	public List<GenericTree<StringPlus>> getTrees() {
 		return this.trees;
 	}
 
@@ -55,24 +47,24 @@ public class StringMap {
 
 		/*
 		 * We're building a tree that looks like this:
-		 * 
+		 *
 		 * I am root! /\ A B / \ C D \ E
 		 */
 
 		/*
 		 * All Independents are root All Orphans are root Some Parents can be
 		 * root
-		 * 
+		 *
 		 * All children have 1 parent parents can have multiple children
 		 * children can be parents
-		 * 
+		 *
 		 */
 
-		List<StringPlus> independent = new ArrayList();
-		List<StringPlus> subnodes = new ArrayList();
-		List<StringPlus> children = new ArrayList();
-		List<StringPlus> roots = new ArrayList();
-		List<StringPlus> orphans = new ArrayList();
+		List<StringPlus> independent = new ArrayList<StringPlus>();
+		List<StringPlus> subnodes = new ArrayList<StringPlus>();
+		List<StringPlus> children = new ArrayList<StringPlus>();
+		List<StringPlus> roots = new ArrayList<StringPlus>();
+		List<StringPlus> orphans = new ArrayList<StringPlus>();
 
 		for (StringPlus a : this.tStrings) {
 			// first lets sort them in possible parents and children
@@ -126,7 +118,7 @@ public class StringMap {
 			GenericTree<StringPlus> tree = new GenericTree<StringPlus>();
 			GenericTreeNode<StringPlus> root = new GenericTreeNode<StringPlus>(a);
 			for (StringPlus b : children) {
-				recursiveBuildNode(root, b, new GenericTreeNode<StringPlus>());
+				this.recursiveBuildNode(root, b, new GenericTreeNode<StringPlus>());
 			}
 			System.out.println("Adding Tree " + a + " with nodes " + root.getChildren());
 			tree.setRoot(root);
@@ -154,33 +146,42 @@ public class StringMap {
 		for (GenericTree<StringPlus> t : this.trees) {
 			System.out.println(t + " - Nodes: " + t.getNumberOfNodes());
 		}
-		
+
 		System.out.println("Checking Trees Makeup");
 		for (GenericTree<StringPlus> t : this.trees) {
 			System.out.println("Root");
 			System.out.println(t.getRoot().getData());
 			System.out.println("Children");
-			for( GenericTreeNode<StringPlus> tc : t.getRoot().getChildren()){
+			for (GenericTreeNode<StringPlus> tc : t.getRoot().getChildren()) {
 				System.out.println(tc.getData() + "->" + tc.getChildren());
 			}
 		}
 		System.out.println("Done");
 	}
-	
-	private void recursiveBuildNode(GenericTreeNode<StringPlus> root, StringPlus node, GenericTreeNode<StringPlus> nodes) {
+
+	private void recursiveBuildNode(GenericTreeNode<StringPlus> root, StringPlus node,
+			GenericTreeNode<StringPlus> nodes) {
 		if (node.hasParent()) {
 			GenericTreeNode<StringPlus> newNode = new GenericTreeNode<StringPlus>();
 			nodes.setData(node);
 			newNode.addChild(nodes);
-			recursiveBuildNode(root, node.getParent(), newNode);
-			if(node.getParent() == root.getData()){
-				//nodes.setData(node);
+			this.recursiveBuildNode(root, node.getParent(), newNode);
+			if (node.getParent() == root.getData()) {
+				// nodes.setData(node);
 				root.addChild(nodes);
 				System.out.println(nodes);
-			} /*else {
-				System.out.println(nodes);
-				nodes.addChild(new GenericTreeNode<StringPlus>(node));
-			}*/
+			} /*
+				 * else { System.out.println(nodes); nodes.addChild(new
+				 * GenericTreeNode<StringPlus>(node)); }
+				 */
 		}
+	}
+
+	public void removeString(StringPlus a) {
+		this.tStrings.remove(a);
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }
