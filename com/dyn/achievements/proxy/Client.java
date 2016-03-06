@@ -12,9 +12,17 @@ import cpw.mods.fml.common.gameevent.InputEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.settings.KeyBinding;
-
+/**
+ * Client class inherits from the proxy interface.
+ * @author Dominic Amato
+ * @version 1.0
+ * @since 2016-03-06
+ */
 public class Client implements Proxy {
 
+	/**
+	 * Stores the key the user presses to activate the achievement menu.
+	 */
 	private KeyBinding achievementKey;
 
 	/**
@@ -25,6 +33,14 @@ public class Client implements Proxy {
 		// Render GUI when on call from client
 	}
 
+	/**
+	 * Listens for when a key is pressed.
+	 * <p>
+	 * If the menu is already open just return.
+	 * If the menu isn't open and the achievement key is pressed then open the menu.
+	 * <p>
+	 * @param event
+	 */
 	@SubscribeEvent
 	public void onKeyInput(InputEvent.KeyInputEvent event) {
 
@@ -37,6 +53,9 @@ public class Client implements Proxy {
 		}
 	}
 
+	/**
+	 * Initializes the achievement key and registers it.
+	 */
 	@Override
 	public void init() {
 

@@ -7,6 +7,7 @@ import com.dyn.achievements.achievement.Requirements.BreakRequirement;
 import com.dyn.achievements.achievement.Requirements.BrewRequirement;
 import com.dyn.achievements.achievement.Requirements.CraftRequirement;
 import com.dyn.achievements.achievement.Requirements.KillRequirement;
+import com.dyn.achievements.achievement.Requirements.MentorRequirement;
 import com.dyn.achievements.achievement.Requirements.PickupRequirement;
 import com.dyn.achievements.achievement.Requirements.PlaceRequirement;
 import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
@@ -20,36 +21,87 @@ import com.google.gson.JsonObject;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
 
-/***
+/**
  * AchievementPlus class modifies Achievement class in MineCraft source code.
- * 
  * @author Dominic Amato
- *
+ * @version 1.0
+ * @since 2016-03-06
  */
 public class AchievementPlus extends Achievement {
 
+	/**
+	 * Requirements for an achievement.
+	 */
 	private Requirements requirements;
+	/**
+	 * Name of achievement.
+	 */
 	private String name;
+	/**
+	 * Description of achievement.
+	 */
 	private String desc;
+	/**
+	 * ID for achievement map.
+	 */
 	private int ach_id;
+	/**
+	 * ID for map location.
+	 */
 	private int map_id;
+	/**
+	 * ID for world location.
+	 */
 	private int world_id;
+	/**
+	 * Parent of current achievement.
+	 */
 	private AchievementPlus parent;
+	/**
+	 * X location.
+	 */
 	private int xCoord;
+	/**
+	 * Y location.
+	 */
 	private int yCoord;
+	/**
+	 * Has the achievement been awarded.
+	 */
 	private boolean awarded;
+	/**
+	 * Texture (image) of achievement on map.
+	 */
 	private ResourceLocation texture;
 
-	// optional but needed to award a badge online;
+	/**
+	 * Optional but needed to award a badge online.
+	 */
 	private int badgeId;
 
+	/**
+	 * Constructor of AchievementPlus.
+	 * @param requirements Requirements for achievement.
+	 * @param name Name of achievement.
+	 * @param description Description of achievement.
+	 * @param xPos X position of achievement.
+	 * @param yPos Y position of achievement.
+	 * @param badgeId Badge ID of achievement.
+	 * @param achievementId ID of achievement
+	 * @param mapId Map ID of achievement.
+	 * @param worldId World ID of achievement.
+	 * @param parent Parent of achievement
+	 * @param awarded Has it been awarded to player.
+	 * @param texture Texture of achievement.
+	 */
 	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int badgeId,
 			int achievementId, int mapId, int worldId, AchievementPlus parent, boolean awarded, ResourceLocation texture) {
-		super(name.replace(' ', '_'), name.replace(' ', '_'), xPos, yPos, new ItemStack(Blocks.dirt), parent);
+		super(name.replace(' ', '_'), name.replace(' ', '_'), xPos, yPos, new ItemStack(Items.experience_bottle), parent);
 		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_'), "en_US", name);
 		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_') + ".desc", "en_US",
 				description);
@@ -71,7 +123,7 @@ public class AchievementPlus extends Achievement {
 		AchievementHandler.registerAchievement(this);
 	}
 
-	/***
+	/**
 	 * Get Requirements.
 	 * 
 	 * @return requirements
@@ -80,18 +132,34 @@ public class AchievementPlus extends Achievement {
 		return requirements;
 	}
 	
+	/**
+	 * Checks if achievement has parent.
+	 * @return Returns true if the player has a parent and false if null.
+	 */
 	public boolean hasParent() {
 		return this.parent != null;
 	}
 	
+	/**
+	 * Gets parent of achievement.
+	 * @return Returns parent variable.
+	 */
 	public AchievementPlus getParent() {
 		return parent;
 	}
 	
+	/**
+	 * Gets the texture achievement.
+	 * @return Returns the texture variable.
+	 */
 	public ResourceLocation getTexture(){
 		return texture;
 	}
 	
+	/**
+	 * Sets the texture of the achievement.
+	 * @param tex Texture to set.
+	 */
 	public void setTexture(ResourceLocation tex){
 		this.texture = tex;
 	}
@@ -126,49 +194,92 @@ public class AchievementPlus extends Achievement {
 		}
 	}
 	
+	/**
+	 * Awards achievement to player and uses DYN username.
+	 * @param player
+	 * @param dynUsername
+	 */
 	public void awardAchievement(EntityPlayer player, String dynUsername) {
 			new PostBadge(badgeId, dynUsername, "5e4ae1a1ddce5d341bd5c0b6075d9491620c31aed80a901345fdf91fe1757ce1d8b67b99ccaf574198c99ca12c3d288ad07b022d5b70d1c72a3d728a7a27ce23", "dd10c3a735a29a9e8d46822aac0660555a25103c57fa5188b793944fd074f1b6", player, this);
 	}
 
+	/**
+	 * Checks if the achievement has been awarded.
+	 * @return Returns true if it has been awarded to the player and false if it hasn't.
+	 */
 	public boolean isAwarded() {
 		return awarded;
 	}
 
+	/**
+	 * Awards the achievement to the specified player.
+	 * @param player
+	 */
 	public void setAwarded(EntityPlayer player) {
 		awarded = true;
 		player.addStat(this, 1);
 	}
 	
-	//if this is the client it doesnt matter if we add the stat we just need to know that its been achieved
+	/**
+	 * If this is the client it doesn't matter if we add the stat we just need to know that its been achieved.
+	 */
 	public void setAwarded() {
 		awarded = true;
 	}
 
+	/**
+	 * Gets name of achievement.
+	 * @return Returns name variable.
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Gets the description of the achievement.
+	 * @return Returns description.
+	 */
 	@Override
 	public String getDescription() {
 		return this.desc;
 	}
 
+	/**
+	 * Gets achievement ID.
+	 * @return
+	 */
 	public int getId() {
 		return this.ach_id;
 	}
 
+	/**
+	 * Gets map ID.
+	 * @return
+	 */
 	public int getMapId() {
 		return this.map_id;
 	}
 
+	/**
+	 * Gets world ID.
+	 * @return
+	 */
 	public int getWorldId() {
 		return this.world_id;
 	}
 
+	/**
+	 * Sets world ID of achievement.
+	 * @param id
+	 */
 	public void setWorldId(int id) {
 		this.world_id = id;
 	}
 
+	/**
+	 * Checks if an achievement has meet its requirements.
+	 * @return
+	 */
 	public boolean meetsRequirements() {
 		for (BaseRequirement r : requirements.getRequirements()) {
 			if (r.getTotalAquired() < r.getTotalNeeded())
@@ -177,6 +288,11 @@ public class AchievementPlus extends Achievement {
 		return true;
 	}
 
+	/**
+	 * Parses JSON file to achievements.
+	 * @param json
+	 * @return Returns the new achievement or null if it could not process the information.
+	 */
 	public static AchievementPlus JsonToAchievement(JsonObject json) {
 		Requirements requirements = new Requirements();
 
@@ -276,6 +392,11 @@ public class AchievementPlus extends Achievement {
 					requirements.addRequirement(r);
 				}
 			}
+			if (req.has("mentor_requirements")) {
+				//this should be an empty array...
+					MentorRequirement r = requirements.new MentorRequirement();
+					requirements.addRequirement(r);
+			}
 			if (json.has("badge_id"))
 				badgeId = json.get("badge_id").getAsInt();
 			if (json.has("parent_name")) {
@@ -292,6 +413,10 @@ public class AchievementPlus extends Achievement {
 		return null;
 	}
 
+	/**
+	 * Turns achievements back into JSON.
+	 * @return Returns JSON reply.
+	 */
 	public JsonObject achievementToJson() {
 		JsonObject reply = new JsonObject();
 		reply.addProperty("name", this.name);
@@ -428,6 +553,12 @@ public class AchievementPlus extends Achievement {
 						reqTypes.add(reqSubTypes);
 					}
 					req.add("break_requirements", reqTypes);
+				}
+				break;
+			case 8:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(AchievementType.MENTOR);
+					req.add("mentor_requirements", reqTypes);
 				}
 				break;
 			default:

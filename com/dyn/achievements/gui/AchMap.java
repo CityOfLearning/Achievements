@@ -12,14 +12,32 @@ import com.rabbit.gui.show.Show;
 import net.minecraft.util.ResourceLocation;
 import net.vivin.GenericTree;
 import net.vivin.GenericTreeNode;
-
+/**
+ * Class extends show for GUI.
+ * @author Dominic Amato
+ * @version 1.0
+ * @since 2016-03-06
+ */
 public class AchMap extends Show {
-	
+	/**
+	 * Map of strings.
+	 */
 	private StringMap achMap;
-	//we should have an idea how many levels there are and the number of nodes per level
+	/**
+	 * Map of levels of achievements.
+	 * We should have an idea how many levels there are and the number of nodes per level
+	 */
 	private Map<Integer, Integer> levels = new HashMap();
+	/**
+	 * Total amount of achievement nodes.
+	 */
 	private int total;
 
+	/**
+	 * Constructor for AchMap.
+	 * Sets variables to default values.
+	 * @param map Takes in a map of strings.
+	 */
 	public AchMap(StringMap map) {
 		this.setBackground(new DefaultBackground());
 		this.title = "Achievement Map Gui";
@@ -35,6 +53,9 @@ public class AchMap extends Show {
 		}
 	}
 
+	/**
+	 * Sets up GUI Screen for displaying achievement map.
+	 */
 	@Override
 	public void setup() {
 		super.setup();
@@ -46,6 +67,11 @@ public class AchMap extends Show {
 				(int) (this.height * .9), new ResourceLocation("dyn", "textures/gui/background3.png")));
 	}
 	
+	/**
+	 * Recursively counts how many levels a node has.
+	 * @param level
+	 * @param nodes
+	 */
 	private void recursiveCount(int level, GenericTreeNode<StringPlus> nodes) {
 		if (nodes.hasChildren()) {
 			for(GenericTreeNode<StringPlus> node: nodes.getChildren()){
