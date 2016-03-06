@@ -16,12 +16,28 @@ import com.rabbit.gui.render.TextAlignment;
 import com.rabbit.gui.show.Show;
 
 import net.minecraft.util.ResourceLocation;
-
+/**
+ * Class extends show for GUI.
+ * @author Dominic Amato
+ * @version 1.0
+ * @since 2016-03-06
+ */
 public class Info extends Show {
 
+	/**
+	 * AchievementPlus object.
+	 */
 	private AchievementPlus achievement;
+	/**
+	 * Achievement texture location.
+	 */
 	private ResourceLocation texture;
 
+	/**
+	 * Constructor that takes in an achievement.
+	 * Sets other variables to default.
+	 * @param achievement
+	 */
 	public Info(AchievementPlus achievement) {
 		this.setBackground(new DefaultBackground());
 		this.title = "Achievement Gui";
@@ -34,6 +50,9 @@ public class Info extends Show {
 		
 	}	
 
+	/**
+	 * Sets up GUI screen for achievement info.
+	 */
 	@Override
 	public void setup() {
 		super.setup();

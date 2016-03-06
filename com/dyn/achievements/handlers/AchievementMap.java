@@ -7,46 +7,95 @@ import com.dyn.achievements.achievement.AchievementPlus;
 
 import net.vivin.GenericTree;
 import net.vivin.GenericTreeNode;
-
+/**
+ * @author Dominic Amato
+ * @version 1.0
+ * @since 2016-03-06
+ */
 public class AchievementMap {
+	/**
+	 * List of achievements.
+	 */
 	private List<AchievementPlus> achievements;
+	/**
+	 * List of achievement trees.
+	 */
 	private List<GenericTree<AchievementPlus>> trees = new ArrayList();
+	/**
+	 * ID of map.
+	 */
 	private int id;
 	
+	/**
+	 * Constructor of achievement map.
+	 * Sets values to default.
+	 */
 	public AchievementMap(){
 		id =0;
 		achievements = new ArrayList();
 	}
 	
+	/**
+	 * Constructor of achievement map.
+	 * Sets variables to parameters.
+	 * @param id
+	 * @param achs
+	 */
 	public AchievementMap(int id, List<AchievementPlus> achs){
 		this.id = id;
 		this.achievements = achs;
 	}
 	
+	/**
+	 * Adds an achievement to the list of achievements.
+	 * @param a
+	 */
 	public void addAchievement(AchievementPlus a){
 		this.achievements.add(a);
 	}
-	
+	/**
+	 * Adds multiple achievements to the list of achievements.
+	 * @param a
+	 */
 	public void addAchievements(List<AchievementPlus> a){
 		this.achievements.addAll(a);
 	}
 	
+	/**
+	 * Removes an achievement from the list of achievements.
+	 * @param a
+	 */
 	public void removeAchievement(AchievementPlus a){
 		this.achievements.remove(a);
 	}
 	
+	/**
+	 * Set the ID of achievement.
+	 * @param id
+	 */
 	public void setId(int id){
 		this.id = id;
 	}
 	
+	/**
+	 * Gets the ID of achievement.
+	 * @return
+	 */
 	public int getId(){
 		return id;
 	}
 	
+	/**
+	 * Gets the list of achievement trees.
+	 * @return
+	 */
 	public List<GenericTree<AchievementPlus>> getTrees(){
 		return this.trees;
 	}
 	
+	/**
+	 * Processes the map based of the achievements.
+	 */
 	public void processMap(){
 		//we need to know where to place achievements in the mapping. 
 		//Are they independent? i.e have no parent or children
@@ -76,13 +125,30 @@ public class AchievementMap {
 		 * children can be parents 
 		 * 
 		 */
-		
+		/**
+		 * List of independent achievements.
+		 */
 		List<AchievementPlus> independent = new ArrayList();
+		/**
+		 * List of sub-node achievements.
+		 */
 		List<AchievementPlus> subnodes = new ArrayList();
+		/**
+		 * List of achievements that are children of other achievements.
+		 */
 		List<AchievementPlus> children = new ArrayList();
+		/**
+		 * List of achievements that are roots.
+		 */
 		List<AchievementPlus> roots = new ArrayList();
+		/**
+		 * List of achievements that are orphans.
+		 */
 		List<AchievementPlus> orphans = new ArrayList();
 
+		/**
+		 * Separates children from independent nodes in the achievements list.
+		 */
 		for (AchievementPlus a : this.achievements) {
 			// first lets sort them in possible roots and children
 			if (a.hasParent()) {
@@ -92,7 +158,9 @@ public class AchievementMap {
 
 			}
 		}
-
+		/**
+		 * Checks the children list and separates independent, root, subnode, and orphan achievement nodes.
+		 */
 		for (AchievementPlus a : children) {
 			if (independent.contains(a.getParent())) {
 				// we need to check if a root has a child
@@ -112,11 +180,25 @@ public class AchievementMap {
 			}
 		}
 
-		//lets clean up all the lists
+		/**
+		 * Cleans up all the lists
+		 */
+		/**
+		 * Removes root nodes from independent nodes.
+		 */
 		independent.removeAll(roots);
+		/**
+		 * Removes sub-nodes from child nodes.
+		 */
 		children.removeAll(subnodes);
+		/**
+		 * Removes orphan nodes from child nodes.
+		 */
 		children.removeAll(orphans);
 
+		/**
+		 * Adds independent nodes to the main tree.
+		 */
 		for (AchievementPlus a : independent) {
 			GenericTree<AchievementPlus> tree = new GenericTree<AchievementPlus>();
 			GenericTreeNode<AchievementPlus> root = new GenericTreeNode<AchievementPlus>(a);
@@ -126,6 +208,9 @@ public class AchievementMap {
 
 		// so we have sorted out the orphans and independent achievements
 		// now we have to link all the parents and children
+		/**
+		 * Builds the tree including children of roots.
+		 */
 		for (AchievementPlus a : roots) {
 			GenericTree<AchievementPlus> tree = new GenericTree<AchievementPlus>();
 			GenericTreeNode<AchievementPlus> root = new GenericTreeNode<AchievementPlus>(a);
@@ -151,7 +236,12 @@ public class AchievementMap {
 			this.trees.add(tree);
 		}	
 	}
-	
+	/**
+	 * Recursively builds the node tree based on if achievements have parents or children.
+	 * @param root
+	 * @param node
+	 * @param nodes
+	 */
 	private void recursiveBuild(AchievementPlus node, List<GenericTreeNode<AchievementPlus>> nodes) {
 		if (node.hasParent()) {
 			recursiveBuild(node.getParent(), nodes);

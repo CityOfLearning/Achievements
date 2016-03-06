@@ -19,20 +19,41 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-
+/**
+ * @author Dominic Amato
+ * @version 1.0
+ * @since 2016-03-06
+ */
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class AchievementsMod {
 
+	/**
+	 * Instance of an achievement.
+	 */
 	@Mod.Instance(Reference.MOD_ID)
 	public static AchievementsMod instance;
 
+	/**
+	 * String of the name of the current world.
+	 */
 	public static String currentWorld = "";
 
+	/**
+	 * Gets the proxy based off of what side the user is on.
+	 */
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static Proxy proxy;
 
+	/**
+	 * Instacne of logger.
+	 */
 	public static Logger logger;
 
+	/**
+	 * Pre-initialization.
+	 * Sets logger and downloads JSON file for achievements.
+	 * @param event
+	 */
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
@@ -88,6 +109,10 @@ public class AchievementsMod {
 		proxy.init();
 	}
 
+	/**
+	 * Initializes an achievement page.
+	 * @param event
+	 */
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		AchievementHandler.addAchievementPage("DYN Achievements", AchievementHandler.getAllAchievements());

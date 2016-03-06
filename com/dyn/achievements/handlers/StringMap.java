@@ -5,46 +5,96 @@ import java.util.List;
 
 import net.vivin.GenericTree;
 import net.vivin.GenericTreeNode;
-
+/**
+ * @author Dominic Amato
+ * @version 1.0
+ * @since 2016-03-06
+ */
 public class StringMap {
+	/**
+	 * List of StringPlus instances.
+	 */
 	private List<StringPlus> tStrings;
+	/**
+	 * List of StringPlus trees.
+	 */
 	private List<GenericTree<StringPlus>> trees = new ArrayList();
+	/**
+	 * ID of map location.
+	 */
 	private int id;
 
+	/**
+	 * Constructor for StringMap.
+	 * Initializes id to 0 and creates new tStrings list.
+	 */
 	public StringMap() {
 		id = 0;
 		tStrings = new ArrayList();
 	}
 
+	/**
+	 * Constructor for StringMap.
+	 * Sets id to id parameter and tStrings list to strs parameter.
+	 * @param id
+	 * @param strs
+	 */
 	public StringMap(int id, List<StringPlus> strs) {
 		this.id = id;
 		this.tStrings = strs;
 	}
 
+	/**
+	 * Adds a new StringPlus to the tStrings list.
+	 * @param a
+	 */
 	public void addString(StringPlus a) {
 		this.tStrings.add(a);
 	}
 
+	/**
+	 * Adds a list of tStrings to the tStrings list.
+	 * @param a
+	 */
 	public void addStrings(List<StringPlus> a) {
 		this.tStrings.addAll(a);
 	}
 
+	/**
+	 * Removes a string from the tStrings list.
+	 * @param a
+	 */
 	public void removeString(StringPlus a) {
 		this.tStrings.remove(a);
 	}
 
+	/**
+	 * Sets id to id parameter.
+	 * @param id
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Gets ID.
+	 * @return Returns id variable.
+	 */
 	public int getId() {
 		return id;
 	}
 	
+	/**
+	 * Gets the StringPlus Trees.
+	 * @return Returns the trees list.
+	 */
 	public List<GenericTree<StringPlus>> getTrees(){
 		return this.trees;
 	}
 
+	/**
+	 * Processes the layout of the map based on achievements having children, being parents, being orphans, or being independent.
+	 */
 	public void processMap() {
 		// we need to know where to place achievements in the mapping.
 		// Are they independent? i.e have no parent or children
@@ -68,12 +118,30 @@ public class StringMap {
 		 * 
 		 */
 
+		/**
+		 * List of independent string achievements.
+		 */
 		List<StringPlus> independent = new ArrayList();
+		/**
+		 * List of sub-node string achievements.
+		 */
 		List<StringPlus> subnodes = new ArrayList();
+		/**
+		 * List of string achievements that are children of other string achievements.
+		 */
 		List<StringPlus> children = new ArrayList();
+		/**
+		 * List of string achievements that are roots.
+		 */
 		List<StringPlus> roots = new ArrayList();
+		/**
+		 * List of string achievements that are orphans.
+		 */
 		List<StringPlus> orphans = new ArrayList();
 
+		/**
+		 * Separates children from independent nodes in the tStrings list.
+		 */
 		for (StringPlus a : this.tStrings) {
 			// first lets sort them in possible parents and children
 			if (a.hasParent()) {
@@ -84,6 +152,9 @@ public class StringMap {
 			}
 		}
 
+		/**
+		 * Checks the children list and separates independent, root, subnode, and orphan achievement nodes.
+		 */
 		for (StringPlus a : children) {
 			if (independent.contains(a.getParent())) {
 				// we need to check if a root has a child
@@ -106,11 +177,22 @@ public class StringMap {
 			}
 		}
 
+		/**
+		 * Removes root nodes from independent nodes.
+		 */
 		independent.removeAll(roots);
-
+		/**
+		 * Removes sub-nodes from child nodes.
+		 */
 		children.removeAll(subnodes);
+		/**
+		 * Removes orphan nodes from child nodes.
+		 */
 		children.removeAll(orphans);
 
+		/**
+		 * Adds independent nodes to the main tree.
+		 */
 		for (StringPlus a : independent) {
 			GenericTree<StringPlus> tree = new GenericTree<StringPlus>();
 			GenericTreeNode<StringPlus> root = new GenericTreeNode<StringPlus>(a);
@@ -122,6 +204,9 @@ public class StringMap {
 		// so we have sorted out the orphans and independent achievements
 		// now we have to link all the parents and children
 
+		/**
+		 * Builds the tree including children of roots.
+		 */
 		for (StringPlus a : roots) {
 			GenericTree<StringPlus> tree = new GenericTree<StringPlus>();
 			GenericTreeNode<StringPlus> root = new GenericTreeNode<StringPlus>(a);
@@ -167,6 +252,12 @@ public class StringMap {
 		System.out.println("Done");
 	}
 	
+	/**
+	 * Recursively builds the node tree based on if achievements have parents or children.
+	 * @param root
+	 * @param node
+	 * @param nodes
+	 */
 	private void recursiveBuildNode(GenericTreeNode<StringPlus> root, StringPlus node, GenericTreeNode<StringPlus> nodes) {
 		if (node.hasParent()) {
 			GenericTreeNode<StringPlus> newNode = new GenericTreeNode<StringPlus>();

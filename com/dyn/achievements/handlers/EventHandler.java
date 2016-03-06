@@ -21,9 +21,18 @@ import com.dyn.server.packets.client.SyncAchievementsMessage;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
-
+/**
+ * @author Dominic Amato
+ * @version 1.0
+ * @since 2016-03-06
+ */
 public class EventHandler {
 
+	/**
+	 * Listens for when a player crafts something.
+	 * If an achievement is attached to crafting then process it.
+	 * @param event
+	 */
 	@SubscribeEvent
 	public void craftingEvent(PlayerEvent.ItemCraftedEvent event) {
 		if (event.crafting != null) {
@@ -52,6 +61,11 @@ public class EventHandler {
 		}
 	}
 
+	/**
+	 * Listens for when a player smelts something.
+	 * If an achievement is attached to smelting then process it.
+	 * @param event
+	 */
 	@SubscribeEvent
 	public void smeltingEvent(PlayerEvent.ItemSmeltedEvent event) {
 		if (event.smelting != null) {
@@ -80,6 +94,11 @@ public class EventHandler {
 		}
 	}
 
+	/**
+	 * Listens for when a player picks up something.
+	 * If an achievement is attached to picking up items then process it.
+	 * @param event
+	 */
 	@SubscribeEvent
 	public void pickupEvent(PlayerEvent.ItemPickupEvent event) {
 		if (event.pickedUp != null) {
@@ -108,6 +127,11 @@ public class EventHandler {
 		}
 	}
 
+	/**
+	 * Listens for when a player kills someone.
+	 * If an achievement is attached to killing then process it.
+	 * @param event
+	 */
 	@SubscribeEvent
 	public void killEvent(LivingDeathEvent event) {
 		if (event.source != null && event.source.getEntity() != null && event.entity != null
@@ -136,7 +160,12 @@ public class EventHandler {
 			}
 		}
 	}
-
+	
+	/**
+	 * Listens for when a player places a block.
+	 * If an achievement is attached to placing blocks then process it.
+	 * @param event
+	 */
 	@SubscribeEvent
 	public void placeBlockEvent(PlaceEvent event) {
 		// we are only concerned with placing blocks
@@ -168,6 +197,11 @@ public class EventHandler {
 		}
 	}
 
+	/**
+	 * Listens for when a player breaks a block.
+	 * If an achievement is attached to breaking blocks then process it.
+	 * @param event
+	 */
 	@SubscribeEvent
 	public void breakBlockEvent(BreakEvent event) {
 		// we are only concerned with placing blocks

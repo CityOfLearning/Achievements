@@ -17,17 +17,34 @@ import com.rabbit.gui.render.TextAlignment;
 import com.rabbit.gui.show.Show;
 
 import net.minecraft.util.ResourceLocation;
-
+/**
+ * Class extends show for GUI.
+ * @author Dominic Amato
+ * @version 1.0
+ * @since 2016-03-06
+ */
 public class Search extends Show {
 
+	/**
+	 * A scrollable grid area to host achievement maps.
+	 */
 	private ScrollableGrid achievementGrid;
+	/**
+	 * Location of images.
+	 */
 	ResourceLocation imgTexture;
 
+	/**
+	 * Constructor for Search class sets default background and Title of screen.
+	 */
 	public Search() {
 		this.setBackground(new DefaultBackground());
 		this.title = "Achievement Gui";
 	}
 
+	/**
+	 * Sets up the GUI screen for searching for achievements.
+	 */
 	@Override
 	public void setup() {
 		super.setup();
@@ -64,6 +81,11 @@ public class Search extends Show {
 				(int) (this.height * .9), new ResourceLocation("dyn", "textures/gui/background3.png")));
 	}
 
+	/**
+	 * Checks if the text has changed in the search text box.
+	 * @param textbox
+	 * @param previousText
+	 */
 	private void textChanged(TextBox textbox, String previousText) {
 		if (textbox.getId() == "achsearch") {
 			achievementGrid.clear();

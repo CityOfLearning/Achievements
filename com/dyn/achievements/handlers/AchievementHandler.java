@@ -11,23 +11,47 @@ import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
-/***
+/**
  * An event handler class for achievements.
- * 
  * @author Dominic Amato
- *
+ * @version 1.0
+ * @since 2016-03-06
  */
 public class AchievementHandler {
 
+	/**
+	 * Map of achievement pages.
+	 */
 	private static Map<String, AchievementPage> achievementPages = new HashMap();
+	/**
+	 * List of achievements.
+	 */
 	private static ArrayList<AchievementPlus> achievements = new ArrayList();
+	/**
+	 * Map of achievement names.
+	 */
 	private static Map<String, AchievementPlus> achievementNames = new HashMap();
+	/**
+	 * Map of achievement IDs.
+	 */
 	private static Map<Integer, AchievementPlus> achievementIds = new HashMap();
+	/**
+	 * Map of achievement maps.
+	 */
 	private static Map<Integer, AchievementMap> achievementMaps = new HashMap();
+	/**
+	 * Map of achievement types.
+	 */
 	private static Map<AchievementType, ArrayList<AchievementPlus>> achievementsType = new HashMap();
+	/**
+	 * Map of item names.
+	 */
 	private static Map<AchievementType, ListMultimap<String, AchievementPlus>> itemNames = new HashMap();
+	/**
+	 * Map of entity names
+	 */
 	private static Map<AchievementType, ListMultimap<String, AchievementPlus>> entityNames = new HashMap();
-	/***
+	/**
 	 * Adds page of achievements.
 	 * @param pageName Name of achievement page
 	 * @param achievements ArrayList of achievements
@@ -41,7 +65,10 @@ public class AchievementHandler {
 			achievementPages.put(pageName, achievementPage);
 		}
 	}
-	
+	/**
+	 * Sorts and assigns maps.
+	 * Assigns achievements to certain maps.
+	 */
 	public static void sortAndAssignMaps(){
 		List<AchievementMap> maps = new ArrayList();
 		Map<Integer, List<AchievementPlus>> mapMapping = new HashMap();
@@ -93,6 +120,11 @@ public class AchievementHandler {
 		return achList;
 	}
 	
+	/**
+	 * Finds the achievement specified by its ID.
+	 * @param id
+	 * @return Returns AchievementPlus by ID.
+	 */
 	public static AchievementPlus findAchievementById(int id) {
 		return achievementIds.get(id);
 	}
@@ -106,16 +138,23 @@ public class AchievementHandler {
 		return achievementsType.get(type);
 	}
 
-	
+	/**
+	 * Gets name of items in achievement map.
+	 * @return Map of item names.
+	 */
 	public static Map<AchievementType, ListMultimap<String, AchievementPlus>> getItemNames() {
 		return itemNames;
 	}
 	
+	/**
+	 * Gets name of entities.
+	 * @return Map of entity names.
+	 */
 	public static Map<AchievementType, ListMultimap<String, AchievementPlus>> getEntityNames() {
 		return entityNames;
 	}
 	
-	/***
+	/**
 	 * Registers achievement by CRAFT, SMELT, PICKUP, and STAT type.
 	 * @param achievement AchievementPlus object
 	 */
@@ -187,6 +226,10 @@ public class AchievementHandler {
 		}
 	}
 	
+	/**
+	 * Parses the item names for achievement requirements.
+	 * @param achievement AchievementPlus object
+	 */
 	private static void parseRequirementItemNames(AchievementPlus achievement){
 		boolean[] vals = achievement.getRequirements().getRequirementTypes();
 		if (vals[0]) {
@@ -245,6 +288,10 @@ public class AchievementHandler {
 		}
 	}
 	
+	/**
+	 * Parses entity names for achievement requirements.
+	 * @param achievement
+	 */
 	private static void parseRequirementEntityNames(AchievementPlus achievement){
 		boolean[] vals = achievement.getRequirements().getRequirementTypes();
 		if (vals[4]) {
