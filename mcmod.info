@@ -1,0 +1,16 @@
+[
+{
+  "modid": "DYN Achievements",
+  "name": "DYNAchievements",
+  "description": "DYN City Servers Additional Achievements",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Dom Amato"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
