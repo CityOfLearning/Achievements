@@ -166,9 +166,9 @@ public class AchievementPlus extends Achievement {
 	// optional but needed to award a badge online;
 	private int badgeId;
 
-	public AchievementPlus(Requirements requirements, String name, String description, int xPos,
-			int yPos, int badgeId, int achievementId, int mapId, int worldId,
-			AchievementPlus parent, boolean awarded, ResourceLocation texture) {
+	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int badgeId,
+			int achievementId, int mapId, int worldId, AchievementPlus parent, boolean awarded,
+			ResourceLocation texture) {
 		super(name.replace(' ', '_'), name.replace(' ', '_'), xPos, yPos, new ItemStack(Items.experience_bottle),
 				parent);
 		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_'), "en_US", name);
@@ -208,8 +208,7 @@ public class AchievementPlus extends Achievement {
 			switch (i) {
 			case 0:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements
-							.getRequirementsByType(AchievementType.CRAFT);
+					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.CRAFT);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -224,8 +223,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 1:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements
-							.getRequirementsByType(AchievementType.SMELT);
+					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.SMELT);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -256,8 +254,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 3:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements
-							.getRequirementsByType(AchievementType.STAT);
+					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.STAT);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("stat", t.getRequirementEntityName());
@@ -270,8 +267,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 4:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements
-							.getRequirementsByType(AchievementType.KILL);
+					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.KILL);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("entity", t.getRequirementEntityName());
@@ -284,8 +280,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 5:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements
-							.getRequirementsByType(AchievementType.BREW);
+					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.BREW);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -300,8 +295,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 6:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements
-							.getRequirementsByType(AchievementType.PLACE);
+					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.PLACE);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -316,8 +310,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 7:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements
-							.getRequirementsByType(AchievementType.BREAK);
+					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.BREAK);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());

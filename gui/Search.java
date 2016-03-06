@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.handlers.AchievementHandler;
+import com.dyn.betterachievements.gui.GuiBetterAchievements;
 import com.rabbit.gui.background.DefaultBackground;
+import com.rabbit.gui.component.control.PictureButton;
 import com.rabbit.gui.component.control.TextBox;
 import com.rabbit.gui.component.display.Picture;
 import com.rabbit.gui.component.display.TextLabel;
@@ -16,6 +18,7 @@ import com.rabbit.gui.component.grid.entries.PictureButtonGridEntry;
 import com.rabbit.gui.render.TextAlignment;
 import com.rabbit.gui.show.Show;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 public class Search extends Show {
@@ -35,6 +38,38 @@ public class Search extends Show {
 		this.registerComponent(new TextLabel(this.width / 3, (int) (this.height * .1), this.width / 3, 20,
 				"Achievements", TextAlignment.CENTER));
 
+		// the side buttons
+		this.registerComponent(new PictureButton((int) (this.width * .03), (int) (this.height * .2), 30, 30,
+				new ResourceLocation("minecraft", "textures/items/nether_star.png")).setIsEnabled(true)
+						.addHoverText("Achievement Maps").doesDrawHoverText(true).setClickListener(but -> Minecraft
+								.getMinecraft().displayGuiScreen(new GuiBetterAchievements(this.getStage(), 0))));
+
+		/*
+		 * this.registerComponent(new PictureButton((int) (this.width * .03),
+		 * (int) (this.height * .35), 30, 30, new ResourceLocation("minecraft",
+		 * "textures/items/ruby.png")).setIsEnabled(true) .addHoverText(
+		 * "Setup Student Roster").doesDrawHoverText(true) .setClickListener(but
+		 * -> this.getStage().display(new Roster())));
+		 * 
+		 * this.registerComponent(new PictureButton((int) (this.width * .03),
+		 * (int) (this.height * .5), 30, 30, new ResourceLocation("minecraft",
+		 * "textures/items/cookie.png")).setIsEnabled(true) .addHoverText(
+		 * "Manage Students").doesDrawHoverText(true) .setClickListener(but ->
+		 * this.getStage().display(new ManageStudents())));
+		 * 
+		 * this.registerComponent(new PictureButton((int) (this.width * .03),
+		 * (int) (this.height * .65), 30, 30, new ResourceLocation("minecraft",
+		 * "textures/items/emerald.png")).setIsEnabled(true) .addHoverText(
+		 * "Give Items").doesDrawHoverText(true) .setClickListener(but ->
+		 * this.getStage().display(new GiveItem())));
+		 * 
+		 * this.registerComponent(new PictureButton((int) (this.width * .03),
+		 * (int) (this.height * .8), 30, 30, new ResourceLocation("minecraft",
+		 * "textures/items/ender_eye.png")).setIsEnabled(true) .addHoverText(
+		 * "Award Achievements").doesDrawHoverText(true) .setClickListener(but
+		 * -> this.getStage().display(new GiveAchievement())));
+		 */
+
 		List<GridEntry> entries = new ArrayList<GridEntry>();
 
 		for (AchievementPlus a : AchievementHandler.getAllAchievements()) {
@@ -47,8 +82,8 @@ public class Search extends Show {
 				this.imgTexture = a.getTexture();
 			}
 			entries.add(new PictureButtonGridEntry(25, 25, this.imgTexture).doesDrawHoverText(true)
-					.setHoverText(hoverText).setClickListener((PictureButtonGridEntry entry, Grid grid,
-							int mouseX, int mouseY) -> this.getStage().display(new Info(a))));
+					.setHoverText(hoverText).setClickListener((PictureButtonGridEntry entry, Grid grid, int mouseX,
+							int mouseY) -> this.getStage().display(new Info(a))));
 		}
 
 		this.achievementGrid = new ScrollableGrid((int) (this.width / 5.8), (int) (this.height * .25),
@@ -78,9 +113,8 @@ public class Search extends Show {
 						this.imgTexture = a.getTexture();
 					}
 					this.achievementGrid.add(new PictureButtonGridEntry(25, 25, this.imgTexture).doesDrawHoverText(true)
-							.setHoverText(hoverText)
-							.setClickListener((PictureButtonGridEntry entry, Grid grid, int mouseX,
-									int mouseY) -> this.getStage().display(new Info(a))));
+							.setHoverText(hoverText).setClickListener((PictureButtonGridEntry entry, Grid grid,
+									int mouseX, int mouseY) -> this.getStage().display(new Info(a))));
 				}
 			} else {
 				for (AchievementPlus a : AchievementHandler.findAchievementsByName(textbox.getText())) {
@@ -93,9 +127,8 @@ public class Search extends Show {
 						this.imgTexture = a.getTexture();
 					}
 					this.achievementGrid.add(new PictureButtonGridEntry(25, 25, this.imgTexture).doesDrawHoverText(true)
-							.setHoverText(hoverText)
-							.setClickListener((PictureButtonGridEntry entry, Grid grid, int mouseX,
-									int mouseY) -> this.getStage().display(new Info(a))));
+							.setHoverText(hoverText).setClickListener((PictureButtonGridEntry entry, Grid grid,
+									int mouseX, int mouseY) -> this.getStage().display(new Info(a))));
 				}
 			}
 		}

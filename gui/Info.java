@@ -53,8 +53,7 @@ public class Info extends Show {
 		if (this.achievement.hasRequirementOfType(AchievementType.CRAFT)) {
 			ulist.add(new StringEntry("-Craft-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements()
-				.getRequirementsByType(AchievementType.CRAFT)) {
+		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.CRAFT)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
@@ -62,8 +61,7 @@ public class Info extends Show {
 		if (this.achievement.hasRequirementOfType(AchievementType.SMELT)) {
 			ulist.add(new StringEntry("-Smelt-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements()
-				.getRequirementsByType(AchievementType.SMELT)) {
+		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.SMELT)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
@@ -71,8 +69,7 @@ public class Info extends Show {
 		if (this.achievement.hasRequirementOfType(AchievementType.PICKUP)) {
 			ulist.add(new StringEntry("-Pickup-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements()
-				.getRequirementsByType(AchievementType.PICKUP)) {
+		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.PICKUP)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
@@ -104,16 +101,14 @@ public class Info extends Show {
 		if (this.achievement.hasRequirementOfType(AchievementType.PLACE)) {
 			ulist.add(new StringEntry("-Place-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements()
-				.getRequirementsByType(AchievementType.PLACE)) {
+		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.PLACE)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
 		if (this.achievement.hasRequirementOfType(AchievementType.BREAK)) {
 			ulist.add(new StringEntry("-Break-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements()
-				.getRequirementsByType(AchievementType.BREAK)) {
+		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.BREAK)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
@@ -136,7 +131,6 @@ public class Info extends Show {
 
 		this.registerComponent(new Button(this.width / 6, (int) (this.height * .8), 40, 20, "Back")
 				.setClickListener(but -> this.getStage().displayPrevious()));
-
 
 		// The background
 		this.registerComponent(new Picture(this.width / 8, (int) (this.height * .05), (int) (this.width * (6.0 / 8.0)),

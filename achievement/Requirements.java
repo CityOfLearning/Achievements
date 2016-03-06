@@ -462,8 +462,7 @@ public class Requirements {
 				isMentor = true;
 			}
 		}
-		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasBrew, hasPlace, hasBreak,
-				isMentor };
+		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasBrew, hasPlace, hasBreak, isMentor };
 		return types;
 	}
 }

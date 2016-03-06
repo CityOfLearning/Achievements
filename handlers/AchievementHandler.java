@@ -147,8 +147,7 @@ public class AchievementHandler {
 				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
 				itemNames.put(AchievementType.PICKUP, map);
 			}
-			for (BaseRequirement r : achievement.getRequirements()
-					.getRequirementsByType(AchievementType.PICKUP)) {
+			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(AchievementType.PICKUP)) {
 				itemNames.get(AchievementType.PICKUP).put(r.getRequirementEntityName(), achievement);
 			}
 		}
