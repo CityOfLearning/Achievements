@@ -521,6 +521,7 @@ public class Requirements {
 			return this.eventStat.toString();
 		}
 	}
+
 	/**
 	 * MentorRequirement class extends BaseRequirement.
 	 * @author Dominic Amato
@@ -535,10 +536,16 @@ public class Requirements {
 		/**
 		 * MentorRequirement Constructor.
 		 */
+
+	
+	public class MentorRequirement extends BaseRequirement {
+		public String info;
+
 		public MentorRequirement() {
 			super();
 			this.info = "";
 		}
+
 		/**
 		 * MentorRequirement Constructor sets info from MentorRequirement parameter.
 		 */
@@ -546,6 +553,7 @@ public class Requirements {
 			super(sr);
 			this.info = sr.info;
 		}
+
 		/**
 		 * Gets entity name of requirement.
 		 */
