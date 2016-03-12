@@ -262,7 +262,7 @@ public class AchievementHandler {
 							if (types[i]) {
 								writer.write("\tlocation_requirements");
 								writer.newLine();
-								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.BREAK);
+								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.LOCATION);
 								for (BaseRequirement t : typeReq) {
 									writer.write("\t\tname " + t.getRequirementEntityName() + (t.getTotalAquired() > 0 ? "-[X]" : "-[ ]"));
 									writer.newLine();
