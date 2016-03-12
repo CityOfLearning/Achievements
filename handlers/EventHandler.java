@@ -5,6 +5,7 @@ import java.util.Random;
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.AchievementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
+import com.dyn.achievements.achievement.Requirements.LocationRequirement;
 import com.dyn.item.blocks.BlockChunkLoader;
 import com.dyn.server.ServerMod;
 import com.dyn.server.packets.PacketDispatcher;
@@ -17,11 +18,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.Vec3i;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class EventHandler {
 
@@ -58,6 +63,7 @@ public class EventHandler {
 					if ((a.getWorldId() > 0) && (event.getPlayer().dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.BREAK)) {
 							if (r.getRequirementEntityName().equals(is.getDisplayName())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.getPlayer(), a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.BREAK + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.getPlayer());
@@ -66,6 +72,7 @@ public class EventHandler {
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.BREAK)) {
 							if (r.getRequirementEntityName().equals(is.getDisplayName())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.getPlayer(), a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.BREAK + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.getPlayer());
@@ -86,6 +93,7 @@ public class EventHandler {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.CRAFT)) {
 							if (r.getRequirementEntityName().equals(event.crafting.getDisplayName())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.player, a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.CRAFT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
@@ -94,6 +102,7 @@ public class EventHandler {
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.CRAFT)) {
 							if (r.getRequirementEntityName().equals(event.crafting.getDisplayName())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.player, a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.CRAFT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
@@ -115,6 +124,8 @@ public class EventHandler {
 					if ((a.getWorldId() > 0) && (event.source.getEntity().dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.KILL)) {
 							if (r.getRequirementEntityName().equals(EntityList.getEntityString(event.entity))) {
+								AchievementHandler.incrementPlayersAchievementsTotal(
+										(EntityPlayer) event.source.getEntity(), a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.KILL + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.source.getEntity());
@@ -123,6 +134,8 @@ public class EventHandler {
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.KILL)) {
 							if (r.getRequirementEntityName().equals(EntityList.getEntityString(event.entity))) {
+								AchievementHandler.incrementPlayersAchievementsTotal(
+										(EntityPlayer) event.source.getEntity(), a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.KILL + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.source.getEntity());
@@ -143,6 +156,7 @@ public class EventHandler {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.PICKUP)) {
 							if (r.getRequirementEntityName().equals(event.pickedUp.getEntityItem().getDisplayName())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.player, a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.PICKUP + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
@@ -151,6 +165,7 @@ public class EventHandler {
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.PICKUP)) {
 							if (r.getRequirementEntityName().equals(event.pickedUp.getEntityItem().getDisplayName())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.player, a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.PICKUP + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
@@ -179,6 +194,7 @@ public class EventHandler {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.PLACE)) {
 							if (r.getRequirementEntityName().equals(event.itemInHand.getDisplayName())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.player, a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.PLACE + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
@@ -187,6 +203,7 @@ public class EventHandler {
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.PLACE)) {
 							if (r.getRequirementEntityName().equals(event.itemInHand.getDisplayName())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.player, a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.PLACE + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
@@ -209,6 +226,7 @@ public class EventHandler {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.SMELT)) {
 							if (r.getRequirementItemID() == Item.getIdFromItem(event.smelting.getItem())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.player, a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.SMELT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
@@ -217,6 +235,7 @@ public class EventHandler {
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(AchievementType.SMELT)) {
 							if (r.getRequirementItemID() == Item.getIdFromItem(event.smelting.getItem())) {
+								AchievementHandler.incrementPlayersAchievementsTotal(event.player, a, r);
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + AchievementType.SMELT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
@@ -244,13 +263,27 @@ public class EventHandler {
 	// this is really dangerous as it happens every game tick,
 	// we either should find an alternative, thread this, or keep code as
 	// minimal as possible
-	/*
-	 * @SubscribeEvent public void onPlayerTick(TickEvent.PlayerTickEvent event)
-	 * { World playerWorld = event.player.worldObj; if (playerWorld.isRaining())
-	 * { event.player.addChatComponentMessage(new ChatComponentTranslation(
-	 * "Its Raining") .setChatStyle(new
-	 * ChatStyle().setColor(EnumChatFormatting.AQUA))); //
-	 * event.player.addStat(InitExample.itsRaining.getAchievement(), 1); } }
-	 */
+
+	@SubscribeEvent
+	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		if(event.side == Side.SERVER && event.player.dimension > 1){
+			for(AchievementPlus a: AchievementHandler.findAchievementByType(AchievementType.LOCATION)){
+				if(a.getWorldId() == event.player.dimension){
+					 for(BaseRequirement r: a.getRequirements().getRequirementsByType(AchievementType.LOCATION)){
+						 if(r.getTotalAquired() ==0){
+							 LocationRequirement lr = (LocationRequirement) r;
+							 Vec3i achVec = new Vec3i(lr.x, lr.y, lr.z);
+							 Vec3i playerVec = new Vec3i(event.player.posX, event.player.posY, event.player.posZ);
+							 if(playerVec.distanceSq(achVec) < lr.r * lr.r){//roots are super slow so take the product
+								 PacketDispatcher.sendTo(new SyncAchievementsMessage(
+											"" + a.getId() + " " + AchievementType.LOCATION + " " + r.getRequirementID()),
+											(EntityPlayerMP) event.player);
+							 } 
+						 }
+					 }
+				}
+			}
+		}
+	}
 
 }

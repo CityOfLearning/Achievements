@@ -112,6 +112,12 @@ public class Info extends Show {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
+		if (this.achievement.hasRequirementOfType(AchievementType.LOCATION)) {
+			ulist.add(new StringEntry("-Location-"));
+		}
+		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.LOCATION)) {
+			ulist.add(new StringEntry((r.getTotalAquired() > 0 ? "[X]-" : "[ ]-") + r.getRequirementEntityName()));
+		}
 		if (this.achievement.hasRequirementOfType(AchievementType.MENTOR)) {
 			ulist.add(new StringEntry("-Mentor-"));
 			ulist.add(new StringEntry("Only a mentor can"));

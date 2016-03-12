@@ -1,5 +1,9 @@
 package com.dyn.achievements.handlers;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +11,25 @@ import java.util.Map;
 
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.AchievementType;
+import com.dyn.achievements.achievement.Requirements;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
+import com.dyn.achievements.achievement.Requirements.LocationRequirement;
+import com.dyn.betterachievements.registry.AchievementRegistry;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /***
  * An event handler class for achievements.
@@ -26,10 +43,244 @@ public class AchievementHandler {
 	private static ArrayList<AchievementPlus> achievements = new ArrayList<AchievementPlus>();
 	private static Map<String, AchievementPlus> achievementNames = new HashMap<String, AchievementPlus>();
 	private static Map<Integer, AchievementPlus> achievementIds = new HashMap<Integer, AchievementPlus>();
+	//private static Map<Integer, List<AchievementPlus>> locationDims = new HashMap<Integer, List<AchievementPlus>>();
 	private static Map<Integer, AchievementMap> achievementMaps = new HashMap<Integer, AchievementMap>();
 	private static Map<AchievementType, ArrayList<AchievementPlus>> achievementsType = new HashMap<AchievementType, ArrayList<AchievementPlus>>();
 	private static Map<AchievementType, ListMultimap<String, AchievementPlus>> itemNames = new HashMap<AchievementType, ListMultimap<String, AchievementPlus>>();
 	private static Map<AchievementType, ListMultimap<String, AchievementPlus>> entityNames = new HashMap<AchievementType, ListMultimap<String, AchievementPlus>>();
+	private static Map<EntityPlayer, Map<String, Requirements>> playerAchievements = new HashMap<EntityPlayer, Map<String, Requirements>>();
+
+	@SideOnly(Side.SERVER)
+	public static Map<String, Requirements> getPlayerAchievementProgress(String username){
+		for(EntityPlayer p : playerAchievements.keySet()){
+			if(p.getDisplayNameString().equals(username)){
+				return playerAchievements.get(p);
+			}
+		}
+		return null;
+	}
+	
+	@SideOnly(Side.SERVER)
+	public static void setupPlayerAchievements(EntityPlayer player) {
+		if (playerAchievements.containsKey(player)) {
+			return;
+		} else {
+			for(EntityPlayer p : playerAchievements.keySet()){
+				if(p.getDisplayNameString().equals(player.getDisplayNameString())){
+					return;
+				}
+			}
+			Map<String, Requirements> map = new HashMap<String, Requirements>();
+			for(AchievementPlus achs : getAllAchievements()){
+				map.put(achs.getName(), Requirements.getCopy(achs.getRequirements()));
+			}
+			playerAchievements.put(player, map);	
+		}
+	}
+
+	@SideOnly(Side.SERVER)
+	public static void incrementPlayersAchievementsTotal(EntityPlayer player, AchievementPlus ach,
+			BaseRequirement req) {
+		try{
+			EntityPlayer keyPlayer = null;
+			for(EntityPlayer p : playerAchievements.keySet()){
+				if(p.getDisplayNameString().equals(player.getDisplayNameString())){
+					keyPlayer = p;
+				}
+			}
+			Requirements reqs = playerAchievements.get(keyPlayer).get(ach.getName());
+			if(reqs != null){
+				ArrayList<BaseRequirement> achReqs = reqs.getRequirements();
+				for (int j = 0; j < achReqs.size(); j++) {
+					if (achReqs.get(j).equals(req)) {
+						System.out.println("Incrementing Total for " + ach.getName());
+						achReqs.get(j).incrementTotal();
+					}
+				}
+			}
+		} catch(NullPointerException e){
+			//this should be impossible but just incase
+			e.printStackTrace();
+		}
+		
+	}
+
+	@SideOnly(Side.SERVER)
+	public static void writeOutPlayerAchievements() {
+		ServerConfigurationManager configMan = MinecraftServer.getServer().getConfigurationManager();
+		for (EntityPlayer keys : playerAchievements.keySet()) {
+			File out = new File(MinecraftServer.getServer().getFolderName() + "/Achievements/",
+					keys.getDisplayNameString() + ".txt");
+			out.mkdirs();
+			if (out.exists()) {
+				out.delete();
+			}
+			try {
+				out.createNewFile();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			try (BufferedWriter writer = new BufferedWriter(new FileWriter(out))) {
+				for (String achKeys : playerAchievements.get(keys).keySet()) {
+					writer.write(achKeys);
+					writer.newLine();
+					writer.write("Unlocked: " + configMan.getPlayerStatsFile(keys).hasAchievementUnlocked(findAchievementByName(achKeys)));
+					writer.newLine();
+					Requirements reqs = playerAchievements.get(keys).get(achKeys);
+					boolean[] types = reqs.getRequirementTypes();
+					for (int i = 0; i < 8; i++) {
+						switch (i) {
+						case 0:
+							if (types[i]) {
+								writer.write("\tcraft_requirements");
+								writer.newLine();
+								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.CRAFT);
+								for (BaseRequirement t : typeReq) {
+									writer.write("\t\titem " + t.getRequirementEntityName());
+									writer.newLine();
+									writer.write("\t\tamount " + t.getTotalNeeded());
+									writer.newLine();
+									writer.write("\t\ttotal " + t.getTotalAquired());
+									writer.newLine();
+								}
+							}
+							break;
+						case 1:
+							if (types[i]) {
+								writer.write("\tsmelt_requirements");
+								writer.newLine();
+								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.SMELT);
+								for (BaseRequirement t : typeReq) {
+									writer.write("\t\titem " + t.getRequirementEntityName());
+									writer.newLine();
+									writer.write("\t\tamount " + t.getTotalNeeded());
+									writer.newLine();
+									writer.write("\t\ttotal " + t.getTotalAquired());
+									writer.newLine();
+								}
+							}
+							break;
+						case 2:
+							if (types[i]) {
+								writer.write("\tpick_up_requirements");
+								writer.newLine();
+								ArrayList<BaseRequirement> typeReq = reqs
+										.getRequirementsByType(AchievementType.PICKUP);
+								for (BaseRequirement t : typeReq) {
+									writer.write("\t\titem " + t.getRequirementEntityName());
+									writer.newLine();
+									writer.write("\t\tamount " + t.getTotalNeeded());
+									writer.newLine();
+									writer.write("\t\ttotal " + t.getTotalAquired());
+									writer.newLine();
+								}
+							}
+							break;
+						case 3:
+							if (types[i]) {
+								writer.write("\tstat_requirements");
+								writer.newLine();
+								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.STAT);
+								for (BaseRequirement t : typeReq) {
+									writer.write("\t\titem " + t.getRequirementEntityName());
+									writer.newLine();
+									writer.write("\t\tamount " + t.getTotalNeeded());
+									writer.newLine();
+									writer.write("\t\ttotal " + t.getTotalAquired());
+									writer.newLine();
+								}
+							}
+							break;
+						case 4:
+							if (types[i]) {
+								writer.write("\tkill_requirements");
+								writer.newLine();
+								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.KILL);
+								for (BaseRequirement t : typeReq) {
+									writer.write("\t\titem " + t.getRequirementEntityName());
+									writer.newLine();
+									writer.write("\t\tamount " + t.getTotalNeeded());
+									writer.newLine();
+									writer.write("\t\ttotal " + t.getTotalAquired());
+									writer.newLine();
+								}
+							}
+							break;
+						case 5:
+							if (types[i]) {
+								writer.write("\tbrew_requirements");
+								writer.newLine();
+								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.BREW);
+								for (BaseRequirement t : typeReq) {
+									writer.write("\t\titem " + t.getRequirementEntityName());
+									writer.newLine();
+									writer.write("\t\tamount " + t.getTotalNeeded());
+									writer.newLine();
+									writer.write("\t\ttotal " + t.getTotalAquired());
+									writer.newLine();
+								}
+							}
+							break;
+						case 6:
+							if (types[i]) {
+								writer.write("\tplace_requirements");
+								writer.newLine();
+								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.PLACE);
+								for (BaseRequirement t : typeReq) {
+									writer.write("\t\titem " + t.getRequirementEntityName());
+									writer.newLine();
+									writer.write("\t\tamount " + t.getTotalNeeded());
+									writer.newLine();
+									writer.write("\t\ttotal " + t.getTotalAquired());
+									writer.newLine();
+								}
+							}
+							break;
+						case 7:
+							if (types[i]) {
+								writer.write("\tbreak_requirements");
+								writer.newLine();
+								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.BREAK);
+								for (BaseRequirement t : typeReq) {
+									writer.write("\t\titem " + t.getRequirementEntityName());
+									writer.newLine();
+									writer.write("\t\tamount " + t.getTotalNeeded());
+									writer.newLine();
+									writer.write("\t\ttotal " + t.getTotalAquired());
+									writer.newLine();
+								}
+							}
+							break;
+						case 8:
+							if (types[i]) {
+								writer.write("\tmentor_requirements");
+								writer.newLine();
+							}
+							break;
+						case 9:
+							if (types[i]) {
+								writer.write("\tlocation_requirements");
+								writer.newLine();
+								ArrayList<BaseRequirement> typeReq = reqs.getRequirementsByType(AchievementType.BREAK);
+								for (BaseRequirement t : typeReq) {
+									writer.write("\t\tname " + t.getRequirementEntityName() + (t.getTotalAquired() > 0 ? "-[X]" : "-[ ]"));
+									writer.newLine();
+								}
+							}
+							break;
+						default:
+							break;
+						}
+					}
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
 
 	/***
 	 * Adds page of achievements.
@@ -278,6 +529,13 @@ public class AchievementHandler {
 				achievementsType.put(AchievementType.MENTOR, ach);
 			}
 			achievementsType.get(AchievementType.MENTOR).add(achievement);
+		}
+		if (vals[9]) {
+			if (achievementsType.get(AchievementType.LOCATION) == null) {
+				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				achievementsType.put(AchievementType.LOCATION, ach);
+			}
+			achievementsType.get(AchievementType.LOCATION).add(achievement);
 		}
 	}
 

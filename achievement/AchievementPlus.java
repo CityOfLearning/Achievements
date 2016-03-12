@@ -7,6 +7,7 @@ import com.dyn.achievements.achievement.Requirements.BreakRequirement;
 import com.dyn.achievements.achievement.Requirements.BrewRequirement;
 import com.dyn.achievements.achievement.Requirements.CraftRequirement;
 import com.dyn.achievements.achievement.Requirements.KillRequirement;
+import com.dyn.achievements.achievement.Requirements.LocationRequirement;
 import com.dyn.achievements.achievement.Requirements.MentorRequirement;
 import com.dyn.achievements.achievement.Requirements.PickupRequirement;
 import com.dyn.achievements.achievement.Requirements.PlaceRequirement;
@@ -128,6 +129,21 @@ public class AchievementPlus extends Achievement {
 					requirements.addRequirement(r);
 				}
 			}
+			if (req.has("location_requirements")) {
+				JsonArray reqType = req.get("location_requirements").getAsJsonArray();
+				for (JsonElement jElement : reqType) {
+					JsonObject reqSubType = jElement.getAsJsonObject();
+					LocationRequirement r = requirements.new LocationRequirement();
+					r.setRequirementId(reqSubType.get("id").getAsInt());
+					r.setAmountNeeded(1);
+					r.name = reqSubType.get("name").getAsString();
+					r.x=reqSubType.get("x").getAsInt();
+					r.y=reqSubType.get("y").getAsInt();
+					r.z=reqSubType.get("z").getAsInt();
+					r.r=reqSubType.get("radius").getAsInt();
+					requirements.addRequirement(r);
+				}
+			}
 			if (req.has("mentor_requirements")) {
 				// this should be an empty array...
 				MentorRequirement r = requirements.new MentorRequirement();
@@ -201,6 +217,7 @@ public class AchievementPlus extends Achievement {
 		reply.addProperty("world", this.world_id);
 		reply.addProperty("x_coord", this.xCoord);
 		reply.addProperty("y_coord", this.yCoord);
+		reply.addProperty("achieved", this.awarded);
 		JsonObject req = new JsonObject();
 		boolean[] types = this.requirements.getRequirementTypes();
 		for (int i = 0; i < 8; i++) {
@@ -213,6 +230,7 @@ public class AchievementPlus extends Achievement {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
+						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
@@ -228,6 +246,7 @@ public class AchievementPlus extends Achievement {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
+						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
@@ -244,6 +263,7 @@ public class AchievementPlus extends Achievement {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
+						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
@@ -259,6 +279,7 @@ public class AchievementPlus extends Achievement {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("stat", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
+						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqTypes.add(reqSubTypes);
 					}
@@ -272,6 +293,7 @@ public class AchievementPlus extends Achievement {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("entity", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
+						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqTypes.add(reqSubTypes);
 					}
@@ -285,6 +307,7 @@ public class AchievementPlus extends Achievement {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
+						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
@@ -300,6 +323,7 @@ public class AchievementPlus extends Achievement {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
+						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
@@ -315,6 +339,7 @@ public class AchievementPlus extends Achievement {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
+						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());

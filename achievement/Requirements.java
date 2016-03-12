@@ -79,6 +79,23 @@ public class Requirements {
 		public void setSubItemId(int id) {
 			this.sub_id = id;
 		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof BaseRequirement)) {
+				return false;
+			}
+			BaseRequirement br = (BaseRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			return true;
+		}
 	}
 
 	public class BreakRequirement extends BaseRequirement {
@@ -92,6 +109,25 @@ public class Requirements {
 		public BreakRequirement(BreakRequirement pr) {
 			super(pr);
 			this.item = pr.item;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof BreakRequirement)) {
+				return false;
+			}
+			BreakRequirement br = (BreakRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
 		}
 
 		@Override
@@ -120,6 +156,25 @@ public class Requirements {
 		}
 
 		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof BrewRequirement)) {
+				return false;
+			}
+			BrewRequirement br = (BrewRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
+		}
+
+		@Override
 		public String getRequirementEntityName() {
 			return this.item.getDisplayName();
 		}
@@ -142,6 +197,25 @@ public class Requirements {
 		public CraftRequirement(CraftRequirement cr) {
 			super(cr);
 			this.item = cr.item;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof CraftRequirement)) {
+				return false;
+			}
+			CraftRequirement br = (CraftRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
 		}
 
 		@Override
@@ -170,6 +244,25 @@ public class Requirements {
 		}
 
 		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof KillRequirement)) {
+				return false;
+			}
+			KillRequirement br = (KillRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
+		}
+
+		@Override
 		public String getRequirementEntityName() {
 			return this.entityType;
 		}
@@ -189,6 +282,25 @@ public class Requirements {
 		}
 
 		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof MentorRequirement)) {
+				return false;
+			}
+			MentorRequirement br = (MentorRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
+		}
+
+		@Override
 		public String getRequirementEntityName() {
 			return this.info;
 		}
@@ -205,6 +317,25 @@ public class Requirements {
 		public PickupRequirement(PickupRequirement pr) {
 			super(pr);
 			this.item = pr.item;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof PickupRequirement)) {
+				return false;
+			}
+			PickupRequirement br = (PickupRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
 		}
 
 		@Override
@@ -233,6 +364,25 @@ public class Requirements {
 		}
 
 		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof PlaceRequirement)) {
+				return false;
+			}
+			PlaceRequirement br = (PlaceRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
+		}
+
+		@Override
 		public String getRequirementEntityName() {
 			return this.item.getDisplayName();
 		}
@@ -255,6 +405,25 @@ public class Requirements {
 		public SmeltRequirement(SmeltRequirement sr) {
 			super(sr);
 			this.item = sr.item;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof SmeltRequirement)) {
+				return false;
+			}
+			SmeltRequirement br = (SmeltRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
 		}
 
 		@Override
@@ -283,8 +452,78 @@ public class Requirements {
 		}
 
 		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof StatRequirement)) {
+				return false;
+			}
+			StatRequirement br = (StatRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
+		}
+
+		@Override
 		public String getRequirementEntityName() {
 			return this.eventStat.toString();
+		}
+	}
+
+	public class LocationRequirement extends BaseRequirement {
+
+		public String name;
+		public int x;
+		public int y;
+		public int z;
+		public int r;
+
+		public LocationRequirement() {
+			super();
+			name = "";
+			x=0;
+			y=0;
+			z=0;
+			r=0;
+		}
+
+		public LocationRequirement(LocationRequirement lr) {
+			super(lr);
+			name = lr.name;
+			x=lr.x;
+			y=lr.y;
+			z=lr.z;
+			r=lr.r;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (!(o instanceof StatRequirement)) {
+				return false;
+			}
+			StatRequirement br = (StatRequirement) o;
+			if (br.getRequirementID() != this.getRequirementID())
+				return false;
+			if (br.getRequirementItemID() != this.getRequirementItemID())
+				return false;
+			if (br.getRequirementSubItemID() != this.getRequirementSubItemID())
+				return false;
+			if (br.getTotalNeeded() != this.getTotalNeeded())
+				return false;
+			if (br.getRequirementEntityName() != this.getRequirementEntityName())
+				return false;
+			return true;
+		}
+
+		@Override
+		public String getRequirementEntityName() {
+			return name;
 		}
 	}
 
@@ -317,6 +556,9 @@ public class Requirements {
 			}
 			if (br instanceof MentorRequirement) {
 				copy.addRequirement(copy.new MentorRequirement((MentorRequirement) br));
+			}
+			if (br instanceof LocationRequirement) {
+				copy.addRequirement(copy.new LocationRequirement((LocationRequirement) br));
 			}
 		}
 		return copy;
@@ -403,6 +645,11 @@ public class Requirements {
 					typereq.add(r);
 				}
 				break;
+			case LOCATION:
+				if (r instanceof LocationRequirement) {
+					typereq.add(r);
+				}
+				break;
 			default:
 				break;
 			}
@@ -425,6 +672,7 @@ public class Requirements {
 		boolean hasPlace = false;
 		boolean hasBreak = false;
 		boolean isMentor = false;
+		boolean isLoc = false;
 		for (BaseRequirement r : this.requirements) {
 			if (r instanceof CraftRequirement) {
 				hasCraft = true;
@@ -461,8 +709,12 @@ public class Requirements {
 			if (r instanceof MentorRequirement) {
 				isMentor = true;
 			}
+			if (r instanceof LocationRequirement) {
+				isLoc = true;
+			}
 		}
-		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasBrew, hasPlace, hasBreak, isMentor };
+		boolean[] types = { hasCraft, hasSmelt, hasPickup, hasStat, hasKill, hasBrew, hasPlace, hasBreak, isMentor,
+				isLoc };
 		return types;
 	}
 }
