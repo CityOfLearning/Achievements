@@ -209,7 +209,7 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		if ((event.side == Side.SERVER)  && (event.player.dimension > 1)) {
+		if ((event.side == Side.SERVER) && (event.player.dimension > 1)) {
 			if (AchievementManager.findAchievementByType(RequirementType.LOCATION) != null) {
 				for (AchievementPlus a : AchievementManager.findAchievementByType(RequirementType.LOCATION)) {
 					if (a.getWorldId() == event.player.dimension) {

@@ -45,7 +45,7 @@ public class AchievementsMod {
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
-		//this will have to change when more pages need to be made
+		// this will have to change when more pages need to be made
 		AchievementManager.addAchievementPage("DYN Achievements", AchievementManager.getAllAchievements());
 	}
 
@@ -68,8 +68,8 @@ public class AchievementsMod {
 		}
 
 		try { // Download the JSON into a json list
-			URL url = new URL("Not a URL: sometimes we need to fail");
-			//URL url = new URL("https://dl.dropboxusercontent.com/u/33377940/achievements.json");
+				// URL url = new URL("Not a URL: sometimes we need to fail");
+			URL url = new URL("https://dl.dropboxusercontent.com/u/33377940/achievements.json");
 			JsonParser parser = new JsonParser();
 			JsonElement element = parser.parse(new JsonReader(new InputStreamReader(url.openStream())));
 			JsonObject overallObject = element.getAsJsonObject();

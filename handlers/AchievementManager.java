@@ -233,58 +233,6 @@ public class AchievementManager {
 
 	}
 
-	@SideOnly(Side.SERVER)
-	public static void setPlayersAchievementsTotal(EntityPlayer player, AchievementPlus ach, BaseRequirement req,
-			int amount) {
-		try {
-			EntityPlayer keyPlayer = null;
-			for (EntityPlayer p : playerAchievements.keySet()) {
-				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
-					keyPlayer = p;
-				}
-			}
-			Requirements reqs = playerAchievements.get(keyPlayer).get(ach.getName());
-			if (reqs != null) {
-				ArrayList<BaseRequirement> achReqs = reqs.getRequirements();
-				for (int j = 0; j < achReqs.size(); j++) {
-					if (achReqs.get(j).equals(req)) {
-						achReqs.get(j).setAquiredTo(amount);
-					}
-				}
-			}
-		} catch (NullPointerException e) {
-			// this should be impossible but just incase
-			e.printStackTrace();
-		}
-
-	}
-
-	@SideOnly(Side.SERVER)
-	public static void setPlayersAchievementsTotal(EntityPlayer player, AchievementPlus ach, RequirementType type,
-			int req_id, int amount) {
-		try {
-			EntityPlayer keyPlayer = null;
-			for (EntityPlayer p : playerAchievements.keySet()) {
-				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
-					keyPlayer = p;
-				}
-			}
-			Requirements reqs = playerAchievements.get(keyPlayer).get(ach.getName());
-			if (reqs != null) {
-				ArrayList<BaseRequirement> achReqs = reqs.getRequirementsByType(type);
-				for (int j = 0; j < achReqs.size(); j++) {
-					if (achReqs.get(j).getRequirementID() == req_id) {
-						achReqs.get(j).setAquiredTo(amount);
-					}
-				}
-			}
-		} catch (NullPointerException e) {
-			// this should be impossible but just incase
-			e.printStackTrace();
-		}
-
-	}
-
 	private static void parseRequirementEntityNames(AchievementPlus achievement) {
 		boolean[] vals = achievement.getRequirements().getRequirementTypes();
 		if (vals[4]) {
@@ -462,6 +410,58 @@ public class AchievementManager {
 			}
 			achievementsType.get(RequirementType.LOCATION).add(achievement);
 		}
+	}
+
+	@SideOnly(Side.SERVER)
+	public static void setPlayersAchievementsTotal(EntityPlayer player, AchievementPlus ach, BaseRequirement req,
+			int amount) {
+		try {
+			EntityPlayer keyPlayer = null;
+			for (EntityPlayer p : playerAchievements.keySet()) {
+				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
+					keyPlayer = p;
+				}
+			}
+			Requirements reqs = playerAchievements.get(keyPlayer).get(ach.getName());
+			if (reqs != null) {
+				ArrayList<BaseRequirement> achReqs = reqs.getRequirements();
+				for (int j = 0; j < achReqs.size(); j++) {
+					if (achReqs.get(j).equals(req)) {
+						achReqs.get(j).setAquiredTo(amount);
+					}
+				}
+			}
+		} catch (NullPointerException e) {
+			// this should be impossible but just incase
+			e.printStackTrace();
+		}
+
+	}
+
+	@SideOnly(Side.SERVER)
+	public static void setPlayersAchievementsTotal(EntityPlayer player, AchievementPlus ach, RequirementType type,
+			int req_id, int amount) {
+		try {
+			EntityPlayer keyPlayer = null;
+			for (EntityPlayer p : playerAchievements.keySet()) {
+				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
+					keyPlayer = p;
+				}
+			}
+			Requirements reqs = playerAchievements.get(keyPlayer).get(ach.getName());
+			if (reqs != null) {
+				ArrayList<BaseRequirement> achReqs = reqs.getRequirementsByType(type);
+				for (int j = 0; j < achReqs.size(); j++) {
+					if (achReqs.get(j).getRequirementID() == req_id) {
+						achReqs.get(j).setAquiredTo(amount);
+					}
+				}
+			}
+		} catch (NullPointerException e) {
+			// this should be impossible but just incase
+			e.printStackTrace();
+		}
+
 	}
 
 	@SideOnly(Side.SERVER)
