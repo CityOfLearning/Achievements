@@ -3,7 +3,7 @@ package com.dyn.achievements.gui;
 import java.util.ArrayList;
 
 import com.dyn.achievements.achievement.AchievementPlus;
-import com.dyn.achievements.achievement.AchievementType;
+import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.rabbit.gui.background.DefaultBackground;
 import com.rabbit.gui.component.control.Button;
@@ -24,13 +24,13 @@ public class Info extends Show {
 	private ResourceLocation texture;
 
 	public Info(AchievementPlus achievement) {
-		this.setBackground(new DefaultBackground());
-		this.title = "Achievement Gui";
+		setBackground(new DefaultBackground());
+		title = "Achievement Gui";
 		this.achievement = achievement;
 		if (achievement.getTexture() != null) {
-			this.texture = achievement.getTexture();
+			texture = achievement.getTexture();
 		} else {
-			this.texture = new ResourceLocation("minecraft", "textures/items/experience_bottle.png");
+			texture = new ResourceLocation("minecraft", "textures/items/experience_bottle.png");
 		}
 
 	}
@@ -39,108 +39,107 @@ public class Info extends Show {
 	public void setup() {
 		super.setup();
 
-		this.registerComponent(new TextLabel(this.width / 3, (int) (this.height * .15), this.width / 3, 20,
-				"Name: " + this.achievement.getName(), TextAlignment.LEFT));
+		registerComponent(new TextLabel(width / 3, (int) (height * .15), width / 3, 20,
+				"Name: " + achievement.getName(), TextAlignment.LEFT));
 
-		this.registerComponent(new ScrollTextLabel(this.width / 3, (int) (this.height * .24), this.width / 2, 35,
-				"Description: " + this.achievement.getDescription(), TextAlignment.LEFT).setMultilined(true));
+		registerComponent(new ScrollTextLabel(width / 3, (int) (height * .24), width / 2, 35,
+				"Description: " + achievement.getDescription(), TextAlignment.LEFT).setMultilined(true));
 
-		this.registerComponent(new Picture((int) (this.width * .15), (int) (this.height * .15), this.width / 6,
-				this.width / 6, this.texture));
+		registerComponent(new Picture((int) (width * .15), (int) (height * .15), width / 6, width / 6, texture));
 
 		ArrayList<ListEntry> ulist = new ArrayList<ListEntry>();
 
-		if (this.achievement.hasRequirementOfType(AchievementType.CRAFT)) {
+		if (achievement.hasRequirementOfType(RequirementType.CRAFT)) {
 			ulist.add(new StringEntry("-Craft-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.CRAFT)) {
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.CRAFT)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
 
-		if (this.achievement.hasRequirementOfType(AchievementType.SMELT)) {
+		if (achievement.hasRequirementOfType(RequirementType.SMELT)) {
 			ulist.add(new StringEntry("-Smelt-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.SMELT)) {
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.SMELT)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
 
-		if (this.achievement.hasRequirementOfType(AchievementType.PICKUP)) {
+		if (achievement.hasRequirementOfType(RequirementType.PICKUP)) {
 			ulist.add(new StringEntry("-Pickup-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.PICKUP)) {
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.PICKUP)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
 
-		if (this.achievement.hasRequirementOfType(AchievementType.STAT)) {
+		if (achievement.hasRequirementOfType(RequirementType.STAT)) {
 			ulist.add(new StringEntry("-Special-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.STAT)) {
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.STAT)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
 
-		if (this.achievement.hasRequirementOfType(AchievementType.KILL)) {
+		if (achievement.hasRequirementOfType(RequirementType.KILL)) {
 			ulist.add(new StringEntry("-Kill-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.KILL)) {
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.KILL)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
 
-		if (this.achievement.hasRequirementOfType(AchievementType.BREW)) {
+		if (achievement.hasRequirementOfType(RequirementType.BREW)) {
 			ulist.add(new StringEntry("-Brew-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.BREW)) {
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.BREW)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
 
-		if (this.achievement.hasRequirementOfType(AchievementType.PLACE)) {
+		if (achievement.hasRequirementOfType(RequirementType.PLACE)) {
 			ulist.add(new StringEntry("-Place-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.PLACE)) {
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.PLACE)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
-		if (this.achievement.hasRequirementOfType(AchievementType.BREAK)) {
+		if (achievement.hasRequirementOfType(RequirementType.BREAK)) {
 			ulist.add(new StringEntry("-Break-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.BREAK)) {
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.BREAK)) {
 			ulist.add(new StringEntry(
 					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
 		}
-		if (this.achievement.hasRequirementOfType(AchievementType.LOCATION)) {
+		if (achievement.hasRequirementOfType(RequirementType.LOCATION)) {
 			ulist.add(new StringEntry("-Location-"));
 		}
-		for (BaseRequirement r : this.achievement.getRequirements().getRequirementsByType(AchievementType.LOCATION)) {
+		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.LOCATION)) {
 			ulist.add(new StringEntry((r.getTotalAquired() > 0 ? "[X]-" : "[ ]-") + r.getRequirementEntityName()));
 		}
-		if (this.achievement.hasRequirementOfType(AchievementType.MENTOR)) {
+		if (achievement.hasRequirementOfType(RequirementType.MENTOR)) {
 			ulist.add(new StringEntry("-Mentor-"));
 			ulist.add(new StringEntry("Only a mentor can"));
 			ulist.add(new StringEntry("give this achievement"));
 		}
 
-		this.registerComponent(new TextLabel((int) (this.width * .5), (int) (this.height * .4), this.width / 3, 20,
-				"Requirements", TextAlignment.CENTER));
+		registerComponent(new TextLabel((int) (width * .5), (int) (height * .4), width / 3, 20, "Requirements",
+				TextAlignment.CENTER));
 
-		if (this.achievement.isAwarded()) {
-			this.registerComponent(new TextLabel((int) (this.width * .2), (int) (this.height * .4), this.width / 3, 20,
-					"Achieved!", TextAlignment.CENTER));
+		if (achievement.isAwarded()) {
+			registerComponent(new TextLabel((int) (width * .2), (int) (height * .4), width / 3, 20, "Achieved!",
+					TextAlignment.CENTER));
 		}
 
-		this.registerComponent(new ScrollableDisplayList((int) (this.width * .5), (int) (this.height * .45),
-				this.width / 3, 100, 15, ulist));
+		registerComponent(
+				new ScrollableDisplayList((int) (width * .5), (int) (height * .45), width / 3, 100, 15, ulist));
 
-		this.registerComponent(new Button(this.width / 6, (int) (this.height * .8), 40, 20, "Back")
-				.setClickListener(but -> this.getStage().displayPrevious()));
+		registerComponent(new Button(width / 6, (int) (height * .8), 40, 20, "Back")
+				.setClickListener(but -> getStage().displayPrevious()));
 
 		// The background
-		this.registerComponent(new Picture(this.width / 8, (int) (this.height * .05), (int) (this.width * (6.0 / 8.0)),
-				(int) (this.height * .9), new ResourceLocation("dyn", "textures/gui/background3.png")));
+		registerComponent(new Picture(width / 8, (int) (height * .05), (int) (width * (6.0 / 8.0)), (int) (height * .9),
+				new ResourceLocation("dyn", "textures/gui/background3.png")));
 	}
 
 }

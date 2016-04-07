@@ -12,7 +12,7 @@ import com.dyn.achievements.achievement.Requirements.MentorRequirement;
 import com.dyn.achievements.achievement.Requirements.PickupRequirement;
 import com.dyn.achievements.achievement.Requirements.PlaceRequirement;
 import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
-import com.dyn.achievements.handlers.AchievementHandler;
+import com.dyn.achievements.handlers.AchievementManager;
 import com.dyn.login.LoginGUI;
 import com.dyn.server.http.PostBadge;
 import com.google.gson.JsonArray;
@@ -137,10 +137,17 @@ public class AchievementPlus extends Achievement {
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(1);
 					r.name = reqSubType.get("name").getAsString();
-					r.x=reqSubType.get("x").getAsInt();
-					r.y=reqSubType.get("y").getAsInt();
-					r.z=reqSubType.get("z").getAsInt();
-					r.r=reqSubType.get("radius").getAsInt();
+					r.x1 = reqSubType.get("x").getAsInt();
+					r.y1 = reqSubType.get("y").getAsInt();
+					r.z1 = reqSubType.get("z").getAsInt();
+					if (reqSubType.has("radius")) {
+						r.r = reqSubType.get("radius").getAsInt();
+					} else {
+						r.x2 = reqSubType.get("x2").getAsInt();
+						r.y2 = reqSubType.get("y2").getAsInt();
+						r.z2 = reqSubType.get("z2").getAsInt();
+					}
+
 					requirements.addRequirement(r);
 				}
 			}
@@ -159,7 +166,7 @@ public class AchievementPlus extends Achievement {
 				texture = new ResourceLocation(json.get("texture").getAsString());
 			}
 			return new AchievementPlus(requirements, name, desc, xCoord, yCoord, badgeId, achId, mapId, worldId,
-					AchievementHandler.findAchievementByName(parentName), awarded, texture);
+					AchievementManager.findAchievementByName(parentName), awarded, texture);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -192,40 +199,40 @@ public class AchievementPlus extends Achievement {
 				description);
 		this.requirements = requirements;
 		this.name = name;
-		this.desc = description;
+		desc = description;
 		this.badgeId = badgeId;
 		this.awarded = awarded;
 		if (awarded) {
 			// Minecraft.getMinecraft().thePlayer.addStat(this, 1);
 		}
-		this.ach_id = achievementId;
-		this.map_id = mapId;
-		this.world_id = worldId;
+		ach_id = achievementId;
+		map_id = mapId;
+		world_id = worldId;
 		this.parent = parent;
-		this.xCoord = xPos;
-		this.yCoord = yPos;
+		xCoord = xPos;
+		yCoord = yPos;
 		this.texture = texture;
-		AchievementHandler.registerAchievement(this);
+		AchievementManager.registerAchievement(this);
 	}
 
 	public JsonObject achievementToJson() {
 		JsonObject reply = new JsonObject();
-		reply.addProperty("name", this.name);
-		reply.addProperty("desc", this.desc);
-		reply.addProperty("ach_id", this.ach_id);
-		reply.addProperty("map_id", this.map_id);
-		reply.addProperty("world", this.world_id);
-		reply.addProperty("x_coord", this.xCoord);
-		reply.addProperty("y_coord", this.yCoord);
-		reply.addProperty("achieved", this.awarded);
+		reply.addProperty("name", name);
+		reply.addProperty("desc", desc);
+		reply.addProperty("ach_id", ach_id);
+		reply.addProperty("map_id", map_id);
+		reply.addProperty("world", world_id);
+		reply.addProperty("x_coord", xCoord);
+		reply.addProperty("y_coord", yCoord);
+		reply.addProperty("achieved", awarded);
 		JsonObject req = new JsonObject();
-		boolean[] types = this.requirements.getRequirementTypes();
+		boolean[] types = requirements.getRequirementTypes();
 		for (int i = 0; i < 8; i++) {
 			JsonArray reqTypes = new JsonArray();
 			switch (i) {
 			case 0:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.CRAFT);
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.CRAFT);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -241,7 +248,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 1:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.SMELT);
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.SMELT);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -257,8 +264,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 2:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements
-							.getRequirementsByType(AchievementType.PICKUP);
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.PICKUP);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -274,7 +280,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 3:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.STAT);
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.STAT);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("stat", t.getRequirementEntityName());
@@ -288,7 +294,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 4:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.KILL);
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.KILL);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("entity", t.getRequirementEntityName());
@@ -302,7 +308,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 5:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.BREW);
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.BREW);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -318,7 +324,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 6:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.PLACE);
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.PLACE);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -334,7 +340,7 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 7:
 				if (types[i]) {
-					ArrayList<BaseRequirement> typeReq = this.requirements.getRequirementsByType(AchievementType.BREAK);
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.BREAK);
 					for (BaseRequirement t : typeReq) {
 						JsonObject reqSubTypes = new JsonObject();
 						reqSubTypes.addProperty("item", t.getRequirementEntityName());
@@ -350,8 +356,35 @@ public class AchievementPlus extends Achievement {
 				break;
 			case 8:
 				if (types[i]) {
-					this.requirements.getRequirementsByType(AchievementType.MENTOR);
+					requirements.getRequirementsByType(RequirementType.MENTOR);
 					req.add("mentor_requirements", reqTypes);
+				}
+				break;
+			case 9:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.LOCATION);
+					for (BaseRequirement t : typeReq) {
+						LocationRequirement lr = (LocationRequirement) t;
+						JsonObject reqSubTypes = new JsonObject();
+						requirements.new LocationRequirement();
+
+						reqSubTypes.addProperty("name", t.getRequirementEntityName());
+						reqSubTypes.addProperty("amount", t.getTotalNeeded());
+						reqSubTypes.addProperty("total", t.getTotalAquired());
+						reqSubTypes.addProperty("id", t.getRequirementID());
+						reqSubTypes.addProperty("x", lr.x1);
+						reqSubTypes.addProperty("y", lr.y1);
+						reqSubTypes.addProperty("z", lr.z1);
+						if (lr.r >= 0) {
+							reqSubTypes.addProperty("radius", lr.r);
+						} else {
+							reqSubTypes.addProperty("x2", lr.x2);
+							reqSubTypes.addProperty("y2", lr.y2);
+							reqSubTypes.addProperty("z2", lr.z2);
+						}
+						reqTypes.add(reqSubTypes);
+					}
+					req.add("break_requirements", reqTypes);
 				}
 				break;
 			default:
@@ -359,14 +392,14 @@ public class AchievementPlus extends Achievement {
 			}
 		}
 		reply.add("requirements", req);
-		if (this.texture != null) {
-			reply.addProperty("texture", this.texture.toString());
+		if (texture != null) {
+			reply.addProperty("texture", texture.toString());
 		}
-		if (this.badgeId > 0) {
-			reply.addProperty("badge_id", this.badgeId);
+		if (badgeId > 0) {
+			reply.addProperty("badge_id", badgeId);
 		}
-		if (this.parent != null) {
-			reply.addProperty("parent_name", this.parent.getName());
+		if (parent != null) {
+			reply.addProperty("parent_name", parent.getName());
 		}
 
 		return reply;
@@ -384,40 +417,40 @@ public class AchievementPlus extends Achievement {
 	 */
 	public void awardAchievement(EntityPlayer player) {
 		if (!LoginGUI.DYN_Username.isEmpty()) {
-			new PostBadge(this.badgeId, LoginGUI.DYN_Username,
+			new PostBadge(badgeId, LoginGUI.DYN_Username,
 					"5e4ae1a1ddce5d341bd5c0b6075d9491620c31aed80a901345fdf91fe1757ce1d8b67b99ccaf574198c99ca12c3d288ad07b022d5b70d1c72a3d728a7a27ce23",
 					"dd10c3a735a29a9e8d46822aac0660555a25103c57fa5188b793944fd074f1b6", player, this);
 		} else {
-			this.awarded = true;
+			awarded = true;
 			player.addStat(this, 1);
 		}
 	}
 
 	public void awardAchievement(EntityPlayer player, String dynUsername) {
-		new PostBadge(this.badgeId, dynUsername,
+		new PostBadge(badgeId, dynUsername,
 				"5e4ae1a1ddce5d341bd5c0b6075d9491620c31aed80a901345fdf91fe1757ce1d8b67b99ccaf574198c99ca12c3d288ad07b022d5b70d1c72a3d728a7a27ce23",
 				"dd10c3a735a29a9e8d46822aac0660555a25103c57fa5188b793944fd074f1b6", player, this);
 	}
 
 	@Override
 	public String getDescription() {
-		return this.desc;
+		return desc;
 	}
 
 	public int getId() {
-		return this.ach_id;
+		return ach_id;
 	}
 
 	public int getMapId() {
-		return this.map_id;
+		return map_id;
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public AchievementPlus getParent() {
-		return this.parent;
+		return parent;
 	}
 
 	/***
@@ -426,19 +459,19 @@ public class AchievementPlus extends Achievement {
 	 * @return requirements
 	 */
 	public Requirements getRequirements() {
-		return this.requirements;
+		return requirements;
 	}
 
 	public ResourceLocation getTexture() {
-		return this.texture;
+		return texture;
 	}
 
 	public int getWorldId() {
-		return this.world_id;
+		return world_id;
 	}
 
 	public boolean hasParent() {
-		return this.parent != null;
+		return parent != null;
 	}
 
 	/***
@@ -448,16 +481,16 @@ public class AchievementPlus extends Achievement {
 	 *            AchievementType
 	 * @return boolean
 	 */
-	public boolean hasRequirementOfType(AchievementType type) {
-		return this.requirements.getRequirementsByType(type).size() > 0;
+	public boolean hasRequirementOfType(RequirementType type) {
+		return requirements.getRequirementsByType(type).size() > 0;
 	}
 
 	public boolean isAwarded() {
-		return this.awarded;
+		return awarded;
 	}
 
 	public boolean meetsRequirements() {
-		for (BaseRequirement r : this.requirements.getRequirements()) {
+		for (BaseRequirement r : requirements.getRequirements()) {
 			if (r.getTotalAquired() < r.getTotalNeeded()) {
 				return false;
 			}
@@ -468,19 +501,19 @@ public class AchievementPlus extends Achievement {
 	// if this is the client it doesnt matter if we add the stat we just need to
 	// know that its been achieved
 	public void setAwarded() {
-		this.awarded = true;
+		awarded = true;
 	}
 
 	public void setAwarded(EntityPlayer player) {
-		this.awarded = true;
+		awarded = true;
 		player.addStat(this, 1);
 	}
 
 	public void setTexture(ResourceLocation tex) {
-		this.texture = tex;
+		texture = tex;
 	}
 
 	public void setWorldId(int id) {
-		this.world_id = id;
+		world_id = id;
 	}
 }
