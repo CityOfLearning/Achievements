@@ -84,7 +84,7 @@ public class RequirementNotification extends Gui {
 		GlStateManager.loadIdentity();
 		windowWidth = mc.displayWidth;
 		windowHeight = mc.displayHeight;
-		ScaledResolution scaledresolution = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+		ScaledResolution scaledresolution = new ScaledResolution(mc);
 		windowWidth = scaledresolution.getScaledWidth();
 		windowHeight = scaledresolution.getScaledHeight();
 		GlStateManager.clear(256);
