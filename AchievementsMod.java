@@ -3,8 +3,7 @@ package com.dyn.achievements;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import org.apache.logging.log4j.Logger;
-
+import com.dyn.DYNServerMod;
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.Requirements;
 import com.dyn.achievements.achievement.Requirements.BreakRequirement;
@@ -38,8 +37,6 @@ public class AchievementsMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static Proxy proxy;
 
-	public static Logger logger;
-
 	@Mod.Metadata(Reference.MOD_ID)
 	public ModMetadata metadata;
 
@@ -58,13 +55,11 @@ public class AchievementsMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		metadata = MetaData.init(metadata);
 
-		logger = event.getModLog();
-
 		Configuration configs = new Configuration(event.getSuggestedConfigurationFile());
 		try {
 			configs.load();
 		} catch (RuntimeException e) {
-			logger.warn(e);
+			DYNServerMod.logger.warn(e);
 		}
 
 		try { // Download the JSON into a json list
@@ -108,7 +103,7 @@ public class AchievementsMod {
 			lr2.z2 = 10;
 			lr2.y2 = 128;
 			r.addRequirement(lr2);
-			new AchievementPlus(r, "No Connection", "The Achievement file could not be found", 0, 0, 0, 0, 0, 0,
+			new AchievementPlus(r, "No Connection", "The Achievement file could not be found", 0, 0, 0, 0, 0, 0, 0,
 					AchievementManager.findAchievementByName(null), false,
 					new ResourceLocation("Minecraft", "textures/items/barrier.png"));
 		}

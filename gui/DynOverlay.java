@@ -1,6 +1,7 @@
 package com.dyn.achievements.gui;
 
 import com.dyn.server.ServerMod;
+import com.dyn.server.utils.PlayerLevel;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -32,7 +33,25 @@ public class DynOverlay extends Gui {
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableLighting();
 
-		if (ServerMod.opped) {
+		if (ServerMod.status == PlayerLevel.ADMIN) {
+			mc.getTextureManager().bindTexture(TABS);
+			this.drawTexturedModalRect(xPos, yPos, 0, 202, 40, 32);
+			mc.fontRendererObj.drawString("Achiev", xPos + 5, yPos + 4, -256);
+			mc.fontRendererObj.drawString("ements", xPos + 4, yPos + 12, -256);
+			mc.fontRendererObj.drawString("(N)", xPos + 13, yPos + 20, -1);
+
+			mc.getTextureManager().bindTexture(TABS);
+			this.drawTexturedModalRect(xPos + 40, yPos, 0, 202, 40, 32);
+			mc.fontRendererObj.drawString("Admin", xPos + 44, yPos + 4, -256);
+			mc.fontRendererObj.drawString("GUI", xPos + 52, yPos + 12, -256);
+			mc.fontRendererObj.drawString("(B)", xPos + 53, yPos + 20, -1);
+
+			mc.getTextureManager().bindTexture(TABS);
+			this.drawTexturedModalRect(xPos + 80, yPos, 0, 202, 40, 32);
+			mc.fontRendererObj.drawString("Hide", xPos + 90, yPos + 4, -256);
+			mc.fontRendererObj.drawString("GUI", xPos + 92, yPos + 12, -256);
+			mc.fontRendererObj.drawString("(H)", xPos + 93, yPos + 20, -1);
+		} else if (ServerMod.status == PlayerLevel.MENTOR) {
 			mc.getTextureManager().bindTexture(TABS);
 			this.drawTexturedModalRect(xPos, yPos, 0, 202, 40, 32);
 			mc.fontRendererObj.drawString("Achiev", xPos + 5, yPos + 4, -256);

@@ -4,7 +4,6 @@ import com.dyn.achievements.handlers.EventHandler;
 import com.dyn.achievements.handlers.NotificationsManager;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class Server implements Proxy {
 
@@ -17,8 +16,6 @@ public class Server implements Proxy {
 	@Override
 	public void init() {
 		EventHandler eH = new EventHandler();
-
-		FMLCommonHandler.instance().bus().register(eH);
 
 		MinecraftForge.EVENT_BUS.register(eH);
 	}

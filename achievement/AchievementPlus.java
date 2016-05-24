@@ -15,6 +15,7 @@ import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
 import com.dyn.achievements.handlers.AchievementManager;
 import com.dyn.login.LoginGUI;
 import com.dyn.server.http.PostBadge;
+import com.dyn.server.keys.KeyManager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -39,6 +40,7 @@ public class AchievementPlus extends Achievement {
 
 		// optional but needed to award a badge online;
 		int badgeId = 0;
+		int orgId = 0;
 		String parentName = "";
 		ResourceLocation texture = null;
 		boolean awarded = false;
@@ -156,8 +158,10 @@ public class AchievementPlus extends Achievement {
 				MentorRequirement r = requirements.new MentorRequirement();
 				requirements.addRequirement(r);
 			}
-			if (json.has("badge_id")) {
-				badgeId = json.get("badge_id").getAsInt();
+			if (json.has("badge")) {
+				JsonObject badge = json.get("badge").getAsJsonObject();
+				badgeId =  badge.get("badge_id").getAsInt();
+				orgId =  badge.get("org_id").getAsInt();
 			}
 			if (json.has("parent_name")) {
 				parentName = json.get("parent_name").getAsString();
@@ -165,7 +169,7 @@ public class AchievementPlus extends Achievement {
 			if (json.has("texture")) {
 				texture = new ResourceLocation(json.get("texture").getAsString());
 			}
-			return new AchievementPlus(requirements, name, desc, xCoord, yCoord, badgeId, achId, mapId, worldId,
+			return new AchievementPlus(requirements, name, desc, xCoord, yCoord, orgId, badgeId, achId, mapId, worldId,
 					AchievementManager.findAchievementByName(parentName), awarded, texture);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -183,13 +187,14 @@ public class AchievementPlus extends Achievement {
 	private int xCoord;
 	private int yCoord;
 	private boolean awarded;
+	private int org_id;
 
 	private ResourceLocation texture;
 
 	// optional but needed to award a badge online;
 	private int badgeId;
 
-	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int badgeId,
+	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int orgId, int badgeId,
 			int achievementId, int mapId, int worldId, AchievementPlus parent, boolean awarded,
 			ResourceLocation texture) {
 		super(name.replace(' ', '_'), name.replace(' ', '_'), xPos, yPos, new ItemStack(Items.experience_bottle),
@@ -201,6 +206,7 @@ public class AchievementPlus extends Achievement {
 		this.name = name;
 		desc = description;
 		this.badgeId = badgeId;
+		this.org_id = orgId;
 		this.awarded = awarded;
 		if (awarded) {
 			// Minecraft.getMinecraft().thePlayer.addStat(this, 1);
@@ -395,8 +401,11 @@ public class AchievementPlus extends Achievement {
 		if (texture != null) {
 			reply.addProperty("texture", texture.toString());
 		}
-		if (badgeId > 0) {
-			reply.addProperty("badge_id", badgeId);
+		if (badgeId > 0 && org_id > 0) {
+			JsonObject badgeObj = new JsonObject();
+			badgeObj.addProperty("org_id", org_id);
+			badgeObj.addProperty("badge_id", badgeId);
+			reply.add("badge", badgeObj);
 		}
 		if (parent != null) {
 			reply.addProperty("parent_name", parent.getName());
@@ -417,9 +426,7 @@ public class AchievementPlus extends Achievement {
 	 */
 	public void awardAchievement(EntityPlayer player) {
 		if (!LoginGUI.DYN_Username.isEmpty()) {
-			new PostBadge(badgeId, LoginGUI.DYN_Username,
-					"5e4ae1a1ddce5d341bd5c0b6075d9491620c31aed80a901345fdf91fe1757ce1d8b67b99ccaf574198c99ca12c3d288ad07b022d5b70d1c72a3d728a7a27ce23",
-					"dd10c3a735a29a9e8d46822aac0660555a25103c57fa5188b793944fd074f1b6", player, this);
+			new PostBadge(badgeId, LoginGUI.DYN_Username, KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id), player, this);
 		} else {
 			awarded = true;
 			player.addStat(this, 1);
@@ -427,9 +434,7 @@ public class AchievementPlus extends Achievement {
 	}
 
 	public void awardAchievement(EntityPlayer player, String dynUsername) {
-		new PostBadge(badgeId, dynUsername,
-				"5e4ae1a1ddce5d341bd5c0b6075d9491620c31aed80a901345fdf91fe1757ce1d8b67b99ccaf574198c99ca12c3d288ad07b022d5b70d1c72a3d728a7a27ce23",
-				"dd10c3a735a29a9e8d46822aac0660555a25103c57fa5188b793944fd074f1b6", player, this);
+		new PostBadge(badgeId, dynUsername, KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id), player, this);
 	}
 
 	@Override
