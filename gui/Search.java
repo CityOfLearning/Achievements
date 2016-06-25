@@ -3,6 +3,7 @@ package com.dyn.achievements.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dyn.DYNServerConstants;
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.handlers.AchievementManager;
 import com.dyn.betterachievements.gui.GuiBetterAchievements;
@@ -40,16 +41,16 @@ public class Search extends Show {
 
 		// the side buttons
 		registerComponent(new PictureButton((int) (width * .03), (int) (height * .2), 30, 30,
-				new ResourceLocation("minecraft", "textures/items/nether_star.png")).setIsEnabled(true)
-						.addHoverText("Achievement Maps").doesDrawHoverText(true).setClickListener(but -> Minecraft
-								.getMinecraft().displayGuiScreen(new GuiBetterAchievements(getStage(), 0))));
+				DYNServerConstants.ACHIEVEMENT_IMAGE).setIsEnabled(true).addHoverText("Achievement Maps")
+						.doesDrawHoverText(true).setClickListener(but -> Minecraft.getMinecraft()
+								.displayGuiScreen(new GuiBetterAchievements(getStage(), 0))));
 
 		/*
 		 * this.registerComponent(new PictureButton((int) (this.width * .03),
 		 * (int) (this.height * .35), 30, 30, new ResourceLocation("minecraft",
 		 * "textures/items/ruby.png")).setIsEnabled(true) .addHoverText(
-		 * "Setup Student Roster").doesDrawHoverText(true) .setClickListener(but
-		 * -> this.getStage().display(new Roster())));
+		 * "Student Rosters").doesDrawHoverText(true) .setClickListener(but ->
+		 * this.getStage().display(new Roster())));
 		 *
 		 * this.registerComponent(new PictureButton((int) (this.width * .03),
 		 * (int) (this.height * .5), 30, 30, new ResourceLocation("minecraft",

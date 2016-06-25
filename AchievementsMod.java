@@ -3,7 +3,6 @@ package com.dyn.achievements;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-import com.dyn.DYNServerMod;
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.Requirements;
 import com.dyn.achievements.achievement.Requirements.BreakRequirement;
@@ -20,7 +19,6 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -54,13 +52,6 @@ public class AchievementsMod {
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		metadata = MetaData.init(metadata);
-
-		Configuration configs = new Configuration(event.getSuggestedConfigurationFile());
-		try {
-			configs.load();
-		} catch (RuntimeException e) {
-			DYNServerMod.logger.warn(e);
-		}
 
 		try { // Download the JSON into a json list
 				// URL url = new URL("Not a URL: sometimes we need to fail");

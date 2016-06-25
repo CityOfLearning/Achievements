@@ -160,8 +160,8 @@ public class AchievementPlus extends Achievement {
 			}
 			if (json.has("badge")) {
 				JsonObject badge = json.get("badge").getAsJsonObject();
-				badgeId =  badge.get("badge_id").getAsInt();
-				orgId =  badge.get("org_id").getAsInt();
+				badgeId = badge.get("badge_id").getAsInt();
+				orgId = badge.get("org_id").getAsInt();
 			}
 			if (json.has("parent_name")) {
 				parentName = json.get("parent_name").getAsString();
@@ -194,8 +194,8 @@ public class AchievementPlus extends Achievement {
 	// optional but needed to award a badge online;
 	private int badgeId;
 
-	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int orgId, int badgeId,
-			int achievementId, int mapId, int worldId, AchievementPlus parent, boolean awarded,
+	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int orgId,
+			int badgeId, int achievementId, int mapId, int worldId, AchievementPlus parent, boolean awarded,
 			ResourceLocation texture) {
 		super(name.replace(' ', '_'), name.replace(' ', '_'), xPos, yPos, new ItemStack(Items.experience_bottle),
 				parent);
@@ -206,7 +206,7 @@ public class AchievementPlus extends Achievement {
 		this.name = name;
 		desc = description;
 		this.badgeId = badgeId;
-		this.org_id = orgId;
+		org_id = orgId;
 		this.awarded = awarded;
 		if (awarded) {
 			// Minecraft.getMinecraft().thePlayer.addStat(this, 1);
@@ -401,7 +401,7 @@ public class AchievementPlus extends Achievement {
 		if (texture != null) {
 			reply.addProperty("texture", texture.toString());
 		}
-		if (badgeId > 0 && org_id > 0) {
+		if ((badgeId > 0) && (org_id > 0)) {
 			JsonObject badgeObj = new JsonObject();
 			badgeObj.addProperty("org_id", org_id);
 			badgeObj.addProperty("badge_id", badgeId);
@@ -426,7 +426,8 @@ public class AchievementPlus extends Achievement {
 	 */
 	public void awardAchievement(EntityPlayer player) {
 		if (!LoginGUI.DYN_Username.isEmpty()) {
-			new PostBadge(badgeId, LoginGUI.DYN_Username, KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id), player, this);
+			new PostBadge(badgeId, LoginGUI.DYN_Username, KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id),
+					player, this);
 		} else {
 			awarded = true;
 			player.addStat(this, 1);
@@ -434,7 +435,8 @@ public class AchievementPlus extends Achievement {
 	}
 
 	public void awardAchievement(EntityPlayer player, String dynUsername) {
-		new PostBadge(badgeId, dynUsername, KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id), player, this);
+		new PostBadge(badgeId, dynUsername, KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id), player,
+				this);
 	}
 
 	@Override
