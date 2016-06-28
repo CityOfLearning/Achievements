@@ -47,8 +47,8 @@ public class EventHandler {
 					return;
 				}
 			}
-			if (AchievementManager.getItemNames().containsKey(RequirementType.BREAK)) {
-				for (AchievementPlus a : AchievementManager.getItemNames().get(RequirementType.BREAK)
+			if (AchievementManager.getRequirementEntityNames().containsKey(RequirementType.BREAK)) {
+				for (AchievementPlus a : AchievementManager.getRequirementEntityNames().get(RequirementType.BREAK)
 						.get(is.getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.getPlayer().dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.BREAK)) {
@@ -89,8 +89,8 @@ public class EventHandler {
 	@SubscribeEvent
 	public void craftingEvent(PlayerEvent.ItemCraftedEvent event) {
 		if (event.crafting != null) {
-			if (AchievementManager.getItemNames().containsKey(RequirementType.CRAFT)) {
-				for (AchievementPlus a : AchievementManager.getItemNames().get(RequirementType.CRAFT)
+			if (AchievementManager.getRequirementEntityNames().containsKey(RequirementType.CRAFT)) {
+				for (AchievementPlus a : AchievementManager.getRequirementEntityNames().get(RequirementType.CRAFT)
 						.get(event.crafting.getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.CRAFT)) {
@@ -170,8 +170,8 @@ public class EventHandler {
 	public void killEvent(LivingDeathEvent event) {
 		if ((event.source != null) && (event.source.getEntity() != null) && (event.entity != null)
 				&& (event.source.getEntity() instanceof EntityPlayer)) {
-			if (AchievementManager.getEntityNames().containsKey(RequirementType.KILL)) {
-				for (AchievementPlus a : AchievementManager.getEntityNames().get(RequirementType.KILL)
+			if (AchievementManager.getRequirementEntityNames().containsKey(RequirementType.KILL)) {
+				for (AchievementPlus a : AchievementManager.getRequirementEntityNames().get(RequirementType.KILL)
 						.get(EntityList.getEntityString(event.entity))) {
 					if ((a.getWorldId() > 0) && (event.source.getEntity().dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.KILL)) {
@@ -261,8 +261,8 @@ public class EventHandler {
 	@SubscribeEvent
 	public void pickupEvent(PlayerEvent.ItemPickupEvent event) {
 		if (event.pickedUp != null) {
-			if (AchievementManager.getItemNames().containsKey(RequirementType.PICKUP)) {
-				for (AchievementPlus a : AchievementManager.getItemNames().get(RequirementType.PICKUP)
+			if (AchievementManager.getRequirementEntityNames().containsKey(RequirementType.PICKUP)) {
+				for (AchievementPlus a : AchievementManager.getRequirementEntityNames().get(RequirementType.PICKUP)
 						.get(event.pickedUp.getEntityItem().getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.PICKUP)) {
@@ -300,8 +300,8 @@ public class EventHandler {
 	public void placeBlockEvent(PlaceEvent event) {
 		// we are only concerned with placing blocks
 		if ((event.placedBlock != null) && (event.player != null)) {
-			if (AchievementManager.getItemNames().containsKey(RequirementType.PLACE)) {
-				for (AchievementPlus a : AchievementManager.getItemNames().get(RequirementType.PLACE)
+			if (AchievementManager.getRequirementEntityNames().containsKey(RequirementType.PLACE)) {
+				for (AchievementPlus a : AchievementManager.getRequirementEntityNames().get(RequirementType.PLACE)
 						.get(event.itemInHand.getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.PLACE)) {
@@ -338,8 +338,8 @@ public class EventHandler {
 	@SubscribeEvent
 	public void smeltingEvent(PlayerEvent.ItemSmeltedEvent event) {
 		if (event.smelting != null) {
-			if (AchievementManager.getItemNames().containsKey(RequirementType.SMELT)) {
-				for (AchievementPlus a : AchievementManager.getItemNames().get(RequirementType.SMELT)
+			if (AchievementManager.getRequirementEntityNames().containsKey(RequirementType.SMELT)) {
+				for (AchievementPlus a : AchievementManager.getRequirementEntityNames().get(RequirementType.SMELT)
 						.get(event.smelting.getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.SMELT)) {

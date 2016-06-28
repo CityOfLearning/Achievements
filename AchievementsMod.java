@@ -1,8 +1,5 @@
 package com.dyn.achievements;
 
-import java.io.InputStreamReader;
-import java.net.URL;
-
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.Requirements;
 import com.dyn.achievements.achievement.Requirements.BreakRequirement;
@@ -12,11 +9,10 @@ import com.dyn.achievements.handlers.AchievementManager;
 import com.dyn.achievements.proxy.Proxy;
 import com.dyn.achievements.reference.MetaData;
 import com.dyn.achievements.reference.Reference;
+import com.dyn.server.database.DBManager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
@@ -26,7 +22,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppedEvent;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, dependencies = "required-after:serverKeys")
 public class AchievementsMod {
 
 	@Mod.Instance(Reference.MOD_ID)
@@ -39,9 +35,12 @@ public class AchievementsMod {
 	public ModMetadata metadata;
 
 	@Mod.EventHandler
-	public void init(FMLInitializationEvent event) {
-		// this will have to change when more pages need to be made
-		AchievementManager.addAchievementPage("DYN Achievements", AchievementManager.getAllAchievements());
+	public void init(FMLInitializationEvent event) {		
+		JsonArray jsonA = DBManager.getAchievementMapDBAsJson().get("achievement_maps").getAsJsonArray();
+		for (JsonElement ach : jsonA) {
+			JsonObject achObj = ach.getAsJsonObject();
+			AchievementManager.addAchievementPage(achObj.get("name").getAsString(), achObj.get("map_id").getAsInt());
+		}
 	}
 
 	@Mod.EventHandler
@@ -53,13 +52,9 @@ public class AchievementsMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		metadata = MetaData.init(metadata);
 
-		try { // Download the JSON into a json list
-				// URL url = new URL("Not a URL: sometimes we need to fail");
-			URL url = new URL("https://dl.dropboxusercontent.com/u/33377940/achievements.json");
-			JsonParser parser = new JsonParser();
-			JsonElement element = parser.parse(new JsonReader(new InputStreamReader(url.openStream())));
-			JsonObject overallObject = element.getAsJsonObject();
-			JsonArray jsonA = overallObject.get("achievements").getAsJsonArray();
+		try { 
+			
+			JsonArray jsonA = DBManager.getAchievementDBAsJson().get("achievements").getAsJsonArray();
 			for (JsonElement ach : jsonA) {
 				AchievementPlus.JsonToAchievement(ach.getAsJsonObject());
 			}

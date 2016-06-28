@@ -41,7 +41,7 @@ public class AchievementPlus extends Achievement {
 		// optional but needed to award a badge online;
 		int badgeId = 0;
 		int orgId = 0;
-		String parentName = "";
+		int parentId = -1;
 		ResourceLocation texture = null;
 		boolean awarded = false;
 		try {
@@ -163,14 +163,15 @@ public class AchievementPlus extends Achievement {
 				badgeId = badge.get("badge_id").getAsInt();
 				orgId = badge.get("org_id").getAsInt();
 			}
-			if (json.has("parent_name")) {
-				parentName = json.get("parent_name").getAsString();
+			if (json.has("parent_ach")) {
+				parentId = json.get("parent_ach").getAsInt();
 			}
-			if (json.has("texture")) {
+			if (json.has("texture") && !json.get("texture").getAsString().equals("null")) {
 				texture = new ResourceLocation(json.get("texture").getAsString());
 			}
+			
 			return new AchievementPlus(requirements, name, desc, xCoord, yCoord, orgId, badgeId, achId, mapId, worldId,
-					AchievementManager.findAchievementByName(parentName), awarded, texture);
+					AchievementManager.findAchievementById(parentId), awarded, texture);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -13,6 +13,7 @@ import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
+import com.dyn.betterachievements.registry.AchievementRegistry;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
@@ -32,12 +33,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class AchievementManager {
 
-	private static Map<String, AchievementPage> achievementPages = new HashMap<String, AchievementPage>();
-	private static ArrayList<AchievementPlus> achievements = new ArrayList<AchievementPlus>();
+	private static Map<String, AchievementPage> achievementPageTextures = new HashMap<String, AchievementPage>();
+	private static List<AchievementPlus> achievements = new ArrayList<AchievementPlus>();
 	private static Map<String, AchievementPlus> achievementNames = new HashMap<String, AchievementPlus>();
 	private static Map<Integer, AchievementPlus> achievementIds = new HashMap<Integer, AchievementPlus>();
-	private static Map<RequirementType, ArrayList<AchievementPlus>> achievementsType = new HashMap<RequirementType, ArrayList<AchievementPlus>>();
-	private static Map<RequirementType, ListMultimap<String, AchievementPlus>> itemNames = new HashMap<RequirementType, ListMultimap<String, AchievementPlus>>();
+	private static Map<RequirementType, List<AchievementPlus>> achievementsType = new HashMap<RequirementType, List<AchievementPlus>>();
 	private static Map<RequirementType, ListMultimap<String, AchievementPlus>> entityNames = new HashMap<RequirementType, ListMultimap<String, AchievementPlus>>();
 	private static Map<EntityPlayer, Map<String, Requirements>> playerAchievements = new HashMap<EntityPlayer, Map<String, Requirements>>();
 
@@ -49,15 +49,21 @@ public class AchievementManager {
 	 * @param achievements
 	 *            ArrayList of achievements
 	 */
-	public static void addAchievementPage(String pageName, ArrayList<AchievementPlus> achievements) {
-		if (achievements.size() > 0) {
-			AchievementPage achievementPage = new AchievementPage(pageName,
-					achievements.toArray(new Achievement[achievements.size()]));
-			AchievementPage.registerAchievementPage(achievementPage);
-
-			achievementPages.put(pageName, achievementPage);
+	public static void addAchievementPage(String pageName, int id) {
+		 List<AchievementPlus> achievementsInMap = new ArrayList<AchievementPlus>();
+		for(AchievementPlus achievement: AchievementManager.getAllAchievements()){
+			if(achievement.getMapId() == id){
+				achievementsInMap.add(achievement);
+			}
+		}
+		if(achievementsInMap.size() > 0){
+			AchievementPage page = new AchievementPage(pageName, achievementsInMap.toArray(new Achievement[achievements.size()]));
+			AchievementPage.registerAchievementPage(page);
+			achievementPageTextures.put(pageName, page);
 		}
 	}
+	
+	
 
 	public static AchievementPlus findAchievementById(int id) {
 		return achievementIds.get(id);
@@ -81,7 +87,7 @@ public class AchievementManager {
 	 *            AchievementType object
 	 * @return ArrayList of achievements
 	 */
-	public static ArrayList<AchievementPlus> findAchievementByType(RequirementType type) {
+	public static List<AchievementPlus> findAchievementByType(RequirementType type) {
 		return achievementsType.get(type);
 	}
 
@@ -107,16 +113,13 @@ public class AchievementManager {
 	 *
 	 * @return ArrayList of achievements
 	 */
-	public static ArrayList<AchievementPlus> getAllAchievements() {
+	public static List<AchievementPlus> getAllAchievements() {
 		return achievements;
 	}
 
-	public static Map<RequirementType, ListMultimap<String, AchievementPlus>> getEntityNames() {
-		return entityNames;
-	}
 
-	public static Map<RequirementType, ListMultimap<String, AchievementPlus>> getItemNames() {
-		return itemNames;
+	public static Map<RequirementType, ListMultimap<String, AchievementPlus>> getRequirementEntityNames() {
+		return entityNames;
 	}
 
 	@SideOnly(Side.SERVER)
@@ -235,6 +238,33 @@ public class AchievementManager {
 
 	private static void parseRequirementEntityNames(AchievementPlus achievement) {
 		boolean[] vals = achievement.getRequirements().getRequirementTypes();
+		if (vals[0]) {
+			if (entityNames.get(RequirementType.CRAFT) == null) {
+				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
+				entityNames.put(RequirementType.CRAFT, map);
+			}
+			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.CRAFT)) {
+				entityNames.get(RequirementType.CRAFT).put(r.getRequirementEntityName(), achievement);
+			}
+		}
+		if (vals[1]) {
+			if (entityNames.get(RequirementType.SMELT) == null) {
+				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
+				entityNames.put(RequirementType.SMELT, map);
+			}
+			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.SMELT)) {
+				entityNames.get(RequirementType.SMELT).put(r.getRequirementEntityName(), achievement);
+			}
+		}
+		if (vals[2]) {
+			if (entityNames.get(RequirementType.PICKUP) == null) {
+				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
+				entityNames.put(RequirementType.PICKUP, map);
+			}
+			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.PICKUP)) {
+				entityNames.get(RequirementType.PICKUP).put(r.getRequirementEntityName(), achievement);
+			}
+		}
 		if (vals[4]) {
 			if (entityNames.get(RequirementType.KILL) == null) {
 				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
@@ -244,62 +274,31 @@ public class AchievementManager {
 				entityNames.get(RequirementType.KILL).put(r.getRequirementEntityName(), achievement);
 			}
 		}
-	}
-
-	private static void parseRequirementItemNames(AchievementPlus achievement) {
-		boolean[] vals = achievement.getRequirements().getRequirementTypes();
-		if (vals[0]) {
-			if (itemNames.get(RequirementType.CRAFT) == null) {
-				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
-				itemNames.put(RequirementType.CRAFT, map);
-			}
-			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.CRAFT)) {
-				itemNames.get(RequirementType.CRAFT).put(r.getRequirementEntityName(), achievement);
-			}
-		}
-		if (vals[1]) {
-			if (itemNames.get(RequirementType.SMELT) == null) {
-				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
-				itemNames.put(RequirementType.SMELT, map);
-			}
-			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.SMELT)) {
-				itemNames.get(RequirementType.SMELT).put(r.getRequirementEntityName(), achievement);
-			}
-		}
-		if (vals[2]) {
-			if (itemNames.get(RequirementType.PICKUP) == null) {
-				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
-				itemNames.put(RequirementType.PICKUP, map);
-			}
-			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.PICKUP)) {
-				itemNames.get(RequirementType.PICKUP).put(r.getRequirementEntityName(), achievement);
-			}
-		}
 		if (vals[5]) {
-			if (itemNames.get(RequirementType.BREW) == null) {
+			if (entityNames.get(RequirementType.BREW) == null) {
 				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
-				itemNames.put(RequirementType.BREW, map);
+				entityNames.put(RequirementType.BREW, map);
 			}
 			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.BREW)) {
-				itemNames.get(RequirementType.BREW).put(r.getRequirementEntityName(), achievement);
+				entityNames.get(RequirementType.BREW).put(r.getRequirementEntityName(), achievement);
 			}
 		}
 		if (vals[6]) {
-			if (itemNames.get(RequirementType.PLACE) == null) {
+			if (entityNames.get(RequirementType.PLACE) == null) {
 				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
-				itemNames.put(RequirementType.PLACE, map);
+				entityNames.put(RequirementType.PLACE, map);
 			}
 			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.PLACE)) {
-				itemNames.get(RequirementType.PLACE).put(r.getRequirementEntityName(), achievement);
+				entityNames.get(RequirementType.PLACE).put(r.getRequirementEntityName(), achievement);
 			}
 		}
 		if (vals[7]) {
-			if (itemNames.get(RequirementType.BREAK) == null) {
+			if (entityNames.get(RequirementType.BREAK) == null) {
 				ListMultimap<String, AchievementPlus> map = ArrayListMultimap.create();
-				itemNames.put(RequirementType.BREAK, map);
+				entityNames.put(RequirementType.BREAK, map);
 			}
 			for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.BREAK)) {
-				itemNames.get(RequirementType.BREAK).put(r.getRequirementEntityName(), achievement);
+				entityNames.get(RequirementType.BREAK).put(r.getRequirementEntityName(), achievement);
 			}
 		}
 	}
@@ -316,18 +315,11 @@ public class AchievementManager {
 
 		achievements.add(achievement);
 
-		// we shouldnt crash from this
-		/*
-		 * if (achievementsName.get(achievement.getName()) != null) { throw new
-		 * RuntimeException("The achievement with the name " +
-		 * achievement.getName() + " already exists!"); }
-		 */
 		achievementNames.put(achievement.getName(), achievement);
 		achievementIds.put(achievement.getId(), achievement);
 		achievement.registerStat();
 
 		registerAchievementRequirementTypes(achievement);
-		parseRequirementItemNames(achievement);
 		parseRequirementEntityNames(achievement);
 	}
 

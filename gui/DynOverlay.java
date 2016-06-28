@@ -1,7 +1,7 @@
 package com.dyn.achievements.gui;
 
 import com.dyn.DYNServerMod;
-import com.dyn.server.utils.PlayerLevel;
+import com.dyn.utils.PlayerLevel;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
