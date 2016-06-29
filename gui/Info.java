@@ -15,24 +15,18 @@ import com.rabbit.gui.component.list.entries.ListEntry;
 import com.rabbit.gui.component.list.entries.StringEntry;
 import com.rabbit.gui.render.TextAlignment;
 import com.rabbit.gui.show.Show;
+import com.rabbit.gui.utils.TextureHelper;
 
 import net.minecraft.util.ResourceLocation;
 
 public class Info extends Show {
 
 	private AchievementPlus achievement;
-	private ResourceLocation texture;
 
 	public Info(AchievementPlus achievement) {
 		setBackground(new DefaultBackground());
 		title = "Achievement Gui";
 		this.achievement = achievement;
-		if (achievement.getTexture() != null) {
-			texture = achievement.getTexture();
-		} else {
-			texture = new ResourceLocation("minecraft", "textures/items/experience_bottle.png");
-		}
-
 	}
 
 	@Override
@@ -45,8 +39,11 @@ public class Info extends Show {
 		registerComponent(new ScrollTextLabel(width / 3, (int) (height * .24), width / 2, 35,
 				"Description: " + achievement.getDescription(), TextAlignment.LEFT).setMultilined(true));
 
-		registerComponent(new Picture((int) (width * .15), (int) (height * .15), width / 6, width / 6, texture));
-
+		if (TextureHelper.textureExists(achievement.getTextureId())) {
+		registerComponent(new Picture((int) (width * .15), (int) (height * .15), width / 6, width / 6, achievement.getTextureId()));
+		} else {
+			registerComponent(new Picture((int) (width * .15), (int) (height * .15), width / 6, width / 6, new ResourceLocation("minecraft", "textures/items/experience_bottle.png")));
+		}
 		ArrayList<ListEntry> ulist = new ArrayList<ListEntry>();
 
 		if (achievement.hasRequirementOfType(RequirementType.CRAFT)) {

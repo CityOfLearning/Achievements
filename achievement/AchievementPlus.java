@@ -1,6 +1,7 @@
 package com.dyn.achievements.achievement;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.dyn.achievements.achievement.Requirements.BreakRequirement;
@@ -19,13 +20,16 @@ import com.dyn.server.keys.KeyManager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.rabbit.gui.utils.TextureHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.LanguageRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 /***
  * AchievementPlus class modifies Achievement class in MineCraft source code.
@@ -42,7 +46,7 @@ public class AchievementPlus extends Achievement {
 		int badgeId = 0;
 		int orgId = 0;
 		int parentId = -1;
-		ResourceLocation texture = null;
+		String texture = "";
 		boolean awarded = false;
 		try {
 			String name = json.get("name").getAsString();
@@ -167,7 +171,7 @@ public class AchievementPlus extends Achievement {
 				parentId = json.get("parent_ach").getAsInt();
 			}
 			if (json.has("texture") && !json.get("texture").getAsString().equals("null")) {
-				texture = new ResourceLocation(json.get("texture").getAsString());
+				texture = json.get("texture").getAsString();
 			}
 
 			return new AchievementPlus(requirements, name, desc, xCoord, yCoord, orgId, badgeId, achId, mapId, worldId,
@@ -190,14 +194,14 @@ public class AchievementPlus extends Achievement {
 	private boolean awarded;
 	private int org_id;
 
-	private ResourceLocation texture;
+	private UUID textureid = UUID.randomUUID();
 
 	// optional but needed to award a badge online;
 	private int badgeId;
-
+	
 	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int orgId,
 			int badgeId, int achievementId, int mapId, int worldId, AchievementPlus parent, boolean awarded,
-			ResourceLocation texture) {
+			String texture) {
 		super(name.replace(' ', '_'), name.replace(' ', '_'), xPos, yPos, new ItemStack(Items.experience_bottle),
 				parent);
 		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_'), "en_US", name);
@@ -218,7 +222,9 @@ public class AchievementPlus extends Achievement {
 		this.parent = parent;
 		xCoord = xPos;
 		yCoord = yPos;
-		this.texture = texture;
+		if((FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)){
+			TextureHelper.addTexture(textureid, texture);
+		}
 		AchievementManager.registerAchievement(this);
 	}
 
@@ -399,8 +405,11 @@ public class AchievementPlus extends Achievement {
 			}
 		}
 		reply.add("requirements", req);
-		if (texture != null) {
-			reply.addProperty("texture", texture.toString());
+		if(TextureHelper.isTextureStatic(textureid)){
+			reply.addProperty("texture", TextureHelper.getStaticTexture(textureid).toString());
+		}
+		else if (TextureHelper.isTextureDynamic(textureid)) {
+			reply.addProperty("texture", TextureHelper.getDynamicTexture(textureid).toString());
 		}
 		if ((badgeId > 0) && (org_id > 0)) {
 			JsonObject badgeObj = new JsonObject();
@@ -470,8 +479,8 @@ public class AchievementPlus extends Achievement {
 		return requirements;
 	}
 
-	public ResourceLocation getTexture() {
-		return texture;
+	public UUID getTextureId() {
+		return textureid;
 	}
 
 	public int getWorldId() {
@@ -518,7 +527,11 @@ public class AchievementPlus extends Achievement {
 	}
 
 	public void setTexture(ResourceLocation tex) {
-		texture = tex;
+		TextureHelper.addStaticTexture(textureid, tex);
+	}
+	
+	public void setTexture(String tex) {
+		TextureHelper.addTexture(textureid, tex);
 	}
 
 	public void setWorldId(int id) {

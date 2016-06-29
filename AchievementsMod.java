@@ -31,8 +31,8 @@ public class AchievementsMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static Proxy proxy;
 
-	@Mod.Metadata(Reference.MOD_ID)
-	public ModMetadata metadata;
+//	@Mod.Metadata(Reference.MOD_ID)
+//	public ModMetadata metadata;
 
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
@@ -50,8 +50,9 @@ public class AchievementsMod {
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		metadata = MetaData.init(metadata);
-
+		
+//		metadata = MetaData.init(metadata);
+		MetaData.init(event.getModMetadata());
 		try {
 
 			JsonArray jsonA = DBManager.getAchievementDBAsJson().get("achievements").getAsJsonArray();
@@ -91,7 +92,7 @@ public class AchievementsMod {
 			r.addRequirement(lr2);
 			new AchievementPlus(r, "No Connection", "The Achievement file could not be found", 0, 0, 0, 0, 0, 0, 0,
 					AchievementManager.findAchievementByName(null), false,
-					new ResourceLocation("Minecraft", "textures/items/barrier.png"));
+					new ResourceLocation("Minecraft", "textures/items/barrier.png").toString());
 		}
 		proxy.init();
 	}
