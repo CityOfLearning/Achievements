@@ -169,7 +169,7 @@ public class AchievementPlus extends Achievement {
 			if (json.has("texture") && !json.get("texture").getAsString().equals("null")) {
 				texture = new ResourceLocation(json.get("texture").getAsString());
 			}
-			
+
 			return new AchievementPlus(requirements, name, desc, xCoord, yCoord, orgId, badgeId, achId, mapId, worldId,
 					AchievementManager.findAchievementById(parentId), awarded, texture);
 		} catch (Exception e) {

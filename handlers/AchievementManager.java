@@ -13,7 +13,6 @@ import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
-import com.dyn.betterachievements.registry.AchievementRegistry;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
@@ -50,20 +49,19 @@ public class AchievementManager {
 	 *            ArrayList of achievements
 	 */
 	public static void addAchievementPage(String pageName, int id) {
-		 List<AchievementPlus> achievementsInMap = new ArrayList<AchievementPlus>();
-		for(AchievementPlus achievement: AchievementManager.getAllAchievements()){
-			if(achievement.getMapId() == id){
+		List<AchievementPlus> achievementsInMap = new ArrayList<AchievementPlus>();
+		for (AchievementPlus achievement : AchievementManager.getAllAchievements()) {
+			if (achievement.getMapId() == id) {
 				achievementsInMap.add(achievement);
 			}
 		}
-		if(achievementsInMap.size() > 0){
-			AchievementPage page = new AchievementPage(pageName, achievementsInMap.toArray(new Achievement[achievements.size()]));
+		if (achievementsInMap.size() > 0) {
+			AchievementPage page = new AchievementPage(pageName,
+					achievementsInMap.toArray(new Achievement[achievements.size()]));
 			AchievementPage.registerAchievementPage(page);
 			achievementPageTextures.put(pageName, page);
 		}
 	}
-	
-	
 
 	public static AchievementPlus findAchievementById(int id) {
 		return achievementIds.get(id);
@@ -115,11 +113,6 @@ public class AchievementManager {
 	 */
 	public static List<AchievementPlus> getAllAchievements() {
 		return achievements;
-	}
-
-
-	public static Map<RequirementType, ListMultimap<String, AchievementPlus>> getRequirementEntityNames() {
-		return entityNames;
 	}
 
 	@SideOnly(Side.SERVER)
@@ -182,6 +175,10 @@ public class AchievementManager {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public static Map<RequirementType, ListMultimap<String, AchievementPlus>> getRequirementEntityNames() {
+		return entityNames;
 	}
 
 	@SideOnly(Side.SERVER)

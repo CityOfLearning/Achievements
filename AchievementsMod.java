@@ -35,7 +35,7 @@ public class AchievementsMod {
 	public ModMetadata metadata;
 
 	@Mod.EventHandler
-	public void init(FMLInitializationEvent event) {		
+	public void init(FMLInitializationEvent event) {
 		JsonArray jsonA = DBManager.getAchievementMapDBAsJson().get("achievement_maps").getAsJsonArray();
 		for (JsonElement ach : jsonA) {
 			JsonObject achObj = ach.getAsJsonObject();
@@ -52,8 +52,8 @@ public class AchievementsMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		metadata = MetaData.init(metadata);
 
-		try { 
-			
+		try {
+
 			JsonArray jsonA = DBManager.getAchievementDBAsJson().get("achievements").getAsJsonArray();
 			for (JsonElement ach : jsonA) {
 				AchievementPlus.JsonToAchievement(ach.getAsJsonObject());
