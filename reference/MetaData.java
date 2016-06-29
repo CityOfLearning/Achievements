@@ -9,7 +9,7 @@ public class MetaData {
 		metadata.modId = Reference.MOD_ID;
 		metadata.name = Reference.MOD_NAME;
 		metadata.description = "Adding in a more robust Achievement System";
-		metadata.url = "https://github.com/Digital-Youth-Network/MinecraftAchievements";
+		metadata.url = "https://github.com/CityOfLearning/MinecraftAchievements";
 		metadata.version = Reference.VERSION;
 		metadata.authorList = Arrays.asList("Dom Amato");
 		metadata.credits = "";
