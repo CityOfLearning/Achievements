@@ -1,5 +1,6 @@
 package com.dyn.achievements;
 
+import com.dyn.DYNServerMod;
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.Requirements;
 import com.dyn.achievements.achievement.Requirements.BreakRequirement;
@@ -31,15 +32,18 @@ public class AchievementsMod {
 	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
 	public static Proxy proxy;
 
-//	@Mod.Metadata(Reference.MOD_ID)
-//	public ModMetadata metadata;
-
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
-		JsonArray jsonA = DBManager.getAchievementMapDBAsJson().get("achievement_maps").getAsJsonArray();
-		for (JsonElement ach : jsonA) {
-			JsonObject achObj = ach.getAsJsonObject();
-			AchievementManager.addAchievementPage(achObj.get("name").getAsString(), achObj.get("map_id").getAsInt());
+		try {
+			JsonArray jsonA = DBManager.getAchievementMapDBAsJson().get("achievement_maps").getAsJsonArray();
+			for (JsonElement ach : jsonA) {
+				JsonObject achObj = ach.getAsJsonObject();
+				AchievementManager.addAchievementPage(achObj.get("name").getAsString(),
+						achObj.get("map_id").getAsInt());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DYNServerMod.logger.error("Could not get Achievement Maps");
 		}
 	}
 
@@ -50,8 +54,7 @@ public class AchievementsMod {
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		
-//		metadata = MetaData.init(metadata);
+
 		MetaData.init(event.getModMetadata());
 		try {
 
