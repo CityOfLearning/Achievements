@@ -198,7 +198,7 @@ public class AchievementPlus extends Achievement {
 
 	// optional but needed to award a badge online;
 	private int badgeId;
-	
+
 	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int orgId,
 			int badgeId, int achievementId, int mapId, int worldId, AchievementPlus parent, boolean awarded,
 			String texture) {
@@ -222,7 +222,7 @@ public class AchievementPlus extends Achievement {
 		this.parent = parent;
 		xCoord = xPos;
 		yCoord = yPos;
-		if((FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)){
+		if ((FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)) {
 			TextureHelper.addTexture(textureid, texture);
 		}
 		AchievementManager.registerAchievement(this);
@@ -405,10 +405,9 @@ public class AchievementPlus extends Achievement {
 			}
 		}
 		reply.add("requirements", req);
-		if(TextureHelper.isTextureStatic(textureid)){
+		if (TextureHelper.isTextureStatic(textureid)) {
 			reply.addProperty("texture", TextureHelper.getStaticTexture(textureid).toString());
-		}
-		else if (TextureHelper.isTextureDynamic(textureid)) {
+		} else if (TextureHelper.isTextureDynamic(textureid)) {
 			reply.addProperty("texture", TextureHelper.getDynamicTexture(textureid).toString());
 		}
 		if ((badgeId > 0) && (org_id > 0)) {
@@ -529,7 +528,7 @@ public class AchievementPlus extends Achievement {
 	public void setTexture(ResourceLocation tex) {
 		TextureHelper.addStaticTexture(textureid, tex);
 	}
-	
+
 	public void setTexture(String tex) {
 		TextureHelper.addTexture(textureid, tex);
 	}

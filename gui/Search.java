@@ -51,15 +51,17 @@ public class Search extends Show {
 			hoverText.add(a.getName());
 			hoverText.add(a.getDescription());
 			if (a.getTextureId() == null) {
-				entries.add(new PictureButtonGridEntry(25, 25, new ResourceLocation("minecraft", "textures/items/experience_bottle.png")).doesDrawHoverText(true).setHoverText(hoverText)
-						.setClickListener((PictureButtonGridEntry entry, Grid grid, int mouseX, int mouseY) -> getStage()
-								.display(new Info(a))));
+				entries.add(new PictureButtonGridEntry(25, 25,
+						new ResourceLocation("minecraft", "textures/items/experience_bottle.png"))
+								.doesDrawHoverText(true).setHoverText(hoverText)
+								.setClickListener((PictureButtonGridEntry entry, Grid grid, int mouseX,
+										int mouseY) -> getStage().display(new Info(a))));
 			} else {
-				entries.add(new PictureButtonGridEntry(25, 25, a.getTextureId()).doesDrawHoverText(true).setHoverText(hoverText)
-						.setClickListener((PictureButtonGridEntry entry, Grid grid, int mouseX, int mouseY) -> getStage()
-								.display(new Info(a))));
+				entries.add(new PictureButtonGridEntry(25, 25, a.getTextureId()).doesDrawHoverText(true)
+						.setHoverText(hoverText).setClickListener((PictureButtonGridEntry entry, Grid grid, int mouseX,
+								int mouseY) -> getStage().display(new Info(a))));
 			}
-			
+
 		}
 
 		achievementGrid = new ScrollableGrid((int) (width / 5.8), (int) (height * .25), (int) (width * .65),
@@ -84,15 +86,17 @@ public class Search extends Show {
 					hoverText.add(a.getName());
 					hoverText.add(a.getDescription());
 					if (a.getTextureId() == null) {
-						achievementGrid.add(new PictureButtonGridEntry(25, 25, new ResourceLocation("minecraft", "textures/items/experience_bottle.png")).doesDrawHoverText(true)
-								.setHoverText(hoverText).setClickListener((PictureButtonGridEntry entry, Grid grid,
-										int mouseX, int mouseY) -> getStage().display(new Info(a))));
+						achievementGrid.add(new PictureButtonGridEntry(25, 25,
+								new ResourceLocation("minecraft", "textures/items/experience_bottle.png"))
+										.doesDrawHoverText(true).setHoverText(hoverText)
+										.setClickListener((PictureButtonGridEntry entry, Grid grid, int mouseX,
+												int mouseY) -> getStage().display(new Info(a))));
 					} else {
 						achievementGrid.add(new PictureButtonGridEntry(25, 25, a.getTextureId()).doesDrawHoverText(true)
 								.setHoverText(hoverText).setClickListener((PictureButtonGridEntry entry, Grid grid,
 										int mouseX, int mouseY) -> getStage().display(new Info(a))));
 					}
-					
+
 				}
 			} else {
 				for (AchievementPlus a : AchievementManager.findAchievementsByName(textbox.getText())) {
@@ -100,9 +104,11 @@ public class Search extends Show {
 					hoverText.add(a.getName());
 					hoverText.add(a.getDescription());
 					if (a.getTextureId() == null) {
-						achievementGrid.add(new PictureButtonGridEntry(25, 25, new ResourceLocation("minecraft", "textures/items/experience_bottle.png")).doesDrawHoverText(true)
-								.setHoverText(hoverText).setClickListener((PictureButtonGridEntry entry, Grid grid,
-										int mouseX, int mouseY) -> getStage().display(new Info(a))));
+						achievementGrid.add(new PictureButtonGridEntry(25, 25,
+								new ResourceLocation("minecraft", "textures/items/experience_bottle.png"))
+										.doesDrawHoverText(true).setHoverText(hoverText)
+										.setClickListener((PictureButtonGridEntry entry, Grid grid, int mouseX,
+												int mouseY) -> getStage().display(new Info(a))));
 					} else {
 						achievementGrid.add(new PictureButtonGridEntry(25, 25, a.getTextureId()).doesDrawHoverText(true)
 								.setHoverText(hoverText).setClickListener((PictureButtonGridEntry entry, Grid grid,

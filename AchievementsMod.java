@@ -17,7 +17,6 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ModMetadata;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -42,6 +41,7 @@ public class AchievementsMod {
 						achObj.get("map_id").getAsInt());
 			}
 		} catch (Exception e) {
+			// likely due to offline mode but still can cause crashes
 			e.printStackTrace();
 			DYNServerMod.logger.error("Could not get Achievement Maps");
 		}

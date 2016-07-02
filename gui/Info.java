@@ -40,9 +40,11 @@ public class Info extends Show {
 				"Description: " + achievement.getDescription(), TextAlignment.LEFT).setMultilined(true));
 
 		if (TextureHelper.textureExists(achievement.getTextureId())) {
-		registerComponent(new Picture((int) (width * .15), (int) (height * .15), width / 6, width / 6, achievement.getTextureId()));
+			registerComponent(new Picture((int) (width * .15), (int) (height * .15), width / 6, width / 6,
+					achievement.getTextureId()));
 		} else {
-			registerComponent(new Picture((int) (width * .15), (int) (height * .15), width / 6, width / 6, new ResourceLocation("minecraft", "textures/items/experience_bottle.png")));
+			registerComponent(new Picture((int) (width * .15), (int) (height * .15), width / 6, width / 6,
+					new ResourceLocation("minecraft", "textures/items/experience_bottle.png")));
 		}
 		ArrayList<ListEntry> ulist = new ArrayList<ListEntry>();
 
