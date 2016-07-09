@@ -5,7 +5,7 @@ import org.lwjgl.input.Keyboard;
 import com.dyn.achievements.gui.DynOverlay;
 import com.dyn.achievements.gui.Search;
 import com.dyn.achievements.handlers.NotificationsManager;
-import com.rabbit.gui.GuiFoundation;
+import com.rabbit.gui.RabbitGui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -51,7 +51,7 @@ public class Client implements Proxy {
 			return;
 		}
 		if (achievementKey.isPressed()) {
-			GuiFoundation.proxy.display(new Search());
+			RabbitGui.proxy.display(new Search());
 		}
 
 		if (hideGuiKey.isPressed()) {
