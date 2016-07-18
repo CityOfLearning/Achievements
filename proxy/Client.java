@@ -2,7 +2,7 @@ package com.dyn.achievements.proxy;
 
 import org.lwjgl.input.Keyboard;
 
-import com.dyn.achievements.gui.DynOverlay;
+import com.dyn.DynOverlay;
 import com.dyn.achievements.gui.Search;
 import com.dyn.achievements.handlers.NotificationsManager;
 import com.rabbit.gui.RabbitGui;
@@ -61,8 +61,8 @@ public class Client implements Proxy {
 
 	@SubscribeEvent
 	public void onRenderTick(TickEvent.RenderTickEvent event) {
-		if (Minecraft.getMinecraft().inGameHasFocus && !hideGui) {
-			achOverlay.drawOverlay();
+		if (Minecraft.getMinecraft().inGameHasFocus) {
+			achOverlay.drawOverlay(hideGui);
 		}
 		if (!(Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu)) {
 			notificationsManager.renderNotifications();

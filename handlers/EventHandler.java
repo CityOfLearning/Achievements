@@ -2,12 +2,24 @@ package com.dyn.achievements.handlers;
 
 import java.util.Random;
 
+import com.derimagia.forgeslack.slack.SlackSender;
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
+import com.dyn.achievements.achievement.Requirements.BreakRequirement;
+import com.dyn.achievements.achievement.Requirements.BrewRequirement;
+import com.dyn.achievements.achievement.Requirements.CraftRequirement;
+import com.dyn.achievements.achievement.Requirements.KillRequirement;
 import com.dyn.achievements.achievement.Requirements.LocationRequirement;
+import com.dyn.achievements.achievement.Requirements.MentorRequirement;
+import com.dyn.achievements.achievement.Requirements.PickupRequirement;
+import com.dyn.achievements.achievement.Requirements.PlaceRequirement;
+import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
+import com.dyn.achievements.achievement.Requirements.StatRequirement;
 import com.dyn.server.packets.PacketDispatcher;
 import com.dyn.server.packets.client.SyncAchievementsMessage;
+import com.forgeessentials.commons.selections.AreaBase;
+import com.forgeessentials.commons.selections.Point;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,6 +72,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.getPlayer());
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.getPlayer().getDisplayNameString());
+								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -72,18 +88,16 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.getPlayer());
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.getPlayer().getDisplayNameString());
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-	}
-
-	public boolean contains(Vec3 achPoint1, Vec3 achPoint2, Vec3 playerPoint) {
-		Vec3 corner1 = getMinPoint(achPoint1, achPoint2);
-		Vec3 corner2 = getMaxPoint(achPoint1, achPoint2);
-		return isGreaterEqualThan(corner2, playerPoint) && isLessEqualThan(corner1, playerPoint);
 	}
 
 	@SubscribeEvent
@@ -102,6 +116,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.CRAFT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.player.getDisplayNameString());
+								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -114,31 +132,16 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.CRAFT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.player.getDisplayNameString());
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-	}
-
-	/**
-	 * Get the highest XYZ coordinate in OOBB [p1,p2]
-	 */
-	public Vec3 getMaxPoint(Vec3 p1, Vec3 p2) {
-		return new Vec3(Math.max(p1.xCoord, p2.xCoord), Math.max(p1.yCoord, p2.yCoord), Math.max(p1.zCoord, p2.zCoord));
-	}
-
-	public Vec3 getMinPoint(Vec3 p1, Vec3 p2) {
-		return new Vec3(Math.min(p1.xCoord, p2.xCoord), Math.min(p1.yCoord, p2.yCoord), Math.min(p1.zCoord, p2.zCoord));
-	}
-
-	/**
-	 * Checks if this point has greater or equal coordinates than another point
-	 * on all axes
-	 */
-	public boolean isGreaterEqualThan(Vec3 origin, Vec3 p) {
-		return (origin.xCoord >= p.xCoord) && (origin.yCoord >= p.yCoord) && (origin.zCoord >= p.zCoord);
 	}
 
 	/*
@@ -158,12 +161,46 @@ public class EventHandler {
 	// we either should find an alternative, thread this, or keep code as
 	// minimal as possible
 
-	/**
-	 * Checks if this point has less or equal coordinates than another point on
-	 * all axes
-	 */
-	public boolean isLessEqualThan(Vec3 origin, Vec3 p) {
-		return (origin.xCoord <= p.xCoord) && (origin.yCoord <= p.yCoord) && (origin.zCoord <= p.zCoord);
+	private String getDescription(BaseRequirement r) {
+		String description = "";
+		if (r instanceof CraftRequirement) {
+			description += "Crafted ";
+		}
+		if (r instanceof SmeltRequirement) {
+			description += "Smelted ";
+		}
+		if (r instanceof PickupRequirement) {
+			description += "Picked up ";
+		}
+		if (r instanceof StatRequirement) {
+			// TODO need to figure out how to parse these
+			description = "";
+		}
+		if (r instanceof KillRequirement) {
+			description += "Killed ";
+		}
+		if (r instanceof BrewRequirement) {
+			description += "Brewed ";
+		}
+		if (r instanceof PlaceRequirement) {
+			description += "Placed ";
+		}
+		if (r instanceof BreakRequirement) {
+			description += "Broke ";
+		}
+		if (r instanceof MentorRequirement) {
+			// TODO need to figure out how to parse these
+			description += "were awarded ";
+		}
+		if (r instanceof LocationRequirement) {
+			description += "Found ";
+		} else {
+			description += r.getTotalNeeded() + " ";
+		}
+
+		description += r.getRequirementEntityName();
+
+		return description;
 	}
 
 	@SubscribeEvent
@@ -185,6 +222,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.KILL + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.source.getEntity());
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.source.getEntity().getName());
+								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -199,6 +240,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.KILL + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.source.getEntity());
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.source.getEntity().getName());
+								}
 							}
 						}
 					}
@@ -218,9 +263,9 @@ public class EventHandler {
 								LocationRequirement lr = (LocationRequirement) r;
 								Vec3 achVec1 = new Vec3(lr.x1, lr.y1, lr.z1);
 								Vec3 playerVec = new Vec3(event.player.posX, event.player.posY, event.player.posZ);
-								if (lr.r >= 0) { // if the requirement is based
-													// on
-													// the radius from a point
+								if (lr.r >= 0) {
+									// if the requirement is based on the radius
+									// from a point
 									if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 											RequirementType.LOCATION, r.getRequirementID())
 											&& (achVec1.distanceTo(playerVec) < lr.r)) {
@@ -232,14 +277,16 @@ public class EventHandler {
 												new SyncAchievementsMessage("" + a.getId() + " "
 														+ RequirementType.LOCATION + " " + r.getRequirementID()),
 												(EntityPlayerMP) event.player);
+										if (r.getTotalAquired() == r.getTotalNeeded()) {
+											SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+													event.player.getDisplayNameString());
+										}
 									}
-								} else { // the requirement is based on a
-											// defined
-											// area
-									Vec3 achVec2 = new Vec3(lr.x2, lr.y2, lr.z2);
+								} else {
+									AreaBase achArea = new AreaBase(new Point(achVec1), new Point(lr.x2, lr.y2, lr.z2));
 									if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 											RequirementType.LOCATION, r.getRequirementID())
-											&& contains(achVec1, achVec2, playerVec)) {
+											&& achArea.contains(new Point(playerVec))) {
 										AchievementManager.incrementPlayersAchievementsTotal(event.player, a,
 												RequirementType.LOCATION, r.getRequirementID());
 										event.player.addChatMessage(new ChatComponentText(
@@ -248,6 +295,10 @@ public class EventHandler {
 												new SyncAchievementsMessage("" + a.getId() + " "
 														+ RequirementType.LOCATION + " " + r.getRequirementID()),
 												(EntityPlayerMP) event.player);
+										if (r.getTotalAquired() == r.getTotalNeeded()) {
+											SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+													event.player.getDisplayNameString());
+										}
 									}
 								}
 							}
@@ -275,6 +326,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PICKUP + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.player.getDisplayNameString());
+								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -288,6 +343,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PICKUP + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.player.getDisplayNameString());
+								}
 							}
 						}
 					}
@@ -313,6 +372,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PLACE + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.player.getDisplayNameString());
+								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -325,6 +388,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PLACE + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.player.getDisplayNameString());
+								}
 							}
 						}
 					}
@@ -351,6 +418,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.SMELT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.player.getDisplayNameString());
+								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -363,6 +434,10 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.SMELT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+								if (r.getTotalAquired() == r.getTotalNeeded()) {
+									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
+											event.player.getDisplayNameString());
+								}
 							}
 						}
 					}
