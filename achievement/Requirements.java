@@ -104,6 +104,13 @@ public class Requirements {
 		public void setSubItemId(int id) {
 			sub_id = id;
 		}
+		
+		
+		@Override
+		public String toString()
+		{
+			return String.format("id: %d, ", id);
+		}
 	}
 
 	public class BreakRequirement extends BaseRequirement {
@@ -152,6 +159,11 @@ public class Requirements {
 			item = new ItemStack(Item.getItemById(id), 1, subItemId);
 			setItemId(id);
 			setSubItemId(subItemId);
+		}
+
+		@Override
+		public String toString() {
+			return "Break: " +super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -202,6 +214,11 @@ public class Requirements {
 			setItemId(id);
 			setSubItemId(subItemId);
 		}
+
+		@Override
+		public String toString() {
+			return "Brew: " +super.toString() + " - " + getRequirementEntityName();
+		}
 	}
 
 	public class CraftRequirement extends BaseRequirement {
@@ -251,6 +268,11 @@ public class Requirements {
 			setItemId(id);
 			setSubItemId(subItemId);
 		}
+
+		@Override
+		public String toString() {
+			return "Craft: " +super.toString() + " - " + getRequirementEntityName();
+		}
 	}
 
 	public class KillRequirement extends BaseRequirement {
@@ -293,6 +315,11 @@ public class Requirements {
 		@Override
 		public String getRequirementEntityName() {
 			return entityType;
+		}
+
+		@Override
+		public String toString() {
+			return "Kill: " +super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -364,6 +391,15 @@ public class Requirements {
 		public String getRequirementEntityName() {
 			return name;
 		}
+
+		@Override
+		public String toString() {
+			if(r>0){
+				return "Location: " +super.toString() + " - " + getRequirementEntityName() + String.format(" <x: %d> <y: %d> <z: %d> <r: %d>", x1,y1,z1,r);
+			} else {
+				return "Location: " +super.toString() + " - " + getRequirementEntityName() + String.format(" <x1: %d> <y1: %d> <z1: %d> <x2: %d> <y2: %d> <z2: %d>", x1,y1,z1,x2, y2, z2);
+			}
+		}
 	}
 
 	public class MentorRequirement extends BaseRequirement {
@@ -406,6 +442,11 @@ public class Requirements {
 		@Override
 		public String getRequirementEntityName() {
 			return info;
+		}
+
+		@Override
+		public String toString() {
+			return "Mentor: " +super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -456,6 +497,11 @@ public class Requirements {
 			setItemId(id);
 			setSubItemId(subItemId);
 		}
+
+		@Override
+		public String toString() {
+			return "Pickup: " +super.toString() + " - " + getRequirementEntityName();
+		}
 	}
 
 	public class PlaceRequirement extends BaseRequirement {
@@ -504,6 +550,11 @@ public class Requirements {
 			item = new ItemStack(Item.getItemById(id), 1, subItemId);
 			setItemId(id);
 			setSubItemId(subItemId);
+		}
+
+		@Override
+		public String toString() {
+			return "Place: " +super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -554,6 +605,11 @@ public class Requirements {
 			setItemId(id);
 			setSubItemId(subItemId);
 		}
+
+		@Override
+		public String toString() {
+			return "Smelt: " +super.toString() + " - " + getRequirementEntityName();
+		}
 	}
 
 	public class StatRequirement extends BaseRequirement {
@@ -596,6 +652,11 @@ public class Requirements {
 		@Override
 		public String getRequirementEntityName() {
 			return eventStat.toString();
+		}
+
+		@Override
+		public String toString() {
+			return "Stat: " +super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
