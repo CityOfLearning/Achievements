@@ -72,10 +72,7 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.getPlayer());
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.getPlayer().getDisplayNameString());
-								}
+								
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -88,10 +85,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.getPlayer());
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.getPlayer().getDisplayNameString());
-								}
 							}
 						}
 					}
@@ -116,10 +109,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.CRAFT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.player.getDisplayNameString());
-								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -132,10 +121,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.CRAFT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.player.getDisplayNameString());
-								}
 							}
 						}
 					}
@@ -161,47 +146,7 @@ public class EventHandler {
 	// we either should find an alternative, thread this, or keep code as
 	// minimal as possible
 
-	private String getDescription(BaseRequirement r) {
-		String description = "";
-		if (r instanceof CraftRequirement) {
-			description += "Crafted ";
-		}
-		if (r instanceof SmeltRequirement) {
-			description += "Smelted ";
-		}
-		if (r instanceof PickupRequirement) {
-			description += "Picked up ";
-		}
-		if (r instanceof StatRequirement) {
-			// TODO need to figure out how to parse these
-			description = "";
-		}
-		if (r instanceof KillRequirement) {
-			description += "Killed ";
-		}
-		if (r instanceof BrewRequirement) {
-			description += "Brewed ";
-		}
-		if (r instanceof PlaceRequirement) {
-			description += "Placed ";
-		}
-		if (r instanceof BreakRequirement) {
-			description += "Broke ";
-		}
-		if (r instanceof MentorRequirement) {
-			// TODO need to figure out how to parse these
-			description += "were awarded ";
-		}
-		if (r instanceof LocationRequirement) {
-			description += "Found ";
-		} else {
-			description += r.getTotalNeeded() + " ";
-		}
-
-		description += r.getRequirementEntityName();
-
-		return description;
-	}
+	
 
 	@SubscribeEvent
 	public void killEvent(LivingDeathEvent event) {
@@ -222,10 +167,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.KILL + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.source.getEntity());
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.source.getEntity().getName());
-								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -240,10 +181,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.KILL + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.source.getEntity());
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.source.getEntity().getName());
-								}
 							}
 						}
 					}
@@ -277,10 +214,6 @@ public class EventHandler {
 												new SyncAchievementsMessage("" + a.getId() + " "
 														+ RequirementType.LOCATION + " " + r.getRequirementID()),
 												(EntityPlayerMP) event.player);
-										if (r.getTotalAquired() == r.getTotalNeeded()) {
-											SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-													event.player.getDisplayNameString());
-										}
 									}
 								} else {
 									AreaBase achArea = new AreaBase(new Point(achVec1), new Point(lr.x2, lr.y2, lr.z2));
@@ -295,10 +228,6 @@ public class EventHandler {
 												new SyncAchievementsMessage("" + a.getId() + " "
 														+ RequirementType.LOCATION + " " + r.getRequirementID()),
 												(EntityPlayerMP) event.player);
-										if (r.getTotalAquired() == r.getTotalNeeded()) {
-											SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-													event.player.getDisplayNameString());
-										}
 									}
 								}
 							}
@@ -326,10 +255,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PICKUP + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.player.getDisplayNameString());
-								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -343,10 +268,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PICKUP + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.player.getDisplayNameString());
-								}
 							}
 						}
 					}
@@ -372,10 +293,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PLACE + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.player.getDisplayNameString());
-								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -388,10 +305,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PLACE + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.player.getDisplayNameString());
-								}
 							}
 						}
 					}
@@ -418,10 +331,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.SMELT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.player.getDisplayNameString());
-								}
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -434,10 +343,6 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.SMELT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
-								if (r.getTotalAquired() == r.getTotalNeeded()) {
-									SlackSender.getInstance().send("Requirement Met: " + getDescription(r),
-											event.player.getDisplayNameString());
-								}
 							}
 						}
 					}
