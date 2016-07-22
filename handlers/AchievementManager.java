@@ -705,4 +705,12 @@ public class AchievementManager {
 
 		}
 	}
+
+	public static Map<String, AchievementPage> getAchievementPageTextures() {
+		return achievementPageTextures;
+	}
+
+	public static void setAchievementPageTexture(String texture, AchievementPage page) {
+		AchievementManager.achievementPageTextures.put(texture, page);
+	}
 }
