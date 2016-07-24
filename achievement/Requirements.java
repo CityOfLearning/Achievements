@@ -104,11 +104,9 @@ public class Requirements {
 		public void setSubItemId(int id) {
 			sub_id = id;
 		}
-		
-		
+
 		@Override
-		public String toString()
-		{
+		public String toString() {
 			return String.format("id: %d, ", id);
 		}
 	}
@@ -163,7 +161,7 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			return "Break: " +super.toString() + " - " + getRequirementEntityName();
+			return "Break: " + super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -217,7 +215,7 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			return "Brew: " +super.toString() + " - " + getRequirementEntityName();
+			return "Brew: " + super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -271,7 +269,7 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			return "Craft: " +super.toString() + " - " + getRequirementEntityName();
+			return "Craft: " + super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -319,7 +317,7 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			return "Kill: " +super.toString() + " - " + getRequirementEntityName();
+			return "Kill: " + super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -394,10 +392,12 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			if(r>0){
-				return "Location: " +super.toString() + " - " + getRequirementEntityName() + String.format(" <x: %d> <y: %d> <z: %d> <r: %d>", x1,y1,z1,r);
+			if (r > 0) {
+				return "Location: " + super.toString() + " - " + getRequirementEntityName()
+						+ String.format(" <x: %d> <y: %d> <z: %d> <r: %d>", x1, y1, z1, r);
 			} else {
-				return "Location: " +super.toString() + " - " + getRequirementEntityName() + String.format(" <x1: %d> <y1: %d> <z1: %d> <x2: %d> <y2: %d> <z2: %d>", x1,y1,z1,x2, y2, z2);
+				return "Location: " + super.toString() + " - " + getRequirementEntityName() + String
+						.format(" <x1: %d> <y1: %d> <z1: %d> <x2: %d> <y2: %d> <z2: %d>", x1, y1, z1, x2, y2, z2);
 			}
 		}
 	}
@@ -446,7 +446,7 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			return "Mentor: " +super.toString() + " - " + getRequirementEntityName();
+			return "Mentor: " + super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -500,7 +500,7 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			return "Pickup: " +super.toString() + " - " + getRequirementEntityName();
+			return "Pickup: " + super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -554,7 +554,7 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			return "Place: " +super.toString() + " - " + getRequirementEntityName();
+			return "Place: " + super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -608,7 +608,7 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			return "Smelt: " +super.toString() + " - " + getRequirementEntityName();
+			return "Smelt: " + super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 
@@ -656,7 +656,7 @@ public class Requirements {
 
 		@Override
 		public String toString() {
-			return "Stat: " +super.toString() + " - " + getRequirementEntityName();
+			return "Stat: " + super.toString() + " - " + getRequirementEntityName();
 		}
 	}
 

@@ -2,20 +2,10 @@ package com.dyn.achievements.handlers;
 
 import java.util.Random;
 
-import com.derimagia.forgeslack.slack.SlackSender;
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
-import com.dyn.achievements.achievement.Requirements.BreakRequirement;
-import com.dyn.achievements.achievement.Requirements.BrewRequirement;
-import com.dyn.achievements.achievement.Requirements.CraftRequirement;
-import com.dyn.achievements.achievement.Requirements.KillRequirement;
 import com.dyn.achievements.achievement.Requirements.LocationRequirement;
-import com.dyn.achievements.achievement.Requirements.MentorRequirement;
-import com.dyn.achievements.achievement.Requirements.PickupRequirement;
-import com.dyn.achievements.achievement.Requirements.PlaceRequirement;
-import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
-import com.dyn.achievements.achievement.Requirements.StatRequirement;
 import com.dyn.server.packets.PacketDispatcher;
 import com.dyn.server.packets.client.SyncAchievementsMessage;
 import com.forgeessentials.commons.selections.AreaBase;
@@ -72,7 +62,7 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.getPlayer());
-								
+
 							}
 						}
 					} else if (a.getWorldId() == 0) {
@@ -145,8 +135,6 @@ public class EventHandler {
 	// this is really dangerous as it happens every game tick,
 	// we either should find an alternative, thread this, or keep code as
 	// minimal as possible
-
-	
 
 	@SubscribeEvent
 	public void killEvent(LivingDeathEvent event) {

@@ -117,6 +117,10 @@ public class AchievementManager {
 		return achList;
 	}
 
+	public static Map<String, AchievementPage> getAchievementPageTextures() {
+		return achievementPageTextures;
+	}
+
 	/***
 	 * Gets list of all achievements.
 	 *
@@ -124,6 +128,48 @@ public class AchievementManager {
 	 */
 	public static List<AchievementPlus> getAllAchievements() {
 		return achievements;
+	}
+
+	private static String getDescription(BaseRequirement r) {
+		String description = "";
+		if (r instanceof CraftRequirement) {
+			description += "Crafted ";
+		}
+		if (r instanceof SmeltRequirement) {
+			description += "Smelted ";
+		}
+		if (r instanceof PickupRequirement) {
+			description += "Picked up ";
+		}
+		if (r instanceof StatRequirement) {
+			// TODO need to figure out how to parse these
+			description = "";
+		}
+		if (r instanceof KillRequirement) {
+			description += "Killed ";
+		}
+		if (r instanceof BrewRequirement) {
+			description += "Brewed ";
+		}
+		if (r instanceof PlaceRequirement) {
+			description += "Placed ";
+		}
+		if (r instanceof BreakRequirement) {
+			description += "Broke ";
+		}
+		if (r instanceof MentorRequirement) {
+			// TODO need to figure out how to parse these
+			description += "were awarded ";
+		}
+		if (r instanceof LocationRequirement) {
+			description += "Found ";
+		} else {
+			description += r.getTotalNeeded() + " ";
+		}
+
+		description += r.getRequirementEntityName();
+
+		return description;
 	}
 
 	@SideOnly(Side.SERVER)
@@ -235,8 +281,8 @@ public class AchievementManager {
 					if (achReqs.get(j).getRequirementID() == req_id) {
 						achReqs.get(j).incrementTotal();
 						if (achReqs.get(j).getTotalAquired() == achReqs.get(j).getTotalNeeded()) {
-							SlackSender.getInstance().send("Met Achievement "+ach.getName()+"'s Requirement: " + getDescription(achReqs.get(j)),
-									keyPlayer.getDisplayNameString());
+							SlackSender.getInstance().send("Met Achievement " + ach.getName() + "'s Requirement: "
+									+ getDescription(achReqs.get(j)), keyPlayer.getDisplayNameString());
 						}
 					}
 				}
@@ -246,48 +292,6 @@ public class AchievementManager {
 			e.printStackTrace();
 		}
 
-	}
-	
-	private static String getDescription(BaseRequirement r) {
-		String description = "";
-		if (r instanceof CraftRequirement) {
-			description += "Crafted ";
-		}
-		if (r instanceof SmeltRequirement) {
-			description += "Smelted ";
-		}
-		if (r instanceof PickupRequirement) {
-			description += "Picked up ";
-		}
-		if (r instanceof StatRequirement) {
-			// TODO need to figure out how to parse these
-			description = "";
-		}
-		if (r instanceof KillRequirement) {
-			description += "Killed ";
-		}
-		if (r instanceof BrewRequirement) {
-			description += "Brewed ";
-		}
-		if (r instanceof PlaceRequirement) {
-			description += "Placed ";
-		}
-		if (r instanceof BreakRequirement) {
-			description += "Broke ";
-		}
-		if (r instanceof MentorRequirement) {
-			// TODO need to figure out how to parse these
-			description += "were awarded ";
-		}
-		if (r instanceof LocationRequirement) {
-			description += "Found ";
-		} else {
-			description += r.getTotalNeeded() + " ";
-		}
-
-		description += r.getRequirementEntityName();
-
-		return description;
 	}
 
 	private static void parseRequirementEntityNames(AchievementPlus achievement) {
@@ -456,6 +460,10 @@ public class AchievementManager {
 			}
 			achievementsType.get(RequirementType.LOCATION).add(achievement);
 		}
+	}
+
+	public static void setAchievementPageTexture(String texture, AchievementPage page) {
+		AchievementManager.achievementPageTextures.put(texture, page);
 	}
 
 	@SideOnly(Side.SERVER)
@@ -704,13 +712,5 @@ public class AchievementManager {
 			}
 
 		}
-	}
-
-	public static Map<String, AchievementPage> getAchievementPageTextures() {
-		return achievementPageTextures;
-	}
-
-	public static void setAchievementPageTexture(String texture, AchievementPage page) {
-		AchievementManager.achievementPageTextures.put(texture, page);
 	}
 }

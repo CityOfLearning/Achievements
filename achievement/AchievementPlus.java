@@ -146,7 +146,7 @@ public class AchievementPlus extends Achievement {
 					r.x1 = reqSubType.get("x").getAsInt();
 					r.y1 = reqSubType.get("y").getAsInt();
 					r.z1 = reqSubType.get("z").getAsInt();
-					if (reqSubType.has("radius") && reqSubType.get("radius").getAsInt() > 0) {
+					if (reqSubType.has("radius") && (reqSubType.get("radius").getAsInt() > 0)) {
 						r.r = reqSubType.get("radius").getAsInt();
 					} else {
 						r.r = -1; // set the radius negative to flag it as an
