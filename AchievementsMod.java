@@ -38,6 +38,7 @@ public class AchievementsMod {
 			for (JsonElement ach : jsonA) {
 				JsonObject achObj = ach.getAsJsonObject();
 				AchievementManager.addAchievementPage(achObj.get("name").getAsString(),
+						achObj.get("texture").isJsonNull() ? null : achObj.get("texture").getAsString(),
 						achObj.get("map_id").getAsInt());
 			}
 		} catch (Exception e) {

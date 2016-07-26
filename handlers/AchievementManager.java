@@ -43,7 +43,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class AchievementManager {
 
-	private static Map<String, AchievementPage> achievementPageTextures = new HashMap<String, AchievementPage>();
+	private static Map<AchievementPage, String> achievementPageTextures = new HashMap<AchievementPage, String>();
 	private static List<AchievementPlus> achievements = new ArrayList<AchievementPlus>();
 	private static Map<String, AchievementPlus> achievementNames = new HashMap<String, AchievementPlus>();
 	private static Map<Integer, AchievementPlus> achievementIds = new HashMap<Integer, AchievementPlus>();
@@ -59,7 +59,7 @@ public class AchievementManager {
 	 * @param achievements
 	 *            ArrayList of achievements
 	 */
-	public static void addAchievementPage(String pageName, int id) {
+	public static void addAchievementPage(String pageName, String texture, int id) {
 		List<AchievementPlus> achievementsInMap = new ArrayList<AchievementPlus>();
 		for (AchievementPlus achievement : AchievementManager.getAllAchievements()) {
 			if (achievement.getMapId() == id) {
@@ -70,7 +70,7 @@ public class AchievementManager {
 			AchievementPage page = new AchievementPage(pageName,
 					achievementsInMap.toArray(new Achievement[achievements.size()]));
 			AchievementPage.registerAchievementPage(page);
-			achievementPageTextures.put(pageName, page);
+			achievementPageTextures.put(page, texture);
 		}
 	}
 
@@ -117,7 +117,7 @@ public class AchievementManager {
 		return achList;
 	}
 
-	public static Map<String, AchievementPage> getAchievementPageTextures() {
+	public static Map<AchievementPage, String> getAchievementPageTextures() {
 		return achievementPageTextures;
 	}
 
@@ -463,7 +463,7 @@ public class AchievementManager {
 	}
 
 	public static void setAchievementPageTexture(String texture, AchievementPage page) {
-		AchievementManager.achievementPageTextures.put(texture, page);
+		AchievementManager.achievementPageTextures.put(page, texture);
 	}
 
 	@SideOnly(Side.SERVER)

@@ -52,69 +52,109 @@ public class Info extends Show {
 			ulist.add(new StringEntry("-Craft-"));
 		}
 		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.CRAFT)) {
-			ulist.add(new StringEntry(
-					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			if(r.getTotalAquired() == r.getTotalNeeded()){
+				ulist.add(new StringEntry("\u00a72\u00a7m"+
+						r.getRequirementEntityName() + "\u00a7r - \u00a7a" + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			} else {
+				ulist.add(new StringEntry("\u00a76" +
+						r.getRequirementEntityName() + " - \u00a7c" + r.getTotalAquired() + "\u00a7r/\u00a7a" + r.getTotalNeeded()));
+			}
 		}
 
 		if (achievement.hasRequirementOfType(RequirementType.SMELT)) {
 			ulist.add(new StringEntry("-Smelt-"));
 		}
 		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.SMELT)) {
-			ulist.add(new StringEntry(
-					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			if(r.getTotalAquired() == r.getTotalNeeded()){
+				ulist.add(new StringEntry("\u00a72\u00a7m"+
+						r.getRequirementEntityName() + "\u00a7r - \u00a7a" + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			} else {
+				ulist.add(new StringEntry("\u00a76" +
+						r.getRequirementEntityName() + " - \u00a7c" + r.getTotalAquired() + "\u00a7r/\u00a7a" + r.getTotalNeeded()));
+			}
 		}
 
 		if (achievement.hasRequirementOfType(RequirementType.PICKUP)) {
 			ulist.add(new StringEntry("-Pickup-"));
 		}
 		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.PICKUP)) {
-			ulist.add(new StringEntry(
-					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			if(r.getTotalAquired() == r.getTotalNeeded()){
+				ulist.add(new StringEntry("\u00a72\u00a7m"+
+						r.getRequirementEntityName() + "\u00a7r - \u00a7a" + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			} else {
+				ulist.add(new StringEntry("\u00a76" +
+						r.getRequirementEntityName() + " - \u00a7c" + r.getTotalAquired() + "\u00a7r/\u00a7a" + r.getTotalNeeded()));
+			}
 		}
 
 		if (achievement.hasRequirementOfType(RequirementType.STAT)) {
 			ulist.add(new StringEntry("-Special-"));
 		}
 		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.STAT)) {
-			ulist.add(new StringEntry(
-					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			if(r.getTotalAquired() == r.getTotalNeeded()){
+				ulist.add(new StringEntry("\u00a72\u00a7m"+
+						r.getRequirementEntityName() + "\u00a7r - \u00a7a" + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			} else {
+				ulist.add(new StringEntry("\u00a76" +
+						r.getRequirementEntityName() + " - \u00a7c" + r.getTotalAquired() + "\u00a7r/\u00a7a" + r.getTotalNeeded()));
+			}
 		}
 
 		if (achievement.hasRequirementOfType(RequirementType.KILL)) {
 			ulist.add(new StringEntry("-Kill-"));
 		}
 		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.KILL)) {
-			ulist.add(new StringEntry(
-					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			if(r.getTotalAquired() == r.getTotalNeeded()){
+				ulist.add(new StringEntry("\u00a72\u00a7m"+
+						r.getRequirementEntityName() + "\u00a7r - \u00a7a" + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			} else {
+				ulist.add(new StringEntry("\u00a76" +
+						r.getRequirementEntityName() + " - \u00a7c" + r.getTotalAquired() + "\u00a7r/\u00a7a" + r.getTotalNeeded()));
+			}
 		}
 
 		if (achievement.hasRequirementOfType(RequirementType.BREW)) {
 			ulist.add(new StringEntry("-Brew-"));
 		}
 		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.BREW)) {
-			ulist.add(new StringEntry(
-					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			if(r.getTotalAquired() == r.getTotalNeeded()){
+				ulist.add(new StringEntry("\u00a72\u00a7m"+
+						r.getRequirementEntityName() + "\u00a7r - \u00a7a" + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			} else {
+				ulist.add(new StringEntry("\u00a76" +
+						r.getRequirementEntityName() + " - \u00a7c" + r.getTotalAquired() + "\u00a7r/\u00a7a" + r.getTotalNeeded()));
+			}
 		}
 
 		if (achievement.hasRequirementOfType(RequirementType.PLACE)) {
 			ulist.add(new StringEntry("-Place-"));
 		}
 		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.PLACE)) {
-			ulist.add(new StringEntry(
-					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			if(r.getTotalAquired() == r.getTotalNeeded()){
+				ulist.add(new StringEntry("\u00a72\u00a7m"+
+						r.getRequirementEntityName() + "\u00a7r - \u00a7a" + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			} else {
+				ulist.add(new StringEntry("\u00a76" +
+						r.getRequirementEntityName() + " - \u00a7c" + r.getTotalAquired() + "\u00a7r/\u00a7a" + r.getTotalNeeded()));
+			}
 		}
 		if (achievement.hasRequirementOfType(RequirementType.BREAK)) {
 			ulist.add(new StringEntry("-Break-"));
 		}
 		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.BREAK)) {
-			ulist.add(new StringEntry(
-					r.getRequirementEntityName() + " - " + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			if(r.getTotalAquired() == r.getTotalNeeded()){
+				ulist.add(new StringEntry("\u00a72\u00a7m"+
+						r.getRequirementEntityName() + "\u00a7r - \u00a7a" + r.getTotalAquired() + "/" + r.getTotalNeeded()));
+			} else {
+				ulist.add(new StringEntry("\u00a76" +
+						r.getRequirementEntityName() + " - \u00a7c" + r.getTotalAquired() + "\u00a7r/\u00a7a" + r.getTotalNeeded()));
+			}
 		}
 		if (achievement.hasRequirementOfType(RequirementType.LOCATION)) {
 			ulist.add(new StringEntry("-Location-"));
 		}
 		for (BaseRequirement r : achievement.getRequirements().getRequirementsByType(RequirementType.LOCATION)) {
-			ulist.add(new StringEntry((r.getTotalAquired() > 0 ? "[X]-" : "[ ]-") + r.getRequirementEntityName()));
+			ulist.add(new StringEntry((r.getTotalAquired() > 0 ? "[\u00a7aX\u00a7r] - \u00a72" : "[ ] - \u00a7e") + r.getRequirementEntityName()).setTextAlignment(TextAlignment.LEFT));
 		}
 		if (achievement.hasRequirementOfType(RequirementType.MENTOR)) {
 			ulist.add(new StringEntry("-Mentor-"));
@@ -122,7 +162,7 @@ public class Info extends Show {
 			ulist.add(new StringEntry("give this achievement"));
 		}
 
-		registerComponent(new TextLabel((int) (width * .5), (int) (height * .4), width / 3, 20, "Requirements",
+		registerComponent(new TextLabel((int) (width * .325), (int) (height * .415), width / 2, 20, "Requirements",
 				TextAlignment.CENTER));
 
 		if (achievement.isAwarded()) {
@@ -131,7 +171,7 @@ public class Info extends Show {
 		}
 
 		registerComponent(
-				new ScrollableDisplayList((int) (width * .5), (int) (height * .45), width / 3, 100, 15, ulist));
+				new ScrollableDisplayList((int) (width * .325), (int) (height * .465), width / 2, 100, 15, ulist));
 
 		registerComponent(new Button(width / 6, (int) (height * .8), 40, 20, "Back")
 				.setClickListener(but -> getStage().displayPrevious()));

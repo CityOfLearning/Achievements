@@ -1,6 +1,7 @@
 package com.dyn.achievements.achievement;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ public class Requirements {
 		private int id;
 		private int item_id;
 		private int sub_id;
+		private List<Integer> zone_ids;
 
 		BaseRequirement() {
 			aquired = 0;
@@ -20,6 +22,7 @@ public class Requirements {
 			item_id = 0;
 			sub_id = 0;
 			id = 0;
+			zone_ids = new ArrayList<Integer>();
 		}
 
 		BaseRequirement(BaseRequirement br) {
@@ -28,6 +31,7 @@ public class Requirements {
 			item_id = br.item_id;
 			sub_id = br.sub_id;
 			id = br.id;
+			zone_ids = br.getZoneIds();
 		}
 
 		@Override
@@ -108,6 +112,14 @@ public class Requirements {
 		@Override
 		public String toString() {
 			return String.format("id: %d, ", id);
+		}
+
+		public List<Integer> getZoneIds() {
+			return zone_ids;
+		}
+
+		public void addZoneId(int zone_id) {
+			this.zone_ids.add(zone_id);
 		}
 	}
 

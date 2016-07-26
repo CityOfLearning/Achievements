@@ -10,6 +10,7 @@ import com.dyn.server.packets.PacketDispatcher;
 import com.dyn.server.packets.client.SyncAchievementsMessage;
 import com.forgeessentials.commons.selections.AreaBase;
 import com.forgeessentials.commons.selections.Point;
+import com.forgeessentials.permissions.ModulePermissions;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,8 +45,9 @@ public class EventHandler {
 				} catch (NullPointerException e2) {
 					// if this doesnt work nothing will lets return before we
 					// cause problems
-					event.getPlayer().addChatMessage(new ChatComponentText(
-							"Cannot create item stack from block: " + event.state.getBlock().getLocalizedName()));
+					// event.getPlayer().addChatMessage(new ChatComponentText(
+					// "Cannot create item stack from block: " +
+					// event.state.getBlock().getLocalizedName()));
 					return;
 				}
 			}
@@ -54,27 +56,32 @@ public class EventHandler {
 						.get(is.getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.getPlayer().dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.BREAK)) {
-							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.getPlayer(), a,
-									RequirementType.BREAK, r.getRequirementID())
-									&& r.getRequirementEntityName().equals(is.getDisplayName())) {
-								AchievementManager.incrementPlayersAchievementsTotal(event.getPlayer(), a,
-										RequirementType.BREAK, r.getRequirementID());
-								PacketDispatcher.sendTo(new SyncAchievementsMessage(
-										"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
-										(EntityPlayerMP) event.getPlayer());
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.getPlayer())) {
+								if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.getPlayer(), a,
+										RequirementType.BREAK, r.getRequirementID())
+										&& r.getRequirementEntityName().equals(is.getDisplayName())) {
+									AchievementManager.incrementPlayersAchievementsTotal(event.getPlayer(), a,
+											RequirementType.BREAK, r.getRequirementID());
+									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+											"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
+											(EntityPlayerMP) event.getPlayer());
 
+								}
 							}
+
 						}
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.BREAK)) {
-							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.getPlayer(), a,
-									RequirementType.BREAK, r.getRequirementID())
-									&& r.getRequirementEntityName().equals(is.getDisplayName())) {
-								AchievementManager.incrementPlayersAchievementsTotal(event.getPlayer(), a,
-										RequirementType.BREAK, r.getRequirementID());
-								PacketDispatcher.sendTo(new SyncAchievementsMessage(
-										"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
-										(EntityPlayerMP) event.getPlayer());
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.getPlayer())) {
+								if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.getPlayer(), a,
+										RequirementType.BREAK, r.getRequirementID())
+										&& r.getRequirementEntityName().equals(is.getDisplayName())) {
+									AchievementManager.incrementPlayersAchievementsTotal(event.getPlayer(), a,
+											RequirementType.BREAK, r.getRequirementID());
+									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+											"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
+											(EntityPlayerMP) event.getPlayer());
+								}
 							}
 						}
 					}
@@ -91,6 +98,7 @@ public class EventHandler {
 						.get(event.crafting.getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.CRAFT)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.player)) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 									RequirementType.CRAFT, r.getRequirementID())
 									&& r.getRequirementEntityName().equals(event.crafting.getDisplayName())) {
@@ -100,9 +108,11 @@ public class EventHandler {
 										"" + a.getId() + " " + RequirementType.CRAFT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
 							}
+							}
 						}
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.CRAFT)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.player)) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 									RequirementType.CRAFT, r.getRequirementID())
 									&& r.getRequirementEntityName().equals(event.crafting.getDisplayName())) {
@@ -111,6 +121,7 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.CRAFT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+							}
 							}
 						}
 					}
@@ -145,6 +156,7 @@ public class EventHandler {
 						.get(EntityList.getEntityString(event.entity))) {
 					if ((a.getWorldId() > 0) && (event.source.getEntity().dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.KILL)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, (EntityPlayer) event.source.getEntity())) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(
 									(EntityPlayer) event.source.getEntity(), a, RequirementType.KILL,
 									r.getRequirementID())
@@ -156,9 +168,11 @@ public class EventHandler {
 										"" + a.getId() + " " + RequirementType.KILL + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.source.getEntity());
 							}
+							}
 						}
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.KILL)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, (EntityPlayer) event.source.getEntity())) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(
 									(EntityPlayer) event.source.getEntity(), a, RequirementType.KILL,
 									r.getRequirementID())
@@ -169,6 +183,7 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.KILL + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.source.getEntity());
+							}
 							}
 						}
 					}
@@ -177,6 +192,7 @@ public class EventHandler {
 		}
 	}
 
+	//location based rquirements
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		if ((event.side == Side.SERVER) && (event.player.dimension > 1)) {
@@ -234,6 +250,7 @@ public class EventHandler {
 						.get(event.pickedUp.getEntityItem().getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.PICKUP)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.player)) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 									RequirementType.PICKUP, r.getRequirementID())
 									&& r.getRequirementEntityName()
@@ -245,8 +262,10 @@ public class EventHandler {
 										(EntityPlayerMP) event.player);
 							}
 						}
+						}
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.PICKUP)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.player)) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 									RequirementType.PICKUP, r.getRequirementID())
 									&& r.getRequirementEntityName()
@@ -256,6 +275,7 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PICKUP + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+							}
 							}
 						}
 					}
@@ -273,6 +293,7 @@ public class EventHandler {
 						.get(event.itemInHand.getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.PLACE)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.player)) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 									RequirementType.PLACE, r.getRequirementID())
 									&& r.getRequirementEntityName().equals(event.itemInHand.getDisplayName())) {
@@ -282,9 +303,11 @@ public class EventHandler {
 										"" + a.getId() + " " + RequirementType.PLACE + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
 							}
+							}
 						}
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.PLACE)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.player)) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 									RequirementType.PLACE, r.getRequirementID())
 									&& r.getRequirementEntityName().equals(event.itemInHand.getDisplayName())) {
@@ -293,6 +316,7 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.PLACE + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+							}
 							}
 						}
 					}
@@ -311,6 +335,7 @@ public class EventHandler {
 						.get(event.smelting.getDisplayName())) {
 					if ((a.getWorldId() > 0) && (event.player.dimension == a.getWorldId())) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.SMELT)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.player)) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 									RequirementType.SMELT, r.getRequirementID())
 									&& (r.getRequirementItemID() == Item.getIdFromItem(event.smelting.getItem()))) {
@@ -320,9 +345,11 @@ public class EventHandler {
 										"" + a.getId() + " " + RequirementType.SMELT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
 							}
+							}
 						}
 					} else if (a.getWorldId() == 0) {
 						for (BaseRequirement r : a.getRequirements().getRequirementsByType(RequirementType.SMELT)) {
+							if (r.getZoneIds().isEmpty() || isPlayerInZone(r, event.player)) {
 							if (!AchievementManager.getPlayersAchievementsRequirementStatus(event.player, a,
 									RequirementType.SMELT, r.getRequirementID())
 									&& (r.getRequirementItemID() == Item.getIdFromItem(event.smelting.getItem()))) {
@@ -331,11 +358,22 @@ public class EventHandler {
 								PacketDispatcher.sendTo(new SyncAchievementsMessage(
 										"" + a.getId() + " " + RequirementType.SMELT + " " + r.getRequirementID()),
 										(EntityPlayerMP) event.player);
+							}
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+
+	private boolean isPlayerInZone(BaseRequirement br, EntityPlayer player) {
+		for (Integer id : br.getZoneIds()) {
+			if (ModulePermissions.permissionHelper.getZoneById(id).isPlayerInZone(player)) {
+				// any zone can trigger if its one of the zones
+				return true;
+			}
+		}
+		return false;
 	}
 }

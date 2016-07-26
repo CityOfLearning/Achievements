@@ -20,6 +20,7 @@ import com.dyn.server.keys.KeyManager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.rabbit.gui.utils.TextureHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -66,6 +67,11 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
+					if(reqSubType.has("zones")){
+						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+							r.addZoneId(Integer.parseInt(ele.getAsString()));
+						}
+					}
 					requirements.addRequirement(r);
 				}
 			}
@@ -77,6 +83,11 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
+					if(reqSubType.has("zones")){
+						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+							r.addZoneId(Integer.parseInt(ele.getAsString()));
+						}
+					}
 					requirements.addRequirement(r);
 				}
 			}
@@ -88,6 +99,11 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
+					if(reqSubType.has("zones")){
+						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+							r.addZoneId(Integer.parseInt(ele.getAsString()));
+						}
+					}
 					requirements.addRequirement(r);
 				}
 			}
@@ -99,6 +115,11 @@ public class AchievementPlus extends Achievement {
 					r.entityType = reqSubType.get("entity").getAsString();
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
+					if(reqSubType.has("zones")){
+						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+							r.addZoneId(Integer.parseInt(ele.getAsString()));
+						}
+					}
 					requirements.addRequirement(r);
 				}
 			}
@@ -110,6 +131,11 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
+					if(reqSubType.has("zones")){
+						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+							r.addZoneId(Integer.parseInt(ele.getAsString()));
+						}
+					}
 					requirements.addRequirement(r);
 				}
 			}
@@ -121,6 +147,11 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
+					if(reqSubType.has("zones")){
+						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+							r.addZoneId(Integer.parseInt(ele.getAsString()));
+						}
+					}
 					requirements.addRequirement(r);
 				}
 			}
@@ -132,6 +163,11 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
+					if(reqSubType.has("zones")){
+						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+							r.addZoneId(Integer.parseInt(ele.getAsString()));
+						}
+					}
 					requirements.addRequirement(r);
 				}
 			}
@@ -255,6 +291,13 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+						if(t.getZoneIds().size() > 0){
+							JsonArray zones = new JsonArray();
+							for(int zone : t.getZoneIds()){
+								zones.add(new JsonPrimitive(zone));
+							}
+							reqSubTypes.add("zones", zones);
+						}
 						reqTypes.add(reqSubTypes);
 					}
 					req.add("craft_requirements", reqTypes);
@@ -271,6 +314,13 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+						if(t.getZoneIds().size() > 0){
+							JsonArray zones = new JsonArray();
+							for(int zone : t.getZoneIds()){
+								zones.add(new JsonPrimitive(zone));
+							}
+							reqSubTypes.add("zones", zones);
+						}
 						reqTypes.add(reqSubTypes);
 					}
 					req.add("smelt_requirements", reqTypes);
@@ -287,6 +337,13 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+						if(t.getZoneIds().size() > 0){
+							JsonArray zones = new JsonArray();
+							for(int zone : t.getZoneIds()){
+								zones.add(new JsonPrimitive(zone));
+							}
+							reqSubTypes.add("zones", zones);
+						}
 						reqTypes.add(reqSubTypes);
 					}
 					req.add("pick_up_requirements", reqTypes);
@@ -315,6 +372,13 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
 						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
+						if(t.getZoneIds().size() > 0){
+							JsonArray zones = new JsonArray();
+							for(int zone : t.getZoneIds()){
+								zones.add(new JsonPrimitive(zone));
+							}
+							reqSubTypes.add("zones", zones);
+						}
 						reqTypes.add(reqSubTypes);
 					}
 					req.add("kill_requirements", reqTypes);
@@ -331,6 +395,13 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+						if(t.getZoneIds().size() > 0){
+							JsonArray zones = new JsonArray();
+							for(int zone : t.getZoneIds()){
+								zones.add(new JsonPrimitive(zone));
+							}
+							reqSubTypes.add("zones", zones);
+						}
 						reqTypes.add(reqSubTypes);
 					}
 					req.add("brew_requirements", reqTypes);
@@ -347,6 +418,13 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+						if(t.getZoneIds().size() > 0){
+							JsonArray zones = new JsonArray();
+							for(int zone : t.getZoneIds()){
+								zones.add(new JsonPrimitive(zone));
+							}
+							reqSubTypes.add("zones", zones);
+						}
 						reqTypes.add(reqSubTypes);
 					}
 					req.add("place_requirements", reqTypes);
@@ -363,6 +441,13 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+						if(t.getZoneIds().size() > 0){
+							JsonArray zones = new JsonArray();
+							for(int zone : t.getZoneIds()){
+								zones.add(new JsonPrimitive(zone));
+							}
+							reqSubTypes.add("zones", zones);
+						}
 						reqTypes.add(reqSubTypes);
 					}
 					req.add("break_requirements", reqTypes);
