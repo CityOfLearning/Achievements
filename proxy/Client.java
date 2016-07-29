@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import com.dyn.DynOverlay;
 import com.dyn.achievements.gui.Search;
 import com.dyn.achievements.handlers.NotificationsManager;
+import com.dyn.student.StudentUI;
 import com.rabbit.gui.RabbitGui;
 
 import net.minecraft.client.Minecraft;
@@ -25,7 +26,7 @@ public class Client implements Proxy {
 	private boolean hideGui = false;
 
 	private final NotificationsManager notificationsManager = new NotificationsManager();
-	private final DynOverlay achOverlay = new DynOverlay();
+	private final DynOverlay hudOverlay = new DynOverlay();
 
 	@Override
 	public NotificationsManager getNotificationsManager() {
@@ -62,7 +63,10 @@ public class Client implements Proxy {
 	@SubscribeEvent
 	public void onRenderTick(TickEvent.RenderTickEvent event) {
 		if (Minecraft.getMinecraft().inGameHasFocus) {
-			achOverlay.drawOverlay(hideGui);
+			if(StudentUI.frozen.getFlag()){
+				hudOverlay.drawFrozenOverlay();
+			}
+			hudOverlay.drawOverlay(hideGui);
 		}
 		if (!(Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu)) {
 			notificationsManager.renderNotifications();
