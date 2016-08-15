@@ -67,8 +67,8 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
-					if(reqSubType.has("zones")){
-						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+					if (reqSubType.has("zones")) {
+						for (JsonElement ele : reqSubType.get("zones").getAsJsonArray()) {
 							r.addZoneId(Integer.parseInt(ele.getAsString()));
 						}
 					}
@@ -83,8 +83,8 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
-					if(reqSubType.has("zones")){
-						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+					if (reqSubType.has("zones")) {
+						for (JsonElement ele : reqSubType.get("zones").getAsJsonArray()) {
 							r.addZoneId(Integer.parseInt(ele.getAsString()));
 						}
 					}
@@ -99,8 +99,8 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
-					if(reqSubType.has("zones")){
-						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+					if (reqSubType.has("zones")) {
+						for (JsonElement ele : reqSubType.get("zones").getAsJsonArray()) {
 							r.addZoneId(Integer.parseInt(ele.getAsString()));
 						}
 					}
@@ -115,8 +115,8 @@ public class AchievementPlus extends Achievement {
 					r.entityType = reqSubType.get("entity").getAsString();
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
-					if(reqSubType.has("zones")){
-						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+					if (reqSubType.has("zones")) {
+						for (JsonElement ele : reqSubType.get("zones").getAsJsonArray()) {
 							r.addZoneId(Integer.parseInt(ele.getAsString()));
 						}
 					}
@@ -131,8 +131,8 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
-					if(reqSubType.has("zones")){
-						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+					if (reqSubType.has("zones")) {
+						for (JsonElement ele : reqSubType.get("zones").getAsJsonArray()) {
 							r.addZoneId(Integer.parseInt(ele.getAsString()));
 						}
 					}
@@ -147,8 +147,8 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
-					if(reqSubType.has("zones")){
-						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+					if (reqSubType.has("zones")) {
+						for (JsonElement ele : reqSubType.get("zones").getAsJsonArray()) {
 							r.addZoneId(Integer.parseInt(ele.getAsString()));
 						}
 					}
@@ -163,8 +163,8 @@ public class AchievementPlus extends Achievement {
 					r.setFromItemId(reqSubType.get("item_id").getAsInt(), reqSubType.get("sub_id").getAsInt());
 					r.setRequirementId(reqSubType.get("id").getAsInt());
 					r.setAmountNeeded(reqSubType.get("amount").getAsInt());
-					if(reqSubType.has("zones")){
-						for(JsonElement ele : reqSubType.get("zones").getAsJsonArray()){
+					if (reqSubType.has("zones")) {
+						for (JsonElement ele : reqSubType.get("zones").getAsJsonArray()) {
 							r.addZoneId(Integer.parseInt(ele.getAsString()));
 						}
 					}
@@ -291,9 +291,9 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
-						if(t.getZoneIds().size() > 0){
+						if (t.getZoneIds().size() > 0) {
 							JsonArray zones = new JsonArray();
-							for(int zone : t.getZoneIds()){
+							for (int zone : t.getZoneIds()) {
 								zones.add(new JsonPrimitive(zone));
 							}
 							reqSubTypes.add("zones", zones);
@@ -314,9 +314,9 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
-						if(t.getZoneIds().size() > 0){
+						if (t.getZoneIds().size() > 0) {
 							JsonArray zones = new JsonArray();
-							for(int zone : t.getZoneIds()){
+							for (int zone : t.getZoneIds()) {
 								zones.add(new JsonPrimitive(zone));
 							}
 							reqSubTypes.add("zones", zones);
@@ -337,9 +337,9 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
-						if(t.getZoneIds().size() > 0){
+						if (t.getZoneIds().size() > 0) {
 							JsonArray zones = new JsonArray();
-							for(int zone : t.getZoneIds()){
+							for (int zone : t.getZoneIds()) {
 								zones.add(new JsonPrimitive(zone));
 							}
 							reqSubTypes.add("zones", zones);
@@ -372,9 +372,9 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("amount", t.getTotalNeeded());
 						reqSubTypes.addProperty("total", t.getTotalAquired());
 						reqSubTypes.addProperty("id", t.getRequirementID());
-						if(t.getZoneIds().size() > 0){
+						if (t.getZoneIds().size() > 0) {
 							JsonArray zones = new JsonArray();
-							for(int zone : t.getZoneIds()){
+							for (int zone : t.getZoneIds()) {
 								zones.add(new JsonPrimitive(zone));
 							}
 							reqSubTypes.add("zones", zones);
@@ -395,9 +395,9 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
-						if(t.getZoneIds().size() > 0){
+						if (t.getZoneIds().size() > 0) {
 							JsonArray zones = new JsonArray();
-							for(int zone : t.getZoneIds()){
+							for (int zone : t.getZoneIds()) {
 								zones.add(new JsonPrimitive(zone));
 							}
 							reqSubTypes.add("zones", zones);
@@ -418,9 +418,9 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
-						if(t.getZoneIds().size() > 0){
+						if (t.getZoneIds().size() > 0) {
 							JsonArray zones = new JsonArray();
-							for(int zone : t.getZoneIds()){
+							for (int zone : t.getZoneIds()) {
 								zones.add(new JsonPrimitive(zone));
 							}
 							reqSubTypes.add("zones", zones);
@@ -441,9 +441,9 @@ public class AchievementPlus extends Achievement {
 						reqSubTypes.addProperty("id", t.getRequirementID());
 						reqSubTypes.addProperty("item_id", t.getRequirementItemID());
 						reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
-						if(t.getZoneIds().size() > 0){
+						if (t.getZoneIds().size() > 0) {
 							JsonArray zones = new JsonArray();
-							for(int zone : t.getZoneIds()){
+							for (int zone : t.getZoneIds()) {
 								zones.add(new JsonPrimitive(zone));
 							}
 							reqSubTypes.add("zones", zones);

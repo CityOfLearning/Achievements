@@ -34,6 +34,10 @@ public class Requirements {
 			zone_ids = br.getZoneIds();
 		}
 
+		public void addZoneId(int zone_id) {
+			zone_ids.add(zone_id);
+		}
+
 		@Override
 		public boolean equals(Object o) {
 			if (!(o instanceof BaseRequirement)) {
@@ -77,6 +81,10 @@ public class Requirements {
 			return amount;
 		}
 
+		public List<Integer> getZoneIds() {
+			return zone_ids;
+		}
+
 		public boolean hasBeenMet() {
 			return aquired >= amount;
 		}
@@ -112,14 +120,6 @@ public class Requirements {
 		@Override
 		public String toString() {
 			return String.format("id: %d, ", id);
-		}
-
-		public List<Integer> getZoneIds() {
-			return zone_ids;
-		}
-
-		public void addZoneId(int zone_id) {
-			this.zone_ids.add(zone_id);
 		}
 	}
 

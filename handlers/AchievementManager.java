@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.derimagia.forgeslack.slack.SlackSender;
 import com.dyn.achievements.achievement.AchievementPlus;
@@ -26,6 +27,7 @@ import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
 import com.dyn.achievements.achievement.Requirements.StatRequirement;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.rabbit.gui.utils.TextureHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
@@ -43,7 +45,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class AchievementManager {
 
-	private static Map<AchievementPage, String> achievementPageTextures = new HashMap<AchievementPage, String>();
+	private static Map<AchievementPage, UUID> achievementPageTextures = new HashMap<AchievementPage, UUID>();
 	private static List<AchievementPlus> achievements = new ArrayList<AchievementPlus>();
 	private static Map<String, AchievementPlus> achievementNames = new HashMap<String, AchievementPlus>();
 	private static Map<Integer, AchievementPlus> achievementIds = new HashMap<Integer, AchievementPlus>();
@@ -70,7 +72,12 @@ public class AchievementManager {
 			AchievementPage page = new AchievementPage(pageName,
 					achievementsInMap.toArray(new Achievement[achievements.size()]));
 			AchievementPage.registerAchievementPage(page);
-			achievementPageTextures.put(page, texture);
+			if ((texture != null) && !texture.isEmpty()) {
+				UUID texUUID = UUID.randomUUID();
+				TextureHelper.addTexture(texUUID, texture);
+				achievementPageTextures.put(page, texUUID);
+			}
+
 		}
 	}
 
@@ -117,7 +124,11 @@ public class AchievementManager {
 		return achList;
 	}
 
-	public static Map<AchievementPage, String> getAchievementPageTextures() {
+	public static UUID getAchievementPageTexture(AchievementPage page) {
+		return achievementPageTextures.get(page);
+	}
+
+	public static Map<AchievementPage, UUID> getAchievementPageTextures() {
 		return achievementPageTextures;
 	}
 
@@ -463,7 +474,11 @@ public class AchievementManager {
 	}
 
 	public static void setAchievementPageTexture(String texture, AchievementPage page) {
-		AchievementManager.achievementPageTextures.put(page, texture);
+		if ((texture != null) && !texture.isEmpty()) {
+			UUID texUUID = UUID.randomUUID();
+			TextureHelper.addTexture(texUUID, texture);
+			achievementPageTextures.replace(page, texUUID);
+		}
 	}
 
 	@SideOnly(Side.SERVER)
