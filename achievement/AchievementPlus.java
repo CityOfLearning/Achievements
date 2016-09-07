@@ -14,7 +14,6 @@ import com.dyn.achievements.achievement.Requirements.PickupRequirement;
 import com.dyn.achievements.achievement.Requirements.PlaceRequirement;
 import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
 import com.dyn.achievements.handlers.AchievementManager;
-import com.dyn.login.LoginGUI;
 import com.dyn.server.http.PostBadge;
 import com.dyn.server.keys.KeyManager;
 import com.google.gson.JsonArray;
@@ -509,30 +508,22 @@ public class AchievementPlus extends Achievement {
 		return reply;
 	}
 
-	/***
-	 * Awards achievement to player.
-	 *
-	 * @param world
-	 *            World
-	 * @param player
-	 *            EntityPlayer
-	 * @param itemStack
-	 *            ItemStack
-	 */
-	public void awardAchievement(EntityPlayer player) {
-		if (!LoginGUI.DYN_Username.isEmpty()) {
-			new PostBadge(badgeId, LoginGUI.DYN_Username, KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id),
+	public void awardAchievement(EntityPlayer player, UUID ccol_uuid) {
+		if (ccol_uuid != null) {
+			new PostBadge(badgeId, ccol_uuid.toString(), KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id),
 					player, this);
 		} else {
 			awarded = true;
 			player.addStat(this, 1);
 		}
+
 	}
 
-	public void awardAchievement(EntityPlayer player, String dynUsername) {
-		new PostBadge(badgeId, dynUsername, KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id), player,
-				this);
-	}
+	// public void awardAchievement(EntityPlayer player, String dynUsername) {
+	// new PostBadge(badgeId, dynUsername, KeyManager.getSecretKey(org_id),
+	// KeyManager.getOrgKey(org_id), player,
+	// this);
+	// }
 
 	@Override
 	public String getDescription() {
