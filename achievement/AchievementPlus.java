@@ -218,6 +218,158 @@ public class AchievementPlus extends Achievement {
 		return null;
 	}
 
+	public void setAchievementRequirementsProgressFromJson(JsonObject json) {
+		boolean[] types = requirements.getRequirementTypes();
+		for (int i = 0; i < types.length; i++) {
+			switch (i) {
+			case 0:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.CRAFT);
+					JsonArray jsonReqArray = json.get("craft_requirements").getAsJsonArray();
+					for (BaseRequirement t : typeReq) {
+						for (JsonElement jElement : jsonReqArray) {
+							JsonObject arrayObject = jElement.getAsJsonObject();
+							if (arrayObject.get("id").getAsInt() == t.getRequirementID()) {
+								t.setAquiredTo(arrayObject.get("total").getAsInt());
+								break;
+							}
+						}
+					}
+				}
+				break;
+			case 1:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.SMELT);
+					JsonArray jsonReqArray = json.get("smelt_requirements").getAsJsonArray();
+					for (BaseRequirement t : typeReq) {
+						for (JsonElement jElement : jsonReqArray) {
+							JsonObject arrayObject = jElement.getAsJsonObject();
+							if (arrayObject.get("id").getAsInt() == t.getRequirementID()) {
+								t.setAquiredTo(arrayObject.get("total").getAsInt());
+								break;
+							}
+						}
+					}
+				}
+				break;
+			case 2:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.PICKUP);
+					JsonArray jsonReqArray = json.get("pick_up_requirements").getAsJsonArray();
+					for (BaseRequirement t : typeReq) {
+						for (JsonElement jElement : jsonReqArray) {
+							JsonObject arrayObject = jElement.getAsJsonObject();
+							if (arrayObject.get("id").getAsInt() == t.getRequirementID()) {
+								t.setAquiredTo(arrayObject.get("total").getAsInt());
+								break;
+							}
+						}
+					}
+				}
+				break;
+			case 3:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.STAT);
+					JsonArray jsonReqArray = json.get("stat_requirements").getAsJsonArray();
+					for (BaseRequirement t : typeReq) {
+						for (JsonElement jElement : jsonReqArray) {
+							JsonObject arrayObject = jElement.getAsJsonObject();
+							if (arrayObject.get("id").getAsInt() == t.getRequirementID()) {
+								t.setAquiredTo(arrayObject.get("total").getAsInt());
+								break;
+							}
+						}
+					}
+				}
+				break;
+			case 4:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.KILL);
+					JsonArray jsonReqArray = json.get("kill_requirements").getAsJsonArray();
+					for (BaseRequirement t : typeReq) {
+						for (JsonElement jElement : jsonReqArray) {
+							JsonObject arrayObject = jElement.getAsJsonObject();
+							if (arrayObject.get("id").getAsInt() == t.getRequirementID()) {
+								t.setAquiredTo(arrayObject.get("total").getAsInt());
+								break;
+							}
+						}
+					}
+				}
+				break;
+			case 5:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.BREW);
+					JsonArray jsonReqArray = json.get("brew_requirements").getAsJsonArray();
+					for (BaseRequirement t : typeReq) {
+						for (JsonElement jElement : jsonReqArray) {
+							JsonObject arrayObject = jElement.getAsJsonObject();
+							if (arrayObject.get("id").getAsInt() == t.getRequirementID()) {
+								t.setAquiredTo(arrayObject.get("total").getAsInt());
+								break;
+							}
+						}
+					}
+				}
+				break;
+			case 6:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.PLACE);
+					JsonArray jsonReqArray = json.get("place_requirements").getAsJsonArray();
+					for (BaseRequirement t : typeReq) {
+						for (JsonElement jElement : jsonReqArray) {
+							JsonObject arrayObject = jElement.getAsJsonObject();
+							if (arrayObject.get("id").getAsInt() == t.getRequirementID()) {
+								t.setAquiredTo(arrayObject.get("total").getAsInt());
+								break;
+							}
+						}
+					}
+				}
+				break;
+			case 7:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.BREAK);
+					JsonArray jsonReqArray = json.get("break_requirements").getAsJsonArray();
+					for (BaseRequirement t : typeReq) {
+						for (JsonElement jElement : jsonReqArray) {
+							JsonObject arrayObject = jElement.getAsJsonObject();
+							if (arrayObject.get("id").getAsInt() == t.getRequirementID()) {
+								t.setAquiredTo(arrayObject.get("total").getAsInt());
+								break;
+							}
+						}
+					}
+				}
+				break;
+			case 8:
+				//is there anything we have to do here?
+//				if (types[i]) {
+//					requirements.getRequirementsByType(RequirementType.MENTOR);
+//					req.add("mentor_requirements", reqTypes);
+//				}
+				break;
+			case 9:
+				if (types[i]) {
+					ArrayList<BaseRequirement> typeReq = requirements.getRequirementsByType(RequirementType.LOCATION);
+					JsonArray jsonReqArray = json.get("location_requirements").getAsJsonArray();
+					for (BaseRequirement t : typeReq) {
+						for (JsonElement jElement : jsonReqArray) {
+							JsonObject arrayObject = jElement.getAsJsonObject();
+							if (arrayObject.get("id").getAsInt() == t.getRequirementID()) {
+								t.setAquiredTo(arrayObject.get("total").getAsInt());
+								break;
+							}
+						}
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	private Requirements requirements;
 	private String name;
 	private String desc;
@@ -276,7 +428,7 @@ public class AchievementPlus extends Achievement {
 		reply.addProperty("achieved", awarded);
 		JsonObject req = new JsonObject();
 		boolean[] types = requirements.getRequirementTypes();
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < types.length; i++) {
 			JsonArray reqTypes = new JsonArray();
 			switch (i) {
 			case 0:
@@ -482,7 +634,7 @@ public class AchievementPlus extends Achievement {
 						}
 						reqTypes.add(reqSubTypes);
 					}
-					req.add("break_requirements", reqTypes);
+					req.add("location_requirements", reqTypes);
 				}
 				break;
 			default:
