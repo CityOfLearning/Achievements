@@ -6,8 +6,8 @@ import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.dyn.achievements.achievement.Requirements.LocationRequirement;
-import com.dyn.server.packets.PacketDispatcher;
-import com.dyn.server.packets.client.SyncAchievementsMessage;
+import com.dyn.server.network.NetworkManager;
+import com.dyn.server.network.packets.client.SyncAchievementsMessage;
 import com.forgeessentials.commons.selections.AreaBase;
 import com.forgeessentials.commons.selections.Point;
 import com.forgeessentials.permissions.ModulePermissions;
@@ -62,7 +62,7 @@ public class EventHandler {
 										&& r.getRequirementEntityName().equals(is.getDisplayName())) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.getPlayer(), a,
 											RequirementType.BREAK, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.getPlayer());
 
@@ -78,7 +78,7 @@ public class EventHandler {
 										&& r.getRequirementEntityName().equals(is.getDisplayName())) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.getPlayer(), a,
 											RequirementType.BREAK, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.BREAK + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.getPlayer());
 								}
@@ -104,7 +104,7 @@ public class EventHandler {
 										&& r.getRequirementEntityName().equals(event.crafting.getDisplayName())) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.player, a,
 											RequirementType.CRAFT, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.CRAFT + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.player);
 								}
@@ -118,7 +118,7 @@ public class EventHandler {
 										&& r.getRequirementEntityName().equals(event.crafting.getDisplayName())) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.player, a,
 											RequirementType.CRAFT, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.CRAFT + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.player);
 								}
@@ -176,7 +176,7 @@ public class EventHandler {
 									AchievementManager.incrementPlayersAchievementsTotal(
 											(EntityPlayer) event.source.getEntity(), a, RequirementType.KILL,
 											r.getRequirementID());
-									PacketDispatcher.sendTo(
+									NetworkManager.sendTo(
 											new SyncAchievementsMessage("" + a.getId() + " " + RequirementType.KILL
 													+ " " + r.getRequirementID()),
 											(EntityPlayerMP) event.source.getEntity());
@@ -195,7 +195,7 @@ public class EventHandler {
 									AchievementManager.incrementPlayersAchievementsTotal(
 											(EntityPlayer) event.source.getEntity(), a, RequirementType.KILL,
 											r.getRequirementID());
-									PacketDispatcher.sendTo(
+									NetworkManager.sendTo(
 											new SyncAchievementsMessage("" + a.getId() + " " + RequirementType.KILL
 													+ " " + r.getRequirementID()),
 											(EntityPlayerMP) event.source.getEntity());
@@ -230,7 +230,7 @@ public class EventHandler {
 												RequirementType.LOCATION, r.getRequirementID());
 										event.player.addChatMessage(new ChatComponentText(
 												"You found the location: " + lr.getRequirementEntityName()));
-										PacketDispatcher.sendTo(
+										NetworkManager.sendTo(
 												new SyncAchievementsMessage("" + a.getId() + " "
 														+ RequirementType.LOCATION + " " + r.getRequirementID()),
 												(EntityPlayerMP) event.player);
@@ -244,7 +244,7 @@ public class EventHandler {
 												RequirementType.LOCATION, r.getRequirementID());
 										event.player.addChatMessage(new ChatComponentText(
 												"You found the location: " + lr.getRequirementEntityName()));
-										PacketDispatcher.sendTo(
+										NetworkManager.sendTo(
 												new SyncAchievementsMessage("" + a.getId() + " "
 														+ RequirementType.LOCATION + " " + r.getRequirementID()),
 												(EntityPlayerMP) event.player);
@@ -273,7 +273,7 @@ public class EventHandler {
 												.equals(event.pickedUp.getEntityItem().getDisplayName())) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.player, a,
 											RequirementType.PICKUP, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.PICKUP + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.player);
 								}
@@ -288,7 +288,7 @@ public class EventHandler {
 												.equals(event.pickedUp.getEntityItem().getDisplayName())) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.player, a,
 											RequirementType.PICKUP, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.PICKUP + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.player);
 								}
@@ -315,7 +315,7 @@ public class EventHandler {
 										&& r.getRequirementEntityName().equals(event.itemInHand.getDisplayName())) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.player, a,
 											RequirementType.PLACE, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.PLACE + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.player);
 								}
@@ -329,7 +329,7 @@ public class EventHandler {
 										&& r.getRequirementEntityName().equals(event.itemInHand.getDisplayName())) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.player, a,
 											RequirementType.PLACE, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.PLACE + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.player);
 								}
@@ -357,7 +357,7 @@ public class EventHandler {
 										&& (r.getRequirementItemID() == Item.getIdFromItem(event.smelting.getItem()))) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.player, a,
 											RequirementType.SMELT, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.SMELT + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.player);
 								}
@@ -371,7 +371,7 @@ public class EventHandler {
 										&& (r.getRequirementItemID() == Item.getIdFromItem(event.smelting.getItem()))) {
 									AchievementManager.incrementPlayersAchievementsTotal(event.player, a,
 											RequirementType.SMELT, r.getRequirementID());
-									PacketDispatcher.sendTo(new SyncAchievementsMessage(
+									NetworkManager.sendTo(new SyncAchievementsMessage(
 											"" + a.getId() + " " + RequirementType.SMELT + " " + r.getRequirementID()),
 											(EntityPlayerMP) event.player);
 								}
