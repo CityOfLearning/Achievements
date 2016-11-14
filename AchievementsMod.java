@@ -34,12 +34,15 @@ public class AchievementsMod {
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event) {
 		try {
-			JsonArray jsonA = DBManager.getAchievementMapDBAsJson().get("achievement_maps").getAsJsonArray();
-			for (JsonElement ach : jsonA) {
-				JsonObject achObj = ach.getAsJsonObject();
-				AchievementManager.addAchievementPage(achObj.get("name").getAsString(),
-						achObj.get("texture").isJsonNull() ? null : achObj.get("texture").getAsString(),
-						achObj.get("map_id").getAsInt());
+			JsonObject jsonO = DBManager.getAchievementMapDBAsJson();
+			if (jsonO != null) {
+				JsonArray jsonA = jsonO.get("achievement_maps").getAsJsonArray();
+				for (JsonElement ach : jsonA) {
+					JsonObject achObj = ach.getAsJsonObject();
+					AchievementManager.addAchievementPage(achObj.get("name").getAsString(),
+							achObj.get("texture").isJsonNull() ? null : achObj.get("texture").getAsString(),
+							achObj.get("map_id").getAsInt());
+				}
 			}
 		} catch (Exception e) {
 			// likely due to offline mode but still can cause crashes
