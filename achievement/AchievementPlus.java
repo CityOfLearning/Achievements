@@ -3,6 +3,7 @@ package com.dyn.achievements.achievement;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import com.dyn.DYNServerMod;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.dyn.achievements.achievement.Requirements.BreakRequirement;
 import com.dyn.achievements.achievement.Requirements.BrewRequirement;
@@ -213,7 +214,7 @@ public class AchievementPlus extends Achievement {
 			return new AchievementPlus(requirements, name, desc, xCoord, yCoord, orgId, badgeId, achId, mapId, worldId,
 					AchievementManager.findAchievementById(parentId), awarded, texture);
 		} catch (Exception e) {
-			e.printStackTrace();
+			DYNServerMod.logger.error("Failed parsing Achievement from JSON", e);
 		}
 		return null;
 	}

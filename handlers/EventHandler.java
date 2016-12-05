@@ -143,9 +143,6 @@ public class EventHandler {
 	 *
 	 * } } } } } }
 	 */
-	// this is really dangerous as it happens every game tick,
-	// we either should find an alternative, thread this, or keep code as
-	// minimal as possible
 
 	private boolean isPlayerInZone(BaseRequirement br, EntityPlayer player) {
 		for (Integer id : br.getZoneIds()) {
@@ -209,6 +206,9 @@ public class EventHandler {
 	}
 
 	// location based rquirements
+	// this is really dangerous as it happens every game tick,
+	// we either should find an alternative, thread this, or keep code as
+	// minimal as possible
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
 		if ((event.side == Side.SERVER) && (event.player.dimension > 1)) {

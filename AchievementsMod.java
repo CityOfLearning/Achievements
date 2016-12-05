@@ -46,8 +46,7 @@ public class AchievementsMod {
 			}
 		} catch (Exception e) {
 			// likely due to offline mode but still can cause crashes
-			e.printStackTrace();
-			DYNServerMod.logger.error("Could not get Achievement Maps");
+			DYNServerMod.logger.error("Could not get Achievement Maps", e);
 		}
 	}
 
@@ -67,7 +66,7 @@ public class AchievementsMod {
 				AchievementPlus.JsonToAchievement(ach.getAsJsonObject());
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			DYNServerMod.logger.error("Could not create Achievements", e);
 			Requirements r = new Requirements();
 			BreakRequirement br = r.new BreakRequirement();
 			br.setAmountNeeded(2);

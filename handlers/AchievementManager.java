@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.derimagia.forgeslack.slack.SlackSender;
+import com.dyn.DYNServerMod;
 import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements;
@@ -213,8 +214,7 @@ public class AchievementManager {
 				}
 			}
 		} catch (NullPointerException e) {
-			// this should be impossible but just incase...
-			e.printStackTrace();
+			DYNServerMod.logger.error("Encountered Null Pointer when retrieving achievement progress", e);
 		}
 		return false;
 	}
@@ -239,8 +239,7 @@ public class AchievementManager {
 				}
 			}
 		} catch (NullPointerException e) {
-			// this should be impossible but just incase...
-			e.printStackTrace();
+			DYNServerMod.logger.error("Encountered Null Pointer when retrieving achievement progress", e);
 		}
 		return false;
 	}
@@ -269,8 +268,7 @@ public class AchievementManager {
 				}
 			}
 		} catch (NullPointerException e) {
-			// this should be impossible but just incase
-			e.printStackTrace();
+			DYNServerMod.logger.error("Encountered Null Pointer when incrementing achievement progress", e);
 		}
 
 	}
@@ -299,8 +297,7 @@ public class AchievementManager {
 				}
 			}
 		} catch (NullPointerException e) {
-			// this should be impossible but just incase
-			e.printStackTrace();
+			DYNServerMod.logger.error("Encountered Null Pointer when incrementing achievement progress", e);
 		}
 
 	}
@@ -501,8 +498,7 @@ public class AchievementManager {
 				}
 			}
 		} catch (NullPointerException e) {
-			// this should be impossible but just incase
-			e.printStackTrace();
+			DYNServerMod.logger.error("Encountered Null Pointer when setting achievement progress", e);
 		}
 
 	}
@@ -527,8 +523,7 @@ public class AchievementManager {
 				}
 			}
 		} catch (NullPointerException e) {
-			// this should be impossible but just incase
-			e.printStackTrace();
+			DYNServerMod.logger.error("Encountered Null Pointer when setting achievement progress", e);
 		}
 
 	}
@@ -563,8 +558,8 @@ public class AchievementManager {
 			}
 			try {
 				out.createNewFile();
-			} catch (IOException e1) {
-				e1.printStackTrace();
+			} catch (IOException e) {
+				DYNServerMod.logger.error("Failed creating new file", e);
 			}
 			try (BufferedWriter writer = new BufferedWriter(new FileWriter(out))) {
 				for (String achKeys : playerAchievements.get(keys).keySet()) {
@@ -723,7 +718,7 @@ public class AchievementManager {
 				}
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				DYNServerMod.logger.error("Failed writing acheivements to JSON file", e);
 			}
 
 		}
