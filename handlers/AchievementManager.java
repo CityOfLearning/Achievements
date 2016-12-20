@@ -46,13 +46,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class AchievementManager {
 
-	private static Map<AchievementPage, UUID> achievementPageTextures = new HashMap<AchievementPage, UUID>();
-	private static List<AchievementPlus> achievements = new ArrayList<AchievementPlus>();
-	private static Map<String, AchievementPlus> achievementNames = new HashMap<String, AchievementPlus>();
-	private static Map<Integer, AchievementPlus> achievementIds = new HashMap<Integer, AchievementPlus>();
-	private static Map<RequirementType, List<AchievementPlus>> achievementsType = new HashMap<RequirementType, List<AchievementPlus>>();
-	private static Map<RequirementType, ListMultimap<String, AchievementPlus>> entityNames = new HashMap<RequirementType, ListMultimap<String, AchievementPlus>>();
-	private static Map<EntityPlayer, Map<String, Requirements>> playerAchievements = new HashMap<EntityPlayer, Map<String, Requirements>>();
+	private static Map<AchievementPage, UUID> achievementPageTextures = new HashMap<>();
+	private static List<AchievementPlus> achievements = new ArrayList<>();
+	private static Map<String, AchievementPlus> achievementNames = new HashMap<>();
+	private static Map<Integer, AchievementPlus> achievementIds = new HashMap<>();
+	private static Map<RequirementType, List<AchievementPlus>> achievementsType = new HashMap<>();
+	private static Map<RequirementType, ListMultimap<String, AchievementPlus>> entityNames = new HashMap<>();
+	private static Map<EntityPlayer, Map<String, Requirements>> playerAchievements = new HashMap<>();
 
 	/***
 	 * Adds page of achievements.
@@ -63,7 +63,7 @@ public class AchievementManager {
 	 *            ArrayList of achievements
 	 */
 	public static void addAchievementPage(String pageName, String texture, int id) {
-		List<AchievementPlus> achievementsInMap = new ArrayList<AchievementPlus>();
+		List<AchievementPlus> achievementsInMap = new ArrayList<>();
 		for (AchievementPlus achievement : AchievementManager.getAllAchievements()) {
 			if (achievement.getMapId() == id) {
 				achievementsInMap.add(achievement);
@@ -116,7 +116,7 @@ public class AchievementManager {
 	 * @return list of achievement objects containing name
 	 */
 	public static List<AchievementPlus> findAchievementsByName(String name) {
-		List<AchievementPlus> achList = new ArrayList<AchievementPlus>();
+		List<AchievementPlus> achList = new ArrayList<>();
 		for (AchievementPlus achs : achievementNames.values()) {
 			if (achs.getName().toLowerCase().contains(name.toLowerCase())) {
 				achList.add(achs);
@@ -400,70 +400,70 @@ public class AchievementManager {
 		boolean[] vals = achievement.getRequirements().getRequirementTypes();
 		if (vals[0]) {
 			if (achievementsType.get(RequirementType.CRAFT) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.CRAFT, ach);
 			}
 			achievementsType.get(RequirementType.CRAFT).add(achievement);
 		}
 		if (vals[1]) {
 			if (achievementsType.get(RequirementType.SMELT) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.SMELT, ach);
 			}
 			achievementsType.get(RequirementType.SMELT).add(achievement);
 		}
 		if (vals[2]) {
 			if (achievementsType.get(RequirementType.PICKUP) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.PICKUP, ach);
 			}
 			achievementsType.get(RequirementType.PICKUP).add(achievement);
 		}
 		if (vals[3]) {
 			if (achievementsType.get(RequirementType.STAT) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.STAT, ach);
 			}
 			achievementsType.get(RequirementType.STAT).add(achievement);
 		}
 		if (vals[4]) {
 			if (achievementsType.get(RequirementType.KILL) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.KILL, ach);
 			}
 			achievementsType.get(RequirementType.KILL).add(achievement);
 		}
 		if (vals[5]) {
 			if (achievementsType.get(RequirementType.BREW) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.BREW, ach);
 			}
 			achievementsType.get(RequirementType.BREW).add(achievement);
 		}
 		if (vals[6]) {
 			if (achievementsType.get(RequirementType.PLACE) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.PLACE, ach);
 			}
 			achievementsType.get(RequirementType.PLACE).add(achievement);
 		}
 		if (vals[7]) {
 			if (achievementsType.get(RequirementType.BREAK) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.BREAK, ach);
 			}
 			achievementsType.get(RequirementType.BREAK).add(achievement);
 		}
 		if (vals[8]) {
 			if (achievementsType.get(RequirementType.MENTOR) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.MENTOR, ach);
 			}
 			achievementsType.get(RequirementType.MENTOR).add(achievement);
 		}
 		if (vals[9]) {
 			if (achievementsType.get(RequirementType.LOCATION) == null) {
-				ArrayList<AchievementPlus> ach = new ArrayList<AchievementPlus>();
+				ArrayList<AchievementPlus> ach = new ArrayList<>();
 				achievementsType.put(RequirementType.LOCATION, ach);
 			}
 			achievementsType.get(RequirementType.LOCATION).add(achievement);
@@ -538,7 +538,7 @@ public class AchievementManager {
 					return;
 				}
 			}
-			Map<String, Requirements> map = new HashMap<String, Requirements>();
+			Map<String, Requirements> map = new HashMap<>();
 			for (AchievementPlus achs : getAllAchievements()) {
 				map.put(achs.getName(), Requirements.getCopy(achs.getRequirements()));
 			}

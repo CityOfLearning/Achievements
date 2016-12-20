@@ -22,7 +22,7 @@ public class Requirements {
 			item_id = 0;
 			sub_id = 0;
 			id = 0;
-			zone_ids = new ArrayList<Integer>();
+			zone_ids = new ArrayList<>();
 		}
 
 		BaseRequirement(BaseRequirement br) {
@@ -709,7 +709,7 @@ public class Requirements {
 		return copy;
 	}
 
-	private ArrayList<BaseRequirement> requirements = new ArrayList<BaseRequirement>();
+	private ArrayList<BaseRequirement> requirements = new ArrayList<>();
 
 	public Requirements() {
 
@@ -742,7 +742,7 @@ public class Requirements {
 	 * @return ArrayList<BaseRequirement> of given type
 	 */
 	public ArrayList<BaseRequirement> getRequirementsByType(RequirementType type) {
-		ArrayList<BaseRequirement> typereq = new ArrayList<BaseRequirement>();
+		ArrayList<BaseRequirement> typereq = new ArrayList<>();
 		for (BaseRequirement r : requirements) {
 			switch (type) {
 			case CRAFT:
