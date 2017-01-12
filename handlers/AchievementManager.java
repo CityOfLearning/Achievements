@@ -28,6 +28,9 @@ import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
 import com.dyn.achievements.achievement.Requirements.StatRequirement;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.rabbit.gui.utils.TextureHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -80,6 +83,252 @@ public class AchievementManager {
 			}
 
 		}
+	}
+
+	public static JsonArray createPlayerAchievementJson(EntityPlayer player) {
+		JsonArray achArray = new JsonArray();
+		// all the achievement data
+		for (AchievementPlus ach : AchievementManager.getAllAchievements()) {
+			JsonObject reply = new JsonObject();
+			reply.addProperty("name", ach.getName());
+			reply.addProperty("desc", ach.getDescription());
+			reply.addProperty("ach_id", ach.getId());
+			reply.addProperty("map_id", ach.getMapId());
+			reply.addProperty("world", ach.getWorldId());
+			// reply.addProperty("x_coord", xCoord);
+			// reply.addProperty("y_coord", yCoord);
+			reply.addProperty("achieved", ach.isAwarded());
+			JsonObject req = new JsonObject();
+			boolean[] types = playerAchievements.get(player).get(ach.getName()).getRequirementTypes();
+			for (int i = 0; i < types.length; i++) {
+				JsonArray reqTypes = new JsonArray();
+				switch (i) {
+				case 0:
+					if (types[i]) {
+						ArrayList<BaseRequirement> typeReq = playerAchievements.get(player).get(ach.getName())
+								.getRequirementsByType(RequirementType.CRAFT);
+						for (BaseRequirement t : typeReq) {
+							JsonObject reqSubTypes = new JsonObject();
+							reqSubTypes.addProperty("item", t.getRequirementEntityName());
+							reqSubTypes.addProperty("amount", t.getTotalNeeded());
+							reqSubTypes.addProperty("total", t.getTotalAquired());
+							reqSubTypes.addProperty("id", t.getRequirementID());
+							reqSubTypes.addProperty("item_id", t.getRequirementItemID());
+							reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+							if (t.getZoneIds().size() > 0) {
+								JsonArray zones = new JsonArray();
+								for (int zone : t.getZoneIds()) {
+									zones.add(new JsonPrimitive(zone));
+								}
+								reqSubTypes.add("zones", zones);
+							}
+							reqTypes.add(reqSubTypes);
+						}
+						req.add("craft_requirements", reqTypes);
+					}
+					break;
+				case 1:
+					if (types[i]) {
+						ArrayList<BaseRequirement> typeReq = playerAchievements.get(player).get(ach.getName())
+								.getRequirementsByType(RequirementType.SMELT);
+						for (BaseRequirement t : typeReq) {
+							JsonObject reqSubTypes = new JsonObject();
+							reqSubTypes.addProperty("item", t.getRequirementEntityName());
+							reqSubTypes.addProperty("amount", t.getTotalNeeded());
+							reqSubTypes.addProperty("total", t.getTotalAquired());
+							reqSubTypes.addProperty("id", t.getRequirementID());
+							reqSubTypes.addProperty("item_id", t.getRequirementItemID());
+							reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+							if (t.getZoneIds().size() > 0) {
+								JsonArray zones = new JsonArray();
+								for (int zone : t.getZoneIds()) {
+									zones.add(new JsonPrimitive(zone));
+								}
+								reqSubTypes.add("zones", zones);
+							}
+							reqTypes.add(reqSubTypes);
+						}
+						req.add("smelt_requirements", reqTypes);
+					}
+					break;
+				case 2:
+					if (types[i]) {
+						ArrayList<BaseRequirement> typeReq = playerAchievements.get(player).get(ach.getName())
+								.getRequirementsByType(RequirementType.PICKUP);
+						for (BaseRequirement t : typeReq) {
+							JsonObject reqSubTypes = new JsonObject();
+							reqSubTypes.addProperty("item", t.getRequirementEntityName());
+							reqSubTypes.addProperty("amount", t.getTotalNeeded());
+							reqSubTypes.addProperty("total", t.getTotalAquired());
+							reqSubTypes.addProperty("id", t.getRequirementID());
+							reqSubTypes.addProperty("item_id", t.getRequirementItemID());
+							reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+							if (t.getZoneIds().size() > 0) {
+								JsonArray zones = new JsonArray();
+								for (int zone : t.getZoneIds()) {
+									zones.add(new JsonPrimitive(zone));
+								}
+								reqSubTypes.add("zones", zones);
+							}
+							reqTypes.add(reqSubTypes);
+						}
+						req.add("pick_up_requirements", reqTypes);
+					}
+					break;
+				case 3:
+					if (types[i]) {
+						ArrayList<BaseRequirement> typeReq = playerAchievements.get(player).get(ach.getName())
+								.getRequirementsByType(RequirementType.STAT);
+						for (BaseRequirement t : typeReq) {
+							JsonObject reqSubTypes = new JsonObject();
+							reqSubTypes.addProperty("stat", t.getRequirementEntityName());
+							reqSubTypes.addProperty("amount", t.getTotalNeeded());
+							reqSubTypes.addProperty("total", t.getTotalAquired());
+							reqSubTypes.addProperty("id", t.getRequirementID());
+							reqTypes.add(reqSubTypes);
+						}
+						req.add("stat_requirements", reqTypes);
+					}
+					break;
+				case 4:
+					if (types[i]) {
+						ArrayList<BaseRequirement> typeReq = playerAchievements.get(player).get(ach.getName())
+								.getRequirementsByType(RequirementType.KILL);
+						for (BaseRequirement t : typeReq) {
+							JsonObject reqSubTypes = new JsonObject();
+							reqSubTypes.addProperty("entity", t.getRequirementEntityName());
+							reqSubTypes.addProperty("amount", t.getTotalNeeded());
+							reqSubTypes.addProperty("total", t.getTotalAquired());
+							reqSubTypes.addProperty("id", t.getRequirementID());
+							if (t.getZoneIds().size() > 0) {
+								JsonArray zones = new JsonArray();
+								for (int zone : t.getZoneIds()) {
+									zones.add(new JsonPrimitive(zone));
+								}
+								reqSubTypes.add("zones", zones);
+							}
+							reqTypes.add(reqSubTypes);
+						}
+						req.add("kill_requirements", reqTypes);
+					}
+					break;
+				case 5:
+					if (types[i]) {
+						ArrayList<BaseRequirement> typeReq = playerAchievements.get(player).get(ach.getName())
+								.getRequirementsByType(RequirementType.BREW);
+						for (BaseRequirement t : typeReq) {
+							JsonObject reqSubTypes = new JsonObject();
+							reqSubTypes.addProperty("item", t.getRequirementEntityName());
+							reqSubTypes.addProperty("amount", t.getTotalNeeded());
+							reqSubTypes.addProperty("total", t.getTotalAquired());
+							reqSubTypes.addProperty("id", t.getRequirementID());
+							reqSubTypes.addProperty("item_id", t.getRequirementItemID());
+							reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+							if (t.getZoneIds().size() > 0) {
+								JsonArray zones = new JsonArray();
+								for (int zone : t.getZoneIds()) {
+									zones.add(new JsonPrimitive(zone));
+								}
+								reqSubTypes.add("zones", zones);
+							}
+							reqTypes.add(reqSubTypes);
+						}
+						req.add("brew_requirements", reqTypes);
+					}
+					break;
+				case 6:
+					if (types[i]) {
+						ArrayList<BaseRequirement> typeReq = playerAchievements.get(player).get(ach.getName())
+								.getRequirementsByType(RequirementType.PLACE);
+						for (BaseRequirement t : typeReq) {
+							JsonObject reqSubTypes = new JsonObject();
+							reqSubTypes.addProperty("item", t.getRequirementEntityName());
+							reqSubTypes.addProperty("amount", t.getTotalNeeded());
+							reqSubTypes.addProperty("total", t.getTotalAquired());
+							reqSubTypes.addProperty("id", t.getRequirementID());
+							reqSubTypes.addProperty("item_id", t.getRequirementItemID());
+							reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+							if (t.getZoneIds().size() > 0) {
+								JsonArray zones = new JsonArray();
+								for (int zone : t.getZoneIds()) {
+									zones.add(new JsonPrimitive(zone));
+								}
+								reqSubTypes.add("zones", zones);
+							}
+							reqTypes.add(reqSubTypes);
+						}
+						req.add("place_requirements", reqTypes);
+					}
+					break;
+				case 7:
+					if (types[i]) {
+						ArrayList<BaseRequirement> typeReq = playerAchievements.get(player).get(ach.getName())
+								.getRequirementsByType(RequirementType.BREAK);
+						for (BaseRequirement t : typeReq) {
+							JsonObject reqSubTypes = new JsonObject();
+							reqSubTypes.addProperty("item", t.getRequirementEntityName());
+							reqSubTypes.addProperty("amount", t.getTotalNeeded());
+							reqSubTypes.addProperty("total", t.getTotalAquired());
+							reqSubTypes.addProperty("id", t.getRequirementID());
+							reqSubTypes.addProperty("item_id", t.getRequirementItemID());
+							reqSubTypes.addProperty("sub_id", t.getRequirementSubItemID());
+							if (t.getZoneIds().size() > 0) {
+								JsonArray zones = new JsonArray();
+								for (int zone : t.getZoneIds()) {
+									zones.add(new JsonPrimitive(zone));
+								}
+								reqSubTypes.add("zones", zones);
+							}
+							reqTypes.add(reqSubTypes);
+						}
+						req.add("break_requirements", reqTypes);
+					}
+					break;
+				case 8:
+					if (types[i]) {
+						playerAchievements.get(player).get(ach.getName()).getRequirementsByType(RequirementType.MENTOR);
+						req.add("mentor_requirements", reqTypes);
+					}
+					break;
+				case 9:
+					if (types[i]) {
+						ArrayList<BaseRequirement> typeReq = playerAchievements.get(player).get(ach.getName())
+								.getRequirementsByType(RequirementType.LOCATION);
+						for (BaseRequirement t : typeReq) {
+							LocationRequirement lr = (LocationRequirement) t;
+							JsonObject reqSubTypes = new JsonObject();
+							playerAchievements.get(player).get(ach.getName()).new LocationRequirement();
+
+							reqSubTypes.addProperty("name", t.getRequirementEntityName());
+							reqSubTypes.addProperty("amount", t.getTotalNeeded());
+							reqSubTypes.addProperty("total", t.getTotalAquired());
+							reqSubTypes.addProperty("id", t.getRequirementID());
+							reqSubTypes.addProperty("x", lr.x1);
+							reqSubTypes.addProperty("y", lr.y1);
+							reqSubTypes.addProperty("z", lr.z1);
+							if (lr.r >= 0) {
+								reqSubTypes.addProperty("radius", lr.r);
+							} else {
+								reqSubTypes.addProperty("x2", lr.x2);
+								reqSubTypes.addProperty("y2", lr.y2);
+								reqSubTypes.addProperty("z2", lr.z2);
+							}
+							reqTypes.add(reqSubTypes);
+						}
+						req.add("location_requirements", reqTypes);
+					}
+					break;
+				default:
+					break;
+				}
+			}
+			reply.add("requirements", req);
+			if (ach.getParent() != null) {
+				reply.addProperty("parent_name", ach.getParent().getName());
+			}
+			achArray.add(reply);
+		}
+		return achArray;
 	}
 
 	public static AchievementPlus findAchievementById(int id) {

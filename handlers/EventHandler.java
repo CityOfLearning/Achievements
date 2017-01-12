@@ -31,7 +31,7 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void breakBlockEvent(BreakEvent event) {
-		// we are only concerned with placing blocks
+		// we are only concerned with breaking blocks
 		if ((event.state.getBlock() != null) && (event.getPlayer() != null)) {
 			ItemStack is = new ItemStack(event.state.getBlock(), 1,
 					event.state.getBlock().getMetaFromState(event.state));
