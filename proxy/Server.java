@@ -31,13 +31,15 @@ public class Server implements Proxy {
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 
 		try {
+			DYNServerMod.logger.info("Initializing Achievements");
+
 			JsonObject achievementJson = DBManager.getAchievementDBAsJson();
 
 			File achievementFile = new File(MinecraftServer.getServer().getDataDirectory(),
 					"current_achievements.json");
 			FileUtils.createJsonFile(achievementJson, achievementFile);
 
-			if (!DYNServerMod.developmentEnvironment) {
+			if (!DYNServerMod.developmentEnvironment && DYNServerMod.apacheNetLoaded) {
 				// upload to ftp
 				FTPClient client = new FTPClient();
 				FileInputStream fis = null;

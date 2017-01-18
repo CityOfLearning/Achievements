@@ -11,6 +11,7 @@ import com.dyn.achievements.achievement.Requirements.BreakRequirement;
 import com.dyn.achievements.achievement.Requirements.LocationRequirement;
 import com.dyn.achievements.achievement.Requirements.PickupRequirement;
 import com.dyn.achievements.handlers.AchievementManager;
+import com.dyn.server.database.DBManager;
 import com.dyn.server.keys.KeyManager;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -26,28 +27,37 @@ public class Client implements Proxy {
 		try {
 			JsonParser parser = new JsonParser();
 
-			FTPClient client = new FTPClient();
+			if (DYNServerMod.apacheNetLoaded) {
+				FTPClient client = new FTPClient();
 
-			client.connect(KeyManager.getFtpKeys().getLeft());
-			client.login(KeyManager.getFtpKeys().getMiddle(), KeyManager.getFtpKeys().getRight());
+				client.connect(KeyManager.getFtpKeys().getLeft());
+				client.login(KeyManager.getFtpKeys().getMiddle(), KeyManager.getFtpKeys().getRight());
 
-			ByteArrayOutputStream fis = new ByteArrayOutputStream();
+				ByteArrayOutputStream fis = new ByteArrayOutputStream();
 
-			if (!client.retrieveFile("/Minecraft/current_achievements.json", fis)) {
-				// throw an exception to fail and make the default null
-				// achievement
+				if (!client.retrieveFile("/Minecraft/current_achievements.json", fis)) {
+					// throw an exception to fail and make the default null
+					// achievement
+					fis.close();
+					client.disconnect();
+					throw new Exception("Failed to retrieve achievement file");
+				}
 				fis.close();
 				client.disconnect();
-				throw new Exception("Failed to retrieve achievement file");
-			}
-			fis.close();
-			client.disconnect();
 
-			JsonObject achievementJson = parser.parse(fis.toString()).getAsJsonObject();
-			JsonArray jsonA = achievementJson.get("achievements").getAsJsonArray();
-			for (JsonElement ach : jsonA) {
-				DYNServerMod.logger.info("Adding Achievement: " + ach.getAsJsonObject().get("name").getAsString());
-				AchievementPlus.JsonToAchievement(ach.getAsJsonObject());
+				JsonObject achievementJson = parser.parse(fis.toString()).getAsJsonObject();
+				JsonArray jsonA = achievementJson.get("achievements").getAsJsonArray();
+				for (JsonElement ach : jsonA) {
+					DYNServerMod.logger.info("Adding Achievement: " + ach.getAsJsonObject().get("name").getAsString());
+					AchievementPlus.JsonToAchievement(ach.getAsJsonObject());
+				}
+			} else {
+				// the apache files were not loaded... cuz its dumb
+				JsonObject achievementJson = DBManager.getAchievementDBAsJson();
+
+				for (JsonElement ach : achievementJson.get("achievements").getAsJsonArray()) {
+					AchievementPlus.JsonToAchievement(ach.getAsJsonObject());
+				}
 			}
 		} catch (Exception e) {
 			DYNServerMod.logger.error("Could not create Achievements", e);
