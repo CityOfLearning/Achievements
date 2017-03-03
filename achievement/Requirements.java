@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatBase;
 
 public class Requirements {
+
 	public abstract class BaseRequirement {
 		private int aquired;
 		private int amount;
@@ -707,6 +708,48 @@ public class Requirements {
 			}
 		}
 		return copy;
+	}
+
+	public static String getDescription(BaseRequirement r) {
+		String description = "";
+		if (r instanceof CraftRequirement) {
+			description += "Crafted ";
+		}
+		if (r instanceof SmeltRequirement) {
+			description += "Smelted ";
+		}
+		if (r instanceof PickupRequirement) {
+			description += "Picked up ";
+		}
+		if (r instanceof StatRequirement) {
+			// TODO need to figure out how to parse these
+			description = "";
+		}
+		if (r instanceof KillRequirement) {
+			description += "Killed ";
+		}
+		if (r instanceof BrewRequirement) {
+			description += "Brewed ";
+		}
+		if (r instanceof PlaceRequirement) {
+			description += "Placed ";
+		}
+		if (r instanceof BreakRequirement) {
+			description += "Broke ";
+		}
+		if (r instanceof MentorRequirement) {
+			// TODO need to figure out how to parse these
+			description += "were awarded ";
+		}
+		if (r instanceof LocationRequirement) {
+			description += "Found ";
+		} else {
+			description += r.getTotalNeeded() + " ";
+		}
+
+		description += r.getRequirementEntityName();
+
+		return description;
 	}
 
 	private ArrayList<BaseRequirement> requirements = new ArrayList<>();

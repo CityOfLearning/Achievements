@@ -10,22 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.derimagia.forgeslack.slack.SlackSender;
 import com.dyn.DYNServerMod;
 import com.dyn.achievements.achievement.AchievementPlus;
+import com.dyn.achievements.achievement.RequirementEvent;
 import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
-import com.dyn.achievements.achievement.Requirements.BreakRequirement;
-import com.dyn.achievements.achievement.Requirements.BrewRequirement;
-import com.dyn.achievements.achievement.Requirements.CraftRequirement;
-import com.dyn.achievements.achievement.Requirements.KillRequirement;
 import com.dyn.achievements.achievement.Requirements.LocationRequirement;
-import com.dyn.achievements.achievement.Requirements.MentorRequirement;
-import com.dyn.achievements.achievement.Requirements.PickupRequirement;
-import com.dyn.achievements.achievement.Requirements.PlaceRequirement;
-import com.dyn.achievements.achievement.Requirements.SmeltRequirement;
-import com.dyn.achievements.achievement.Requirements.StatRequirement;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.gson.JsonArray;
@@ -38,6 +29,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -391,48 +383,6 @@ public class AchievementManager {
 		return achievements;
 	}
 
-	private static String getDescription(BaseRequirement r) {
-		String description = "";
-		if (r instanceof CraftRequirement) {
-			description += "Crafted ";
-		}
-		if (r instanceof SmeltRequirement) {
-			description += "Smelted ";
-		}
-		if (r instanceof PickupRequirement) {
-			description += "Picked up ";
-		}
-		if (r instanceof StatRequirement) {
-			// TODO need to figure out how to parse these
-			description = "";
-		}
-		if (r instanceof KillRequirement) {
-			description += "Killed ";
-		}
-		if (r instanceof BrewRequirement) {
-			description += "Brewed ";
-		}
-		if (r instanceof PlaceRequirement) {
-			description += "Placed ";
-		}
-		if (r instanceof BreakRequirement) {
-			description += "Broke ";
-		}
-		if (r instanceof MentorRequirement) {
-			// TODO need to figure out how to parse these
-			description += "were awarded ";
-		}
-		if (r instanceof LocationRequirement) {
-			description += "Found ";
-		} else {
-			description += r.getTotalNeeded() + " ";
-		}
-
-		description += r.getRequirementEntityName();
-
-		return description;
-	}
-
 	@SideOnly(Side.SERVER)
 	public static Map<String, Requirements> getPlayerAchievementProgress(String username) {
 		for (EntityPlayer p : playerAchievements.keySet()) {
@@ -513,6 +463,7 @@ public class AchievementManager {
 				for (int j = 0; j < achReqs.size(); j++) {
 					if (achReqs.get(j).equals(req)) {
 						achReqs.get(j).incrementTotal();
+						MinecraftForge.EVENT_BUS.post(new RequirementEvent.Increment(keyPlayer, ach, achReqs.get(j)));
 					}
 				}
 			}
@@ -538,9 +489,9 @@ public class AchievementManager {
 				for (int j = 0; j < achReqs.size(); j++) {
 					if (achReqs.get(j).getRequirementID() == req_id) {
 						achReqs.get(j).incrementTotal();
+						MinecraftForge.EVENT_BUS.post(new RequirementEvent.Increment(keyPlayer, ach, achReqs.get(j)));
 						if (achReqs.get(j).getTotalAquired() == achReqs.get(j).getTotalNeeded()) {
-							SlackSender.getInstance().send("Met Achievement " + ach.getName() + "'s Requirement: "
-									+ getDescription(achReqs.get(j)), keyPlayer.getDisplayNameString());
+							MinecraftForge.EVENT_BUS.post(new RequirementEvent.Met(keyPlayer, ach, achReqs.get(j)));
 						}
 					}
 				}
