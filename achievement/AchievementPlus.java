@@ -239,10 +239,10 @@ public class AchievementPlus extends Achievement {
 	public AchievementPlus(Requirements requirements, String name, String description, int xPos, int yPos, int orgId,
 			int badgeId, int achievementId, int mapId, int worldId, AchievementPlus parent, boolean awarded,
 			String texture) {
-		super(name.replace(' ', '_'), name.replace(' ', '_'), xPos, yPos, new ItemStack(Items.experience_bottle),
+		super(name.replace(' ', '_').toLowerCase(), name.replace(' ', '_'), xPos, yPos, new ItemStack(Items.experience_bottle),
 				parent);
-		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_'), "en_US", name);
-		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_') + ".desc", "en_US",
+		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_').toLowerCase(), name);
+		LanguageRegistry.instance().addStringLocalization("achievement." + name.replace(' ', '_').toLowerCase() + ".desc",
 				description);
 		this.requirements = requirements;
 		this.name = name;

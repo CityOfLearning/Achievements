@@ -87,8 +87,6 @@ public class AchievementManager {
 			reply.addProperty("ach_id", ach.getId());
 			reply.addProperty("map_id", ach.getMapId());
 			reply.addProperty("world", ach.getWorldId());
-			// reply.addProperty("x_coord", xCoord);
-			// reply.addProperty("y_coord", yCoord);
 			reply.addProperty("achieved", ach.isAwarded());
 			JsonObject req = new JsonObject();
 			boolean[] types = playerAchievements.get(player).get(ach.getName()).getRequirementTypes();
