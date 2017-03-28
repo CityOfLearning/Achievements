@@ -6,6 +6,8 @@ import com.dyn.achievements.achievement.AchievementPlus;
 import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.dyn.achievements.achievement.Requirements.LocationRequirement;
+import com.dyn.fixins.items.DynItemManager;
+import com.dyn.fixins.items.ItemAchievementMedal;
 import com.dyn.server.network.NetworkManager;
 import com.dyn.server.network.packets.client.SyncAchievementsMessage;
 import com.forgeessentials.commons.selections.AreaBase;
@@ -20,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.AchievementEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -380,6 +383,17 @@ public class EventHandler {
 					}
 				}
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public void onPlayerRecieveAchievement(AchievementEvent event) {
+		if (!((EntityPlayerMP) event.entityPlayer).getStatFile().hasAchievementUnlocked(event.achievement)) {
+		ItemStack medal = new ItemStack(DynItemManager.achMedal, 1,
+				ItemAchievementMedal.getMetaFromAchievementName(
+						event.achievement instanceof AchievementPlus ? ((AchievementPlus) event.achievement).getName()
+								: event.achievement.getStatName().getUnformattedText()));
+		boolean success = event.entityPlayer.inventory.addItemStackToInventory(medal);
 		}
 	}
 }
