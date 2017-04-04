@@ -393,7 +393,7 @@ public class AchievementManager {
 	@SideOnly(Side.SERVER)
 	public static Map<String, Requirements> getPlayerAchievementProgress(String username) {
 		for (EntityPlayer p : playerAchievements.keySet()) {
-			if (p.getDisplayNameString().equals(username)) {
+			if (p.getName().equals(username)) {
 				return playerAchievements.get(p);
 			}
 		}
@@ -406,7 +406,7 @@ public class AchievementManager {
 		try {
 			EntityPlayer keyPlayer = null;
 			for (EntityPlayer p : playerAchievements.keySet()) {
-				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
+				if (p.getName().equals(player.getName())) {
 					keyPlayer = p;
 				}
 			}
@@ -431,7 +431,7 @@ public class AchievementManager {
 		try {
 			EntityPlayer keyPlayer = null;
 			for (EntityPlayer p : playerAchievements.keySet()) {
-				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
+				if (p.getName().equals(player.getName())) {
 					keyPlayer = p;
 				}
 			}
@@ -460,7 +460,7 @@ public class AchievementManager {
 		try {
 			EntityPlayer keyPlayer = null;
 			for (EntityPlayer p : playerAchievements.keySet()) {
-				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
+				if (p.getName().equals(player.getName())) {
 					keyPlayer = p;
 				}
 			}
@@ -486,7 +486,7 @@ public class AchievementManager {
 		try {
 			EntityPlayer keyPlayer = null;
 			for (EntityPlayer p : playerAchievements.keySet()) {
-				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
+				if (p.getName().equals(player.getName())) {
 					keyPlayer = p;
 				}
 			}
@@ -691,7 +691,7 @@ public class AchievementManager {
 		try {
 			EntityPlayer keyPlayer = null;
 			for (EntityPlayer p : playerAchievements.keySet()) {
-				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
+				if (p.getName().equals(player.getName())) {
 					keyPlayer = p;
 				}
 			}
@@ -716,7 +716,7 @@ public class AchievementManager {
 		try {
 			EntityPlayer keyPlayer = null;
 			for (EntityPlayer p : playerAchievements.keySet()) {
-				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
+				if (p.getName().equals(player.getName())) {
 					keyPlayer = p;
 				}
 			}
@@ -741,7 +741,7 @@ public class AchievementManager {
 			return;
 		} else {
 			for (EntityPlayer p : playerAchievements.keySet()) {
-				if (p.getDisplayNameString().equals(player.getDisplayNameString())) {
+				if (p.getName().equals(player.getName())) {
 					return;
 				}
 			}
@@ -758,7 +758,7 @@ public class AchievementManager {
 		ServerConfigurationManager configMan = MinecraftServer.getServer().getConfigurationManager();
 		for (EntityPlayer keys : playerAchievements.keySet()) {
 			File out = new File(MinecraftServer.getServer().getFolderName() + "/Achievements/",
-					keys.getDisplayNameString() + ".txt");
+					keys.getName() + ".txt");
 			out.mkdirs();
 			if (out.exists()) {
 				out.delete();
