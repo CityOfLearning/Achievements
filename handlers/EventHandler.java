@@ -208,6 +208,17 @@ public class EventHandler {
 		}
 	}
 
+	@SubscribeEvent
+	public void onPlayerRecieveAchievement(AchievementEvent event) {
+		if (!((EntityPlayerMP) event.entityPlayer).getStatFile().hasAchievementUnlocked(event.achievement)) {
+			ItemStack medal = new ItemStack(DynItemManager.achMedal, 1,
+					ItemAchievementMedal.getMetaFromAchievementName(event.achievement instanceof AchievementPlus
+							? ((AchievementPlus) event.achievement).getName()
+							: event.achievement.getStatName().getUnformattedText()));
+			event.entityPlayer.inventory.addItemStackToInventory(medal);
+		}
+	}
+
 	// location based rquirements
 	// this is really dangerous as it happens every game tick,
 	// we either should find an alternative, thread this, or keep code as
@@ -383,17 +394,6 @@ public class EventHandler {
 					}
 				}
 			}
-		}
-	}
-
-	@SubscribeEvent
-	public void onPlayerRecieveAchievement(AchievementEvent event) {
-		if (!((EntityPlayerMP) event.entityPlayer).getStatFile().hasAchievementUnlocked(event.achievement)) {
-		ItemStack medal = new ItemStack(DynItemManager.achMedal, 1,
-				ItemAchievementMedal.getMetaFromAchievementName(
-						event.achievement instanceof AchievementPlus ? ((AchievementPlus) event.achievement).getName()
-								: event.achievement.getStatName().getUnformattedText()));
-		boolean success = event.entityPlayer.inventory.addItemStackToInventory(medal);
 		}
 	}
 }

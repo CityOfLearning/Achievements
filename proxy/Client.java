@@ -33,7 +33,7 @@ public class Client implements Proxy {
 				client.connect(KeyManager.getFtpKeys().getLeft());
 				client.login(KeyManager.getFtpKeys().getMiddle(), KeyManager.getFtpKeys().getRight());
 				client.enterLocalPassiveMode();
-				
+
 				ByteArrayOutputStream fis = new ByteArrayOutputStream();
 
 				if (!client.retrieveFile("/Minecraft/current_achievements.json", fis)) {
