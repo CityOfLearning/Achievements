@@ -216,6 +216,7 @@ public class EventHandler {
 							? ((AchievementPlus) event.achievement).getName()
 							: event.achievement.getStatName().getUnformattedText()));
 			event.entityPlayer.inventory.addItemStackToInventory(medal);
+			event.entityPlayer.worldObj.playSoundAtEntity(event.entityPlayer, "dyn:get.achievement", 1, 1);
 		}
 	}
 

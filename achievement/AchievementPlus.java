@@ -511,8 +511,8 @@ public class AchievementPlus extends Achievement {
 
 	public void awardAchievement(EntityPlayer player, UUID ccol_uuid) {
 		if (ccol_uuid != null) {
-			new PostBadge(org_id, badgeId, ccol_uuid.toString(), KeyManager.getSecretKey(org_id), KeyManager.getOrgKey(org_id),
-					player, this);
+			new PostBadge(org_id, badgeId, ccol_uuid.toString(), KeyManager.getSecretKey(org_id),
+					KeyManager.getOrgKey(org_id), player, this);
 		} else {
 			awarded = true;
 			player.addStat(this, 1);
