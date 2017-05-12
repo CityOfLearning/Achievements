@@ -7,7 +7,6 @@ import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.dyn.achievements.achievement.Requirements.LocationRequirement;
 import com.dyn.fixins.items.DynItemManager;
-import com.dyn.fixins.items.ItemAchievementMedal;
 import com.dyn.server.network.NetworkManager;
 import com.dyn.server.network.packets.client.SyncAchievementsMessage;
 import com.forgeessentials.commons.selections.AreaBase;
@@ -19,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -211,10 +211,22 @@ public class EventHandler {
 	@SubscribeEvent
 	public void onPlayerRecieveAchievement(AchievementEvent event) {
 		if (!((EntityPlayerMP) event.entityPlayer).getStatFile().hasAchievementUnlocked(event.achievement)) {
-			ItemStack medal = new ItemStack(DynItemManager.achMedal, 1,
-					ItemAchievementMedal.getMetaFromAchievementName(event.achievement instanceof AchievementPlus
-							? ((AchievementPlus) event.achievement).getName()
-							: event.achievement.getStatName().getUnformattedText()));
+			ItemStack medal = new ItemStack(DynItemManager.achMedal);
+			if (event.achievement instanceof AchievementPlus) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setString("ach_name", ((AchievementPlus) event.achievement).getName());
+				// tag.setInteger("rarity", event.achievement.getSpecial() ? 0 :
+				// Math.min(recursiveTreeSearch(node), 4));
+
+				medal.setTagCompound(tag);
+			} else {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setString("ach_name", event.achievement.getStatName().getUnformattedText());
+				// tag.setInteger("rarity", event.achievement.getSpecial() ? 0 :
+				// Math.min(recursiveTreeSearch(node), 4));
+
+				medal.setTagCompound(tag);
+			}
 			event.entityPlayer.inventory.addItemStackToInventory(medal);
 			event.entityPlayer.worldObj.playSoundAtEntity(event.entityPlayer, "dyn:get.achievement", 1, 1);
 		}
