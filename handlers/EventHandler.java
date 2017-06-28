@@ -3,6 +3,7 @@ package com.dyn.achievements.handlers;
 import java.util.Random;
 
 import com.dyn.achievements.achievement.AchievementPlus;
+import com.dyn.achievements.achievement.RequirementEvent;
 import com.dyn.achievements.achievement.RequirementType;
 import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.dyn.achievements.achievement.Requirements.LocationRequirement;
@@ -210,25 +211,29 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public void onPlayerRecieveAchievement(AchievementEvent event) {
-		if (!((EntityPlayerMP) event.entityPlayer).getStatFile().hasAchievementUnlocked(event.achievement)) {
-			ItemStack medal = new ItemStack(DynItemManager.achMedal);
-			if (event.achievement instanceof AchievementPlus) {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setString("ach_name", ((AchievementPlus) event.achievement).getName());
-				// tag.setInteger("rarity", event.achievement.getSpecial() ? 0 :
-				// Math.min(recursiveTreeSearch(node), 4));
+		if (!(event instanceof RequirementEvent)) {
+			if (!((EntityPlayerMP) event.entityPlayer).getStatFile().hasAchievementUnlocked(event.achievement)) {
+				ItemStack medal = new ItemStack(DynItemManager.achMedal);
+				if (event.achievement instanceof AchievementPlus) {
+					NBTTagCompound tag = new NBTTagCompound();
+					tag.setString("ach_name", ((AchievementPlus) event.achievement).getName());
+					// tag.setInteger("rarity", event.achievement.getSpecial() ?
+					// 0 :
+					// Math.min(recursiveTreeSearch(node), 4));
 
-				medal.setTagCompound(tag);
-			} else {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setString("ach_name", event.achievement.getStatName().getUnformattedText());
-				// tag.setInteger("rarity", event.achievement.getSpecial() ? 0 :
-				// Math.min(recursiveTreeSearch(node), 4));
+					medal.setTagCompound(tag);
+				} else {
+					NBTTagCompound tag = new NBTTagCompound();
+					tag.setString("ach_name", event.achievement.getStatName().getUnformattedText());
+					// tag.setInteger("rarity", event.achievement.getSpecial() ?
+					// 0 :
+					// Math.min(recursiveTreeSearch(node), 4));
 
-				medal.setTagCompound(tag);
+					medal.setTagCompound(tag);
+				}
+				event.entityPlayer.inventory.addItemStackToInventory(medal);
+				event.entityPlayer.worldObj.playSoundAtEntity(event.entityPlayer, "dyn:get.achievement", 1, 1);
 			}
-			event.entityPlayer.inventory.addItemStackToInventory(medal);
-			event.entityPlayer.worldObj.playSoundAtEntity(event.entityPlayer, "dyn:get.achievement", 1, 1);
 		}
 	}
 
