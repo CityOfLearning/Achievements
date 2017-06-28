@@ -80,7 +80,7 @@ public class AchievementManager {
 	public static JsonArray createPlayerAchievementJson(EntityPlayer player) {
 		JsonArray achArray = new JsonArray();
 		// all the achievement data
-		if (playerAchievements.get(player) != null) {
+		if (playerAchievements.get(player) == null) {
 			DYNServerMod.logger.error("Player not found in achievement mapping");
 			return achArray;
 		}
