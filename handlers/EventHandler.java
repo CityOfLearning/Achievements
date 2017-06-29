@@ -9,6 +9,7 @@ import com.dyn.achievements.achievement.Requirements.BaseRequirement;
 import com.dyn.achievements.achievement.Requirements.LocationRequirement;
 import com.dyn.fixins.items.DynItemManager;
 import com.dyn.server.network.NetworkManager;
+import com.dyn.server.network.messages.PlayCustomSoundMessage;
 import com.dyn.server.network.packets.client.SyncAchievementsMessage;
 import com.forgeessentials.commons.selections.AreaBase;
 import com.forgeessentials.commons.selections.Point;
@@ -232,7 +233,8 @@ public class EventHandler {
 					medal.setTagCompound(tag);
 				}
 				event.entityPlayer.inventory.addItemStackToInventory(medal);
-				event.entityPlayer.worldObj.playSoundAtEntity(event.entityPlayer, "dyn:get.achievement", 1, 1);
+				NetworkManager.sendTo(new PlayCustomSoundMessage("dyn:get.achievement"),
+						(EntityPlayerMP) event.entityPlayer);
 			}
 		}
 	}
